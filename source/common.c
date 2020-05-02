@@ -1563,14 +1563,10 @@ void COM_InitFilesystem (void)
 	//johnfitz -- track number of mission packs added
 	//since we don't want to allow the "game" command to strip them away
 	com_nummissionpacks = 0;
-	if (COM_CheckParm ("-rogue")){
-		COM_AddGameDirectory (va("%s/rogue", basedir) );
-		com_nummissionpacks++;
-	}
-	if (COM_CheckParm ("-hipnotic")){
-		COM_AddGameDirectory (va("%s/hipnotic", basedir) );
-		com_nummissionpacks++;
-	}
+	//add halo
+	COM_AddGameDirectory (va("%s/Rev", basedir) );
+	com_nummissionpacks++;
+	
 //
 // -game <gamedir>
 // Adds basedir/gamedir as an override game

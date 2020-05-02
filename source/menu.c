@@ -356,7 +356,7 @@ void M_ToggleMenu_f (void)
 /* MAIN MENU */
 
 int	m_main_cursor;
-#define	MAIN_ITEMS	5
+#define	MAIN_ITEMS	3
 
 
 void M_Menu_Main_f (void)
@@ -376,22 +376,31 @@ void M_Main_Draw (void)
 {
 	int		f;
 	qpic_t	*p;
+	int y_offset = 30;
+	int y_cursor_offset = 32;
+	int x_offset = 60;
+	int x_text_offset = 15;
 
+	//background & menu title
 	M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
 	p = Draw_CachePic ("gfx/ttl_main.lmp");
 	M_DrawPic ( (320-p->width)/2, 4, p);
-	M_DrawTransPic (72, 32, Draw_CachePic ("gfx/mainmenu.lmp") );
-
-	f = (int)(host_time * 10)%6;
-
-	M_DrawTransPic (54, 32 + m_main_cursor * 20,Draw_CachePic( va("gfx/menudot%i.lmp", f+1 ) ) );
 	
+	//cursor
+	//M_DrawTextBox (x_offset+2, y_offset+24+(m_main_cursor*20), 15, 1);
+	f = (int)(host_time * 5)%6;
+	M_DrawTransPic (x_offset, y_offset+y_cursor_offset+(m_main_cursor*20), Draw_CachePic(va("gfx/menudot%i.lmp", f+1)));
+	//menu items
+	M_Print(x_offset+x_text_offset, y_offset+32, "Multiplayer");
+	M_Print(x_offset+x_text_offset, y_offset+52, "Options");
+	M_Print(x_offset+x_text_offset, y_offset+72, "Quit");
+	
+	//Rinne patreon credits
 	M_PrintCentered (190, " Thanks for the awesome support ");
 	M_PrintCentered (198, "         on Patreon to:         ");
 	M_PrintCentered (206, "     Tain Sueiras, polytoad     ");
 	M_PrintCentered (214, "  drd7of14, The Vita3K Project  ");
 }
-
 
 void M_Main_Key (int key)
 {
@@ -426,22 +435,14 @@ void M_Main_Key (int key)
 		switch (m_main_cursor)
 		{
 		case 0:
-			M_Menu_SinglePlayer_f ();
-			break;
-
-		case 1:
 			M_Menu_MultiPlayer_f ();
 			break;
 
-		case 2:
+		case 1:
 			M_Menu_Options_f ();
 			break;
 
-		case 3:
-			M_Menu_Help_f ();
-			break;
-
-		case 4:
+		case 2:
 			M_Menu_Quit_f ();
 			break;
 		}
@@ -702,7 +703,7 @@ void M_Save_Key (int k)
 //=============================================================================
 /* MULTIPLAYER MENU */
 
-int	m_multiplayer_cursor;
+int	m_multiplayer_cursor = 1;
 #define	MULTIPLAYER_ITEMS	3
 
 
@@ -718,15 +719,24 @@ void M_MultiPlayer_Draw (void)
 {
 	int		f;
 	qpic_t	*p;
-
+    int y_offset = 30;
+	int y_cursor_offset = 32;
+	int x_offset = 60;
+	int x_text_offset = 15;
+	
+	//title and background
 	M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
 	p = Draw_CachePic ("gfx/p_multi.lmp");
 	M_DrawPic ( (320-p->width)/2, 4, p);
-	M_DrawTransPic (72, 32, Draw_CachePic ("gfx/mp_menu.lmp") );
+	// M_DrawTransPic (72, 32, Draw_CachePic ("gfx/mp_menu.lmp") );
 
+	//menu items
+	M_Print(x_offset+x_text_offset, y_offset+32, "Join Game");
+	M_Print(x_offset+x_text_offset, y_offset+52, "Start Game");
+	M_Print(x_offset+x_text_offset, y_offset+72, "Edit Spartan");
+	//cursor
 	f = (int)(host_time * 10)%6;
-
-	M_DrawTransPic (54, 32 + m_multiplayer_cursor * 20,Draw_CachePic( va("gfx/menudot%i.lmp", f+1 ) ) );
+	M_DrawTransPic (x_offset, y_offset+y_cursor_offset+(m_multiplayer_cursor*20), Draw_CachePic(va("gfx/menudot%i.lmp", f+1)));
 
 	if (tcpipAvailable)
 		return;
@@ -2187,7 +2197,7 @@ void M_Quit_Draw (void)
 //=============================================================================
 /* LAN CONFIG MENU */
 
-int		lanConfig_cursor = 1;
+int		lanConfig_cursor = 2;
 int		lanConfig_cursor_table [] = {72, 92, 112, 144, 158};
 #define NUM_LANCONFIG_CMDS	4
 
@@ -2522,60 +2532,15 @@ typedef struct
 
 level_t		levels[] =
 {
-	{"pit", "Pit H3"},	// 0
+	// {"pit", "Pit H3"},	// 0
 	{"plaza", "Plaza"},
 	{"spider", "spiderweb"},
-	{"foundation", "Halo 2 Foundation"},
+	// {"foundation", "Halo 2 Foundation"},
 	{"lockout", "Lockout"},
 	{"narrowed", "Narrowed"},
 	{"bloody", "bloody"},
 	{"construction", "construction"},
-	{"base", "base"},
-
-	{"start", "Entrance"},	// 9
-
-	{"e1m1", "Slipgate Complex"},				// 10
-	{"e1m2", "Castle of the Damned"},
-	{"e1m3", "The Necropolis"},
-	{"e1m4", "The Grisly Grotto"},
-	{"e1m5", "Gloom Keep"},
-	{"e1m6", "The Door To Chthon"},
-	{"e1m7", "The House of Chthon"},
-	{"e1m8", "Ziggurat Vertigo"},
-
-	{"e2m1", "The Installation"},				// 18
-	{"e2m2", "Ogre Citadel"},
-	{"e2m3", "Crypt of Decay"},
-	{"e2m4", "The Ebon Fortress"},
-	{"e2m5", "The Wizard's Manse"},
-	{"e2m6", "The Dismal Oubliette"},
-	{"e2m7", "Underearth"},
-
-	{"e3m1", "Termination Central"},			// 25
-	{"e3m2", "The Vaults of Zin"},
-	{"e3m3", "The Tomb of Terror"},
-	{"e3m4", "Satan's Dark Delight"},
-	{"e3m5", "Wind Tunnels"},
-	{"e3m6", "Chambers of Torment"},
-	{"e3m7", "The Haunted Halls"},
-
-	{"e4m1", "The Sewage System"},				// 32
-	{"e4m2", "The Tower of Despair"},
-	{"e4m3", "The Elder God Shrine"},
-	{"e4m4", "The Palace of Hate"},
-	{"e4m5", "Hell's Atrium"},
-	{"e4m6", "The Pain Maze"},
-	{"e4m7", "Azure Agony"},
-	{"e4m8", "The Nameless City"},
-
-	{"end", "Shub-Niggurath's Pit"},			// 40
-
-	{"dm1", "Place of Two Deaths"},				// 41
-	{"dm2", "Claustrophobopolis"},
-	{"dm3", "The Abandoned Base"},
-	{"dm4", "The Bad Place"},
-	{"dm5", "The Cistern"},
-	{"dm6", "The Dark Zone"}
+	{"base", "base"}
 };
 
 //MED 01/06/97 added hipnotic levels
@@ -2638,14 +2603,7 @@ typedef struct
 
 episode_t	episodes[] =
 {
-	{"Halo Deathmatch", 0, 9},
-	{"Welcome to Quake", 9, 1},
-	{"Doomed Dimension", 10, 8},
-	{"Realm of Black Magic", 18, 7},
-	{"Netherworld", 25, 7},
-	{"The Elder World", 32, 8},
-	{"Final Level", 40, 1},
-	{"Deathmatch Arena", 41, 6}
+	{"Halo Deathmatch", 0, 7}
 };
 
 //MED 01/06/97  added hipnotic episodes
@@ -2877,17 +2835,7 @@ void M_NetStart_Change (int dir)
 
 	case 7:
 		startepisode += dir;
-	//MED 01/06/97 added hipnotic count
-		if (hipnotic)
-			count = 6;
-	//PGM 01/07/97 added rogue count
-	//PGM 03/02/97 added 1 for dmatch episode
-		else if (rogue)
-			count = 4;
-		else if (registered.value)
-			count = 7;
-		else
-			count = 2;
+		count = 1;
 
 		if (startepisode < 0)
 			startepisode = count - 1;
