@@ -18,6 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
 #include "quakedef.h"
 #include "net_dgrm.h"
 
@@ -133,8 +134,8 @@ uint8_t netcheck_dialog_running = 0;
 void SetResolution(int w, int h){
 	char res_str[64];
 	FILE *f = NULL;
-	if (is_uma0) f = fopen("uma0:data/Quake/resolution.cfg", "wb");
-	else f = fopen("ux0:data/Quake/resolution.cfg", "wb");
+	if (is_uma0) f = fopen("uma0:data/Halo/resolution.cfg", "wb");
+	else f = fopen("ux0:data/Halo/resolution.cfg", "wb");
 	sprintf(res_str, "%dx%d", w, h);
 	fwrite(res_str, 1, strlen(res_str), f);
 	fclose(f);
@@ -145,8 +146,8 @@ void SetResolution(int w, int h){
 void SetAntiAliasing(int m){
 	char res_str[64];
 	FILE *f = NULL;
-	if (is_uma0) f = fopen("uma0:data/Quake/antialiasing.cfg", "wb");
-	else f = fopen("ux0:data/Quake/antialiasing.cfg", "wb");
+	if (is_uma0) f = fopen("uma0:data/Halo/antialiasing.cfg", "wb");
+	else f = fopen("ux0:data/Halo/antialiasing.cfg", "wb");
 	sprintf(res_str, "%d", m);
 	fwrite(res_str, 1, strlen(res_str), f);
 	fclose(f);
@@ -1778,7 +1779,12 @@ char *bindnames[][2] =
 {
 {"+attack", 		"attack"},
 {"impulse 10", 		"next weapon"},
+{"impulse 13", 		"Change Weapon"},
 {"impulse 12",	 	"previous weapon" },
+{"impulse 27", 		"Change Grenade"},
+{"impulse 28", 		"Throw Grenade"},
+{"impulse 29", 		"Melee"},
+{"impulse 39", 		"Zoom"},
 {"+jump", 			"jump / swim up"},
 {"+forward", 		"move forward"},
 {"+back", 			"move back"},
@@ -2324,7 +2330,7 @@ void M_LanConfig_Key (int key)
 				SceNetAdhocctlAdhocId adhocId;
 				memset(&adhocId, 0, sizeof(SceNetAdhocctlAdhocId));
 				adhocId.type = SCE_NET_ADHOCCTL_ADHOCTYPE_RESERVED;
-				memcpy(&adhocId.data[0], "QUAK00001", SCE_NET_ADHOCCTL_ADHOCID_LEN);
+				memcpy(&adhocId.data[0], "HALO00001", SCE_NET_ADHOCCTL_ADHOCID_LEN);
 				sceNetAdhocctlInit(&adhocId);
 	
 				SceNetCheckDialogParam param;
@@ -2332,7 +2338,7 @@ void M_LanConfig_Key (int key)
 				SceNetAdhocctlGroupName groupName;
 				memset(groupName.data, 0, SCE_NET_ADHOCCTL_GROUPNAME_LEN);
 				param.groupName = &groupName;
-				memcpy(&param.npCommunicationId.data, "QUAK00001", 9);
+				memcpy(&param.npCommunicationId.data, "HALO00001", 9);
 				param.npCommunicationId.term = '\0';
 				param.npCommunicationId.num = 0;
 				param.mode = SCE_NETCHECK_DIALOG_MODE_PSP_ADHOC_CONN;
@@ -2523,9 +2529,19 @@ typedef struct
 
 level_t		levels[] =
 {
-	{"start", "Entrance"},	// 0
+	{"pit", "Pit H3"},	// 0
+	{"plaza", "Plaza"},
+	{"spider", "spiderweb"},
+	{"foundation", "Halo 2 Foundation"},
+	{"lockout", "Lockout"},
+	{"narrowed", "Narrowed"},
+	{"bloody", "bloody"},
+	{"construction", "construction"},
+	{"base", "base"},
 
-	{"e1m1", "Slipgate Complex"},				// 1
+	{"start", "Entrance"},	// 9
+
+	{"e1m1", "Slipgate Complex"},				// 10
 	{"e1m2", "Castle of the Damned"},
 	{"e1m3", "The Necropolis"},
 	{"e1m4", "The Grisly Grotto"},
@@ -2534,7 +2550,7 @@ level_t		levels[] =
 	{"e1m7", "The House of Chthon"},
 	{"e1m8", "Ziggurat Vertigo"},
 
-	{"e2m1", "The Installation"},				// 9
+	{"e2m1", "The Installation"},				// 18
 	{"e2m2", "Ogre Citadel"},
 	{"e2m3", "Crypt of Decay"},
 	{"e2m4", "The Ebon Fortress"},
@@ -2542,7 +2558,7 @@ level_t		levels[] =
 	{"e2m6", "The Dismal Oubliette"},
 	{"e2m7", "Underearth"},
 
-	{"e3m1", "Termination Central"},			// 16
+	{"e3m1", "Termination Central"},			// 25
 	{"e3m2", "The Vaults of Zin"},
 	{"e3m3", "The Tomb of Terror"},
 	{"e3m4", "Satan's Dark Delight"},
@@ -2550,7 +2566,7 @@ level_t		levels[] =
 	{"e3m6", "Chambers of Torment"},
 	{"e3m7", "The Haunted Halls"},
 
-	{"e4m1", "The Sewage System"},				// 23
+	{"e4m1", "The Sewage System"},				// 32
 	{"e4m2", "The Tower of Despair"},
 	{"e4m3", "The Elder God Shrine"},
 	{"e4m4", "The Palace of Hate"},
@@ -2559,9 +2575,9 @@ level_t		levels[] =
 	{"e4m7", "Azure Agony"},
 	{"e4m8", "The Nameless City"},
 
-	{"end", "Shub-Niggurath's Pit"},			// 31
+	{"end", "Shub-Niggurath's Pit"},			// 40
 
-	{"dm1", "Place of Two Deaths"},				// 32
+	{"dm1", "Place of Two Deaths"},				// 41
 	{"dm2", "Claustrophobopolis"},
 	{"dm3", "The Abandoned Base"},
 	{"dm4", "The Bad Place"},
@@ -2629,13 +2645,14 @@ typedef struct
 
 episode_t	episodes[] =
 {
-	{"Welcome to Quake", 0, 1},
-	{"Doomed Dimension", 1, 8},
-	{"Realm of Black Magic", 9, 7},
-	{"Netherworld", 16, 7},
-	{"The Elder World", 23, 8},
-	{"Final Level", 31, 1},
-	{"Deathmatch Arena", 32, 6}
+	{"Halo Deathmatch", 0, 9},
+	{"Welcome to Quake", 9, 1},
+	{"Doomed Dimension", 10, 8},
+	{"Realm of Black Magic", 18, 7},
+	{"Netherworld", 25, 7},
+	{"The Elder World", 32, 8},
+	{"Final Level", 40, 1},
+	{"Deathmatch Arena", 41, 6}
 };
 
 //MED 01/06/97  added hipnotic episodes

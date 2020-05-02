@@ -1,5 +1,5 @@
-TARGET		:= vitaQuake
-TITLE		:= QUAK00001
+TARGET		:= HaloQuake
+TITLE		:= HALO00001
 GIT_VERSION := $(shell git describe --abbrev=6 --dirty --always --tags)
 SHADERS     := shaders
 
