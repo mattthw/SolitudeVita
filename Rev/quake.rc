@@ -10,11 +10,7 @@ exec autoexec.cfg
 // stuff command line statements
 stuffcmds
 
-// start demos if not allready running a server
-//startdemos title demo1 title demo1 title demo1 title demo1
-
 // Kurok stuff
-
 sv_maxspeed 200
 sv_maxvelocity 5000
 

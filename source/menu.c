@@ -70,6 +70,7 @@ void M_Menu_LanConfig_f (void);
 void M_Menu_GameOptions_f (void);
 void M_Menu_Search_f (void);
 void M_Menu_ServerList_f (void);
+void M_Menu_Pause_f (void);
 
 void M_Main_Draw (void);
 	void M_SinglePlayer_Draw (void);
@@ -90,6 +91,7 @@ void M_LanConfig_Draw (void);
 void M_GameOptions_Draw (void);
 void M_Search_Draw (void);
 void M_ServerList_Draw (void);
+void M_Pause_Draw (void);
 
 void M_Main_Key (int key);
 	void M_SinglePlayer_Key (int key);
@@ -110,6 +112,7 @@ void M_LanConfig_Key (int key);
 void M_GameOptions_Key (int key);
 void M_Search_Key (int key);
 void M_ServerList_Key (int key);
+void M_Pause_Key (int key);
 
 bool	m_entersound;		// play after drawing a frame, so caching
 								// won't disrupt the sound
@@ -348,7 +351,15 @@ void M_ToggleMenu_f (void)
 	}
 	else
 	{
-		M_Menu_Main_f ();
+		if(sv.active)	//Enter pause menu
+		{
+			m_state = m_pause;
+			key_dest = key_menu;
+		}
+		else
+		{
+			M_Menu_Main_f ();
+		}
 	}
 }
 
@@ -1660,7 +1671,11 @@ void M_Options_Key (int k)
 	case K_ENTER:
 	case K_START:
 	case K_TRIANGLE:
-		M_Menu_Main_f ();
+		if (sv.active) { //user is in pause menu
+			M_Menu_Pause_f();
+		} else {
+			M_Menu_Main_f ();
+		}
 		break;
 
 	case K_CIRCLE:
@@ -2539,10 +2554,10 @@ typedef struct
 
 level_t		levels[] =
 {
-	// {"pit", "Pit H3"},	// 0
+	{"pit", "Pit H3"},	// 0
 	{"plaza", "Plaza"},
 	{"spider", "spiderweb"},
-	// {"foundation", "Halo 2 Foundation"},
+	{"foundation", "Halo 2 Foundation"},
 	{"lockout", "Lockout"},
 	{"narrowed", "Narrowed"},
 	{"bloody", "bloody"},
@@ -2610,7 +2625,7 @@ typedef struct
 
 episode_t	episodes[] =
 {
-	{"Halo Deathmatch", 0, 7}
+	{"Halo Deathmatch", 0, 9}
 };
 
 //MED 01/06/97  added hipnotic episodes
@@ -2633,6 +2648,85 @@ episode_t	rogueepisodes[] =
 	{"Corridors of Time", 8, 8},
 	{"Deathmatch Arena", 16, 1}
 };
+
+void M_Menu_Pause_f (void)
+{
+	key_dest = key_menu;
+	m_state = m_pause;
+	m_entersound = true;
+}
+#define	NUM_PAUSEOPTIONS	4
+int		pause_cursor;
+//add bot
+//remove bot
+//options
+//quit
+void M_Pause_Draw (void)
+{
+	int		f;
+	qpic_t	*p;
+	int y_offset = 30;
+	int y_cursor_offset = 32;
+	int x_offset = 100;
+	int x_text_offset = 15;
+	
+	//cursor
+	f = (int)(host_time * 5)%6;
+	M_DrawTransPic (x_offset, y_offset+y_cursor_offset+(pause_cursor*20), Draw_CachePic(va("gfx/menudot%i.lmp", f+1)));
+	//menu items
+	M_Print(x_offset+x_text_offset, y_offset+32, "Add Bot");
+	M_Print(x_offset+x_text_offset, y_offset+52, "Remove Bot");
+	M_Print(x_offset+x_text_offset, y_offset+72, "Options");
+	M_Print(x_offset+x_text_offset, y_offset+92, "Disconnect");
+
+}
+void M_Pause_Key (int key)
+{
+	switch (key)
+	{
+	case K_ENTER:
+	case K_START:
+	case K_TRIANGLE:
+		key_dest = key_game;
+		m_state = m_none;
+		break;
+
+	case K_UPARROW:
+		S_LocalSound ("misc/menu1.wav");
+		pause_cursor--;
+		if (pause_cursor < 0)
+			pause_cursor = NUM_PAUSEOPTIONS-1;
+		break;
+
+	case K_DOWNARROW:
+		S_LocalSound ("misc/menu1.wav");
+		pause_cursor++;
+		if (pause_cursor >= NUM_PAUSEOPTIONS)
+			pause_cursor = 0;
+		break;
+
+	case K_CROSS:
+		S_LocalSound ("misc/menu2.wav");
+		if(pause_cursor == 0)
+		{
+			Cbuf_AddText ("impulse 100\n");
+		}
+		if(pause_cursor == 1)
+		{
+			Cbuf_AddText ("impulse 102\n");
+		}
+		if(pause_cursor == 2)
+		{
+			M_Menu_Options_f ();
+		}
+		if(pause_cursor == 3)
+		{
+			Cbuf_AddText ("disconnect\n");
+			M_Menu_GameOptions_f();
+		}
+		break;
+	}
+}
 
 int	startepisode;
 int	startlevel;
@@ -3122,6 +3216,7 @@ void M_Init (void)
 	Cmd_AddCommand ("menu_video", M_Menu_Video_f);
 	Cmd_AddCommand ("help", M_Menu_Help_f);
 	Cmd_AddCommand ("menu_quit", M_Menu_Quit_f);
+	Cmd_AddCommand ("menu_pause", M_Menu_Pause_f);
 }
 
 
@@ -3237,6 +3332,9 @@ void M_Draw (void)
 	case m_benchmark:
 		M_Benchmark_Draw();
 		break;
+	case m_pause:
+		M_Pause_Draw();
+		break;
 	}
 
 	if (m_entersound)
@@ -3336,6 +3434,9 @@ void M_Keydown (int key)
 
 	case m_benchmark:
 		M_Benchmark_Key (key);
+		break;
+	case m_pause:
+		M_Pause_Key(key);
 		break;
 	}
 }
