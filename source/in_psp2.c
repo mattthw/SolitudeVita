@@ -131,6 +131,7 @@ void IN_RescaleAnalog(int *x, int *y, int dead) {
 	}
 }
 
+int old_x = - 1, old_y;
 void IN_Move (usercmd_t *cmd)
 {
 	// ANALOGS
@@ -191,16 +192,21 @@ void IN_Move (usercmd_t *cmd)
 	{
 		sceTouchPeek(SCE_TOUCH_PORT_FRONT, &touch, 1);
 		if (touch.reportNum > 0) {
-			int raw_x = lerp(touch.report[0].x, 1919, 960);
-			int raw_y = lerp(touch.report[0].y, 1087, 544);
-			int touch_x = raw_x - 480;
-			int touch_y = raw_y - 272;
-			x_cam = abs(touch_x) < 20 ? 0 : touch_x * psvita_front_sensitivity_x.value * 0.008;
-			y_cam = abs(touch_y) < 20 ? 0 : touch_y * psvita_front_sensitivity_y.value * 0.008;
-			cl.viewangles[YAW] -= x_cam;
-			V_StopPitchDrift();
-			if (invert_camera.value) cl.viewangles[PITCH] -= y_cam;
-			else cl.viewangles[PITCH] += y_cam;
+			if (old_x != -1) {
+				int touch_x = touch.report[0].x - old_x;
+				int touch_y = touch.report[0].y - old_y;
+
+				cl.viewangles[YAW] -= touch_x * psvita_front_sensitivity_x.value;
+				if (invert_camera.value) {
+					cl.viewangles[PITCH] -= touch_y * psvita_front_sensitivity_y.value;
+				} else {
+					cl.viewangles[PITCH] += touch_y * psvita_front_sensitivity_y.value;
+				}
+			}
+			old_x = touch.report[0].x;
+			old_y = touch.report[0].y;
+		} else {
+			old_x = -1;
 		}
 	}
 

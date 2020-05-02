@@ -40,6 +40,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define m_benchmark 18
 #define m_mods 19
 #define m_graphics 20
+#define m_pause 21
 
 extern int m_state;
 
