@@ -1,4 +1,4 @@
-TARGET		:= HaloQuake
+TARGET		:= HaloRevamped
 TITLE		:= HALO00001
 GIT_VERSION := $(shell git describe --abbrev=6 --dirty --always --tags)
 SHADERS     := shaders
