@@ -29,6 +29,21 @@ extern cvar_t viewsize;
 
 int			sb_updates;		// if >= vid.numpages, no update needed
 
+cvar_t cl_killmedals = {"cl_killmedals", "0"};
+cvar_t cl_plasmanade = {"cl_plasmanade", "2"};
+cvar_t cl_nadenum = {"cl_nadenum", "5"};
+cvar_t cl_round = {"cl_round", "0"};
+cvar_t cl_life = {"cl_life", "1"};
+cvar_t cl_slowmo = {"cl_slowmo", "5"};
+cvar_t cl_respawn = {"cl_respawn", "0"};
+cvar_t cl_activate = {"cl_activate", "0"};	//For slowmo
+cvar_t cl_scope = {"cl_scope", "0"};
+cvar_t cl_ww = {"cl_ww", "0"};		//World weapon print message
+cvar_t cl_ch_red = {"cl_ch_red", "0"};
+cvar_t cl_ch_blue = {"cl_ch_blue", "1"};
+cvar_t cl_overlay = {"cl_overlay", "0"};
+cvar_t hide_hud = {"hide_hud", "0"};
+
 #define STAT_MINUS		10	// num frame for '-' stats digit
 qpic_t		*sb_nums[2][11];
 qpic_t		*sb_colon, *sb_slash;
@@ -59,6 +74,86 @@ qpic_t      *rsb_items[2];
 qpic_t      *rsb_ammo[3];
 qpic_t      *rsb_teambord;		// PGM 01/19/97 - team color border
 
+//Weapon Icons
+qpic_t		*AR;
+qpic_t		*SMG;
+qpic_t		*Sniper;
+qpic_t		*RL;
+qpic_t		*Needler;
+qpic_t		*ppist;
+qpic_t		*Pistol;
+qpic_t		*Shottie;
+//World weapons
+qpic_t		*ARW;
+qpic_t		*SMGW;
+qpic_t		*SniperW;
+qpic_t		*RLW;
+qpic_t		*NeedlerW;
+qpic_t		*ppistW;
+qpic_t		*PistolW;
+qpic_t		*ShottieW;
+
+//Kill medals
+qpic_t		*doublek;
+qpic_t		*triple;
+qpic_t		*killtrocity;
+qpic_t		*killtacular;
+
+//Grenade types
+qpic_t		*plasma;
+qpic_t		*frag;
+
+
+//Health
+qpic_t		*life90;
+qpic_t		*lifered;
+qpic_t		*health_bar;
+qpic_t		*health_bar_red;
+
+//Ammo counter
+qpic_t		*pistolb;
+qpic_t		*shotgunb;
+qpic_t		*arb;
+qpic_t		*needleb;
+qpic_t		*rocketb;
+qpic_t		*smgb;
+qpic_t		*sniperb;
+
+//Slowmo graphic
+qpic_t		*slomoclock[9];
+
+//Grenade Numbers
+qpic_t		*numbers[5];
+
+//Crosshairs
+
+//red
+qpic_t		*arred;
+qpic_t		*smgred;
+qpic_t		*sniperred;
+qpic_t		*rlred;
+qpic_t		*pistolred;
+qpic_t		*ppistred;
+qpic_t		*needlerred;
+qpic_t		*plriflered;
+qpic_t		*shotgunred;
+qpic_t		*swordred;
+
+//blue
+qpic_t		*arblue;
+qpic_t		*smgblue;
+qpic_t		*sniperblue;
+qpic_t		*rlblue;
+qpic_t		*pistolblue;
+qpic_t		*ppistblue;
+qpic_t		*needlerblue;
+qpic_t		*plrifleblue;
+qpic_t		*shotgunblue;
+qpic_t		*swordblue;
+
+qpic_t		*plasmabar;
+
+
 //MED 01/04/97 added two more weapons + 3 alternates for grenade launcher
 qpic_t      *hsb_weapons[7][5];   // 0 is active, 1 is owned, 2-5 are flashes
 //MED 01/04/97 added array to simplify weapon parsing
@@ -69,6 +164,16 @@ qpic_t      *hsb_items[2];
 void Sbar_MiniDeathmatchOverlay (void);
 void Sbar_DeathmatchOverlay (void);
 void M_DrawPic (int x, int y, qpic_t *pic);
+
+int cach;
+int drawhealth_kicked;
+int drawslowmo_kicked;
+int drawww_kicked;
+int drawnade_kicked;
+int crosshairs_kicked;
+int drawammo_kicked;
+int drawmedal_kicked;
+int drawweapon_kicked;
 
 /*
 ===============
@@ -193,6 +298,23 @@ void Sbar_Init (void)
 	sb_face_invis_invuln = Draw_PicFromWad ("face_inv2");
 	sb_face_quad = Draw_PicFromWad ("face_quad");
 
+			//Client variables
+		Cvar_RegisterVariable (&cl_killmedals);	//Kill medals
+		Cvar_RegisterVariable (&cl_plasmanade); //Grenade types
+		Cvar_RegisterVariable (&cl_nadenum);	//A counter for your grenades.
+		Cvar_RegisterVariable (&cl_ww);	//World weapons
+		Cvar_RegisterVariable (&cl_round);
+		Cvar_RegisterVariable (&cl_life);
+		Cvar_RegisterVariable (&cl_slowmo);
+		Cvar_RegisterVariable (&cl_activate);
+		Cvar_RegisterVariable (&cl_scope);
+		Cvar_RegisterVariable (&cl_respawn);
+		Cvar_RegisterVariable (&cl_ch_red);
+		Cvar_RegisterVariable (&cl_ch_blue);
+		Cvar_RegisterVariable (&cl_overlay);
+		Cvar_RegisterVariable (&hide_hud);
+
+		
 	Cmd_AddCommand ("+showscores", Sbar_ShowScores);
 	Cmd_AddCommand ("-showscores", Sbar_DontShowScores);
 
