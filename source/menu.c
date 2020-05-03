@@ -2547,15 +2547,13 @@ typedef struct
 
 level_t		levels[] =
 {
-	{"pit", "Pit H3"},	// 0
+	{"narsp", "Narrows"},
+	{"base", "Minibase"},
 	{"plaza", "Plaza"},
-	{"spider", "spiderweb"},
-	{"foundation", "Halo 2 Foundation"},
-	{"lockout", "Lockout"},
-	{"narrowed", "Narrowed"},
-	{"bloody", "bloody"},
-	{"construction", "construction"},
-	{"base", "base"}
+	{"spider", "Spiderweb"},
+	{"construction", "Construction"},
+	{"bloody", "Blood Gutch 3DS"},
+	{"lockout", "Lockout"}
 };
 
 //MED 01/06/97 added hipnotic levels
@@ -2618,7 +2616,7 @@ typedef struct
 
 episode_t	episodes[] =
 {
-	{"Halo Deathmatch", 0, 9}
+	{"Halo Deathmatch", 0, 7}
 };
 
 //MED 01/06/97  added hipnotic episodes
