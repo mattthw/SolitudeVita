@@ -22,6 +22,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // does, the entire thing will be redrawn for the next vid.numpages frames.
 
 #define	SBAR_HEIGHT		24
+#define CANVAS_WIDTH   960 //change from 320 to real height so we can use default canvas
+#define CANVAS_HEIGHT  540
+#define CANVAS_MENU_WIDTH 320
+#define XPADDING 96
+#define YPADDING 54
+
+#define SBAR_WEAPON_GROUND_XOFF 580
+#define SBAR_WEAPON_GROUND_YOFF 200
+#define SBAR_WEAPON_AMMO_XOFF 550
+
+#define SBAR_EDGEBUFF 30
+
 
 extern	int			sb_lines;			// scan lines to draw
 

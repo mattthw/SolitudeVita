@@ -163,6 +163,7 @@ void	VID_UnlockBuffer (void);
 #define	IT_ROCKET_LAUNCHER		BIT(5)
 #define	IT_LIGHTNING			BIT(6)
 #define IT_SUPER_LIGHTNING      BIT(7)
+#define IT_EXTRA_WEAPON         BIT(7)
 #define IT_SHELLS               BIT(8)
 #define IT_NAILS                BIT(9)
 #define IT_ROCKETS              BIT(10)
@@ -450,5 +451,6 @@ typedef struct ModsList{
 #define CANVAS_SBAR        3
 #define CANVAS_CROSSHAIR   4
 #define CANVAS_TOPRIGHT    5
+#define CANVAS_LEGACY      6
 
 extern void Log(const char *format, ...);
