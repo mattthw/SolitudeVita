@@ -1011,11 +1011,15 @@ void Draw_TransPic (int x, int y, qpic_t *pic)
 	byte	*dest, *source, tbyte;
 	unsigned short	*pusdest;
 	int				v, u;
+	char cx[5];
+	char cy[5];
+	itoa(x, cx, 10);
+	itoa(y, cy, 10);
 
 	if (x < 0 || (unsigned)(x + pic->width) > vid.width || y < 0 ||
 		 (unsigned)(y + pic->height) > vid.height)
 	{
-		Sys_Error ("Draw_TransPic: bad coordinates");
+		Con_Printf("Draw_TransPic: bad coordinates: %s,%s\n", cx, cy);
 	}
 	
 	Draw_Pic (x, y, pic);
