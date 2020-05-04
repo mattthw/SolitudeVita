@@ -8,7 +8,7 @@ exec config.cfg
 exec autoexec.cfg
 
 // stuff command line statements
-stuffcmds
+stuffcmds 
 
 // Kurok stuff
 sv_maxspeed 200
