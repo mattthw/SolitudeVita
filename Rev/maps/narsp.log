@@ -1,0 +1,123 @@
+---- qbsp / ericw-tools v0.18.1-32-g6660c5f ----
+Input file: C:\Program Files (x86)\Steam\steamapps\common\Quake\Id1\maps\narsp.map
+Output file: C:\Program Files (x86)\Steam\steamapps\common\Quake\Id1\maps\narsp.bsp
+
+---- LoadMapFile ----
+WARNING: repairing invalid texture projection on line 983 ("STEEL1_256" near 896 -1044 -1986)
+WARNING: repairing invalid texture projection on line 991 ("STEEL1_256" near 896 -1038 -1986)
+WARNING: repairing invalid texture projection on line 2688 ("STEEL1_256" near 1664 -1540 -1986)
+WARNING: repairing invalid texture projection on line 2696 ("STEEL1_256" near 1664 -1546 -1986)
+         2072 faces
+          336 brushes
+           22 entities
+            7 unique texnames
+          238 texinfo
+
+Opened WAD: C:/Users/User/Downloads/q/Q.wad
+Opened WAD: C:/Users/User/Downloads/quakewads/narrows.wad
+Opened WAD: C:/Program Files (x86)/Steam/steamapps/common/Quake/Id1/quake.wad
+Processing hull 0...
+---- Brush_LoadEntity ----
+          332 brushes
+          683 planes
+---- CSGFaces ----
+         2047 brushfaces
+         2830 csgfaces
+         2235 mergedfaces
+---- SolidBSP ----
+         4107 split nodes
+         1676 solid leafs
+         2379 empty leafs
+           53 water leafs
+            0 detail leafs
+            0 detail illusionary leafs
+            0 detail fence leafs
+            0 illusionary visblocker leafs
+         8401 leaffaces
+         7574 nodefaces
+---- Portalize ----
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1984.000 -280.000 -1169.175)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1984.000 -344.000 -1169.175)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1920.000 -120.000 -1060.098)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1984.000 -280.000 -1169.172)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1986.703 -248.000 -1672.000)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1752.361 -120.000 -927.000)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1997.330 -120.000 -2048.000)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1536.000 -1728.000 -1967.192)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1536.000 -1538.270 -1984.000)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1440.000 -1568.000 -1991.979)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1440.000 -1568.000 -1991.979)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1536.000 -1824.000 -1851.618)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1504.000 -1832.021 -1844.693)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1504.000 -1728.000 -1967.194)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1472.000 -1728.000 -1967.194)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (586.942 -343.000 -2016.000)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (586.942 -344.000 -2016.000)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (640.000 -2304.000 -1608.051)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (576.000 -2304.000 -1670.168)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1248.000 -1568.000 -1991.979)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1025.000 -1855.922 -1824.057)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1025.000 -1845.087 -1833.412)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (641.466 -1484.000 -1984.000)
+         2432 vis leafs
+         2432 vis clusters
+         7536 vis portals
+---- FillOutside ----
+          546 outleafs
+---- MergeAll ----
+         2049 mergefaces
+---- SolidBSP ----
+         1786 split nodes
+          702 solid leafs
+         1055 empty leafs
+           30 water leafs
+            0 detail leafs
+            0 detail illusionary leafs
+            0 detail fence leafs
+            0 illusionary visblocker leafs
+         5168 leaffaces
+         4245 nodefaces
+---- Portalize ----
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1997.330 -120.000 -2048.000)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (576.000 -248.000 -2310.690)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (912.056 -2464.000 -1344.000)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (821.018 -1376.000 -2048.000)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1088.000 -1775.529 -2047.684)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (549.387 -2240.000 -1696.000)
+         1085 vis leafs
+         1085 vis clusters
+         4093 vis portals
+---- Tjunc ----
+         3909 world edges
+        14837 edge points
+         3765 edges added by tjunctions
+            0 faces added by tjunctions
+---- MakeFaceEdges ----
+---- GrowRegions ----
+Processing hull 1...
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1937.733 -232.000 -1672.000)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1361.000 -1063.000 -1646.803)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1038.372 -648.000 -1035.787)
+Processing hull 2...
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1345.000 -1079.000 -1646.803)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (991.000 -661.829 -1032.530)
+*** WARNING 12: New portal was clipped away in CutNodePortals_r near (1088.000 -1952.000 -978.226)
+---- WriteBSPFile ----
+Wrote C:\Program Files (x86)\Steam\steamapps\common\Quake\Id1\maps\narsp.bsp
+         1665 planes            33300
+         6172 vertexes          74064
+         1811 nodes             43464
+          189 texinfo            7560
+         4504 faces             90080
+         5111 clipnodes         40888
+         1111 leafs             31108
+         5427 marksurfaces      10854
+        21872 surfedges         87488
+        10980 edges             43920
+            7 textures         376488
+              lightdata             0
+              visdata               0
+              entdata            2316
+
+0.635 seconds elapsed
+Peak memory usage: 30487834 (29.1M)
