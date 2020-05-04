@@ -2548,6 +2548,7 @@ typedef struct
 level_t		levels[] =
 {
 	{"narsp", "Narrows"},
+	{"narrowed", "Narrows (original)"},
 	{"base", "Minibase"},
 	{"plaza", "Plaza"},
 	{"spider", "Spiderweb"},
@@ -2616,7 +2617,7 @@ typedef struct
 
 episode_t	episodes[] =
 {
-	{"Halo Deathmatch", 0, 7}
+	{"Solitude Mappack", 0, 8} //only 1 episode (halo maps)
 };
 
 //MED 01/06/97  added hipnotic episodes
@@ -2758,9 +2759,9 @@ void M_GameOptions_Draw (void)
 
 	M_Print (0, 64, "        Game Type");
 	if (coop.value)
-		M_Print (160, 64, "Cooperative");
+		M_Print (160, 64, "Firefight (not implemented)"); //Cooperative
 	else
-		M_Print (160, 64, "Deathmatch");
+		M_Print (160, 64, "Slayer"); //Deathmatch
 
 	M_Print (0, 72, "        Teamplay");
 	if (rogue)
@@ -2814,7 +2815,7 @@ void M_GameOptions_Draw (void)
 	else
 		M_Print (160, 96, va("%i minutes", (int)timelimit.value));
 
-	M_Print (0, 112, "         Episode");
+	M_Print (0, 112, "                "); //"Episode" 
    //MED 01/06/97 added hipnotic episodes
    if (hipnotic)
       M_Print (160, 112, hipnoticepisodes[startepisode].description);
@@ -2824,7 +2825,7 @@ void M_GameOptions_Draw (void)
    else
       M_Print (160, 112, episodes[startepisode].description);
 
-	M_Print (0, 120, "           Level");
+	M_Print (0, 120, "             Map"); // "Level"
    //MED 01/06/97 added hipnotic episodes
    if (hipnotic)
    {
