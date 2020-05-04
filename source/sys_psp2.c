@@ -105,8 +105,8 @@ void Log(const char *format, ...) {
 	int i;
 	sprintf(msg, "%s\n", msg);
 	FILE* f = NULL;
-	if (is_uma0) f = fopen("uma0:/data/Halo/log.txt", "a+");
-	else f = fopen("ux0:/data/Halo/log.txt", "a+");
+	if (is_uma0) f = fopen("uma0:/data/Quake/log.txt", "a+");
+	else f = fopen("ux0:/data/Quake/log.txt", "a+");
 	if (log != NULL) {
 		fwrite(msg, 1, strlen(msg), log);
 		fclose(log);
@@ -266,8 +266,8 @@ void Sys_Error(const char *error, ...)
 	va_end(argptr);
 	sprintf(buf, "%s\n", buf);
 	FILE* f = NULL;
-	if (is_uma0) f = fopen("uma0:/data/Halo/log.txt", "a+");
-	else f = fopen("ux0:/data/Halo/log.txt", "a+");
+	if (is_uma0) f = fopen("uma0:/data/Quake/log.txt", "a+");
+	else f = fopen("ux0:/data/Quake/log.txt", "a+");
 	fwrite(buf, 1, strlen(buf), f);
 	fclose(f);
 	Sys_Quit();
@@ -446,7 +446,7 @@ int quake_main (unsigned int argc, void* argv){
 	cl_efrags = malloc(sizeof(efrag_t) * MAX_EFRAGS);
 
 	// Checking for uma0 support
-	FILE *f = fopen("uma0:/data/Halo/id1/pak0.pak", "rb");
+	FILE *f = fopen("uma0:/data/Quake/id1/pak0.pak", "rb");
 	if (f) {
 		fclose(f);
 		is_uma0 = 1;
@@ -473,14 +473,14 @@ int quake_main (unsigned int argc, void* argv){
 	static quakeparms_t    parms;
 	
 	// Loading resolution and MSAA mode from config files, those are not handled via Host cause Host_Init requires vitaGL to be working
-	if (is_uma0) f = fopen("uma0:data/Halo/resolution.cfg", "rb");
-	else f = fopen("ux0:data/Halo/resolution.cfg", "rb");
+	if (is_uma0) f = fopen("uma0:data/Quake/resolution.cfg", "rb");
+	else f = fopen("ux0:data/Quake/resolution.cfg", "rb");
 	if (f != NULL){
 		fscanf(f, "%dx%d", &scr_width, &scr_height);
 		fclose(f);
 	}
-	if (is_uma0) f = fopen("uma0:data/Halo/antialiasing.cfg", "rb");
-	else f = fopen("ux0:data/Halo/antialiasing.cfg", "rb");
+	if (is_uma0) f = fopen("uma0:data/Quake/antialiasing.cfg", "rb");
+	else f = fopen("ux0:data/Quake/antialiasing.cfg", "rb");
 	if (f != NULL){
 		fscanf(f, "%d", &antialiasing);
 		fclose(f);
@@ -584,8 +584,8 @@ int quake_main (unsigned int argc, void* argv){
 		}
 	} else COM_InitArgv(argc, argv);
 	
-	if (is_uma0) parms.basedir = "uma0:/data/Halo";
-	else parms.basedir = "ux0:/data/Halo";
+	if (is_uma0) parms.basedir = "uma0:/data/Quake";
+	else parms.basedir = "ux0:/data/Quake";
 	
 	// Initializing empty ModList
 	mods = NULL;

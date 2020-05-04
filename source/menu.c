@@ -136,8 +136,8 @@ uint8_t netcheck_dialog_running = 0;
 void SetResolution(int w, int h){
 	char res_str[64];
 	FILE *f = NULL;
-	if (is_uma0) f = fopen("uma0:data/Halo/resolution.cfg", "wb");
-	else f = fopen("ux0:data/Halo/resolution.cfg", "wb");
+	if (is_uma0) f = fopen("uma0:data/Quake/resolution.cfg", "wb");
+	else f = fopen("ux0:data/Quake/resolution.cfg", "wb");
 	sprintf(res_str, "%dx%d", w, h);
 	fwrite(res_str, 1, strlen(res_str), f);
 	fclose(f);
@@ -148,8 +148,8 @@ void SetResolution(int w, int h){
 void SetAntiAliasing(int m){
 	char res_str[64];
 	FILE *f = NULL;
-	if (is_uma0) f = fopen("uma0:data/Halo/antialiasing.cfg", "wb");
-	else f = fopen("ux0:data/Halo/antialiasing.cfg", "wb");
+	if (is_uma0) f = fopen("uma0:data/Quake/antialiasing.cfg", "wb");
+	else f = fopen("ux0:data/Quake/antialiasing.cfg", "wb");
 	sprintf(res_str, "%d", m);
 	fwrite(res_str, 1, strlen(res_str), f);
 	fclose(f);
@@ -2348,7 +2348,7 @@ void M_LanConfig_Key (int key)
 				SceNetAdhocctlAdhocId adhocId;
 				memset(&adhocId, 0, sizeof(SceNetAdhocctlAdhocId));
 				adhocId.type = SCE_NET_ADHOCCTL_ADHOCTYPE_RESERVED;
-				memcpy(&adhocId.data[0], "HALO00001", SCE_NET_ADHOCCTL_ADHOCID_LEN);
+				memcpy(&adhocId.data[0], "SOLI00001", SCE_NET_ADHOCCTL_ADHOCID_LEN);
 				sceNetAdhocctlInit(&adhocId);
 	
 				SceNetCheckDialogParam param;
@@ -2356,7 +2356,7 @@ void M_LanConfig_Key (int key)
 				SceNetAdhocctlGroupName groupName;
 				memset(groupName.data, 0, SCE_NET_ADHOCCTL_GROUPNAME_LEN);
 				param.groupName = &groupName;
-				memcpy(&param.npCommunicationId.data, "HALO00001", 9);
+				memcpy(&param.npCommunicationId.data, "SOLI00001", 9);
 				param.npCommunicationId.term = '\0';
 				param.npCommunicationId.num = 0;
 				param.mode = SCE_NETCHECK_DIALOG_MODE_PSP_ADHOC_CONN;
@@ -2617,7 +2617,7 @@ typedef struct
 
 episode_t	episodes[] =
 {
-	{"Solitude Mappack", 0, 8} //only 1 episode (halo maps)
+	{"Solitude Mappack", 0, 8} //only 1 episode (solitude maps)
 };
 
 //MED 01/06/97  added hipnotic episodes

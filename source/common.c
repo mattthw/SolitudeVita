@@ -1564,7 +1564,7 @@ void COM_InitFilesystem (void)
 	//since we don't want to allow the "game" command to strip them away
 	com_nummissionpacks = 0;
 	//add halo
-	COM_AddGameDirectory (va("%s/Rev", basedir) );
+	COM_AddGameDirectory (va("%s/Solitude", basedir) );
 	com_nummissionpacks++;
 	
 //
