@@ -33,6 +33,9 @@ extern cvar_t	scr_sbaralpha;
 extern cvar_t	motioncam;
 extern cvar_t	motion_horizontal_sensitivity;
 extern cvar_t	motion_vertical_sensitivity;
+extern cvar_t	psvita_front_sensitivity_x;
+extern cvar_t	psvita_front_sensitivity_y;
+extern cvar_t	psvita_touchmode;
 extern cvar_t	gl_torchflares;
 extern cvar_t	show_fps;
 extern cvar_t	gl_fog;
@@ -1453,7 +1456,7 @@ void M_Graphics_Key (int k)
 //=============================================================================
 /* OPTIONS MENU */
 
-#define	OPTIONS_ITEMS 20
+#define	OPTIONS_ITEMS 23
 
 int	options_cursor;
 
@@ -1577,6 +1580,25 @@ void M_AdjustSliders (int dir)
 	case 20:	// specular mode
 		Cvar_SetValue ("gl_xflip", !gl_xflip.value);
 		break;
+	case 21: //touchscreen x value
+		psvita_front_sensitivity_x.value += dir * 0.05;
+		if (psvita_front_sensitivity_x.value > 1)
+			psvita_front_sensitivity_x.value = 1;
+		else if (psvita_front_sensitivity_x.value < 0)
+			psvita_front_sensitivity_x.value = 0;
+		Cvar_SetValue ("psvita_front_sensitivity_x", psvita_front_sensitivity_x.value);
+		break;
+	case 22: //touchscreen y value
+		psvita_front_sensitivity_y.value += dir * 0.05;
+		if (psvita_front_sensitivity_y.value > 1)
+			psvita_front_sensitivity_y.value = 1;
+		else if (psvita_front_sensitivity_y.value < 0)
+			psvita_front_sensitivity_y.value = 0;
+		Cvar_SetValue ("psvita_front_sensitivity_y", psvita_front_sensitivity_y.value);
+		break;
+	case 23: //enable touchscreen aiming
+		Cvar_SetValue ("psvita_touchmode", !psvita_touchmode.value);
+		break;
 	default:
 		break;
 	}
@@ -1660,6 +1682,17 @@ void M_Options_Draw (void)
 	M_Print (16, 192,"         Specular Mode");
 	M_DrawCheckbox (220, 192, gl_xflip.value);
 
+	M_Print (16, 200,"   Touch X Sensitivity");
+	r = psvita_front_sensitivity_x.value;
+	M_DrawSlider (220, 200, r);
+
+	M_Print (16, 208,"   Touch Y Sensitivity");
+	r = psvita_front_sensitivity_y.value;
+	M_DrawSlider (220, 208, r);
+
+	M_Print (16, 216,"   Touch Screen Aiming");
+	M_DrawCheckbox (220, 216, psvita_touchmode.value);
+
 	M_DrawCharacter (200, 32 + options_cursor*8, 12+((int)(realtime*4)&1));
 }
 
@@ -1709,13 +1742,13 @@ void M_Options_Key (int k)
 			pstv_rumble.value = 1.0f;
 			show_fps.value = 0;
 			r_drawviewmodel.value = 1;
-			crosshair.value = 1;
+			crosshair.value = 0;
 			fov.value = 90;
 			gl_fog.value = 0;
 			gl_torchflares.value = 1;
 			r_shadows.value = 1;
-			r_interpolate_model_animation.value = 0;
-			r_interpolate_model_transform.value = 0;
+			r_interpolate_model_animation.value = 1;
+			r_interpolate_model_transform.value = 1;
 			r_mirroralpha.value = 0.8f;
 			r_wateralpha.value = 1.0f;
 			gl_xflip.value = 0;
@@ -1723,6 +1756,9 @@ void M_Options_Key (int k)
 			vid_vsync.value = 1;
 			motion_horizontal_sensitivity.value = 3;
 			motion_vertical_sensitivity.value = 3;
+			psvita_front_sensitivity_x.value = 0.25;
+			psvita_front_sensitivity_y.value = 0.25;
+			psvita_touchmode.value = 1;
 			scr_sbaralpha.value = 0.5f;
 			gl_outline.value = 0;
 			st_separation.value = 0;
@@ -1752,6 +1788,9 @@ void M_Options_Key (int k)
 			Cvar_SetValue ("motioncam", motioncam.value);
 			Cvar_SetValue ("motion_horizontal_sensitivity", motion_horizontal_sensitivity.value);
 			Cvar_SetValue ("motion_vertical_sensitivity", motion_vertical_sensitivity.value);
+			Cvar_SetValue ("psvita_front_sensitivity_x", psvita_front_sensitivity_x.value);
+			Cvar_SetValue ("psvita_front_sensitivity_y", psvita_front_sensitivity_y.value);
+			Cvar_SetValue ("psvita_touchmode", psvita_touchmode.value);
 			Cvar_SetValue ("scr_sbaralpha", scr_sbaralpha.value);
 			Cvar_SetValue ("vid_vsync", vid_vsync.value);
 			Cvar_SetValue ("gl_outline", gl_outline.value);
@@ -1802,28 +1841,18 @@ void M_Options_Key (int k)
 
 char *bindnames[][2] =
 {
-{"+attack", 		"attack"},
-{"impulse 10", 		"next weapon"},
-{"impulse 13", 		"Change Weapon"},
-{"impulse 12",	 	"previous weapon" },
-{"impulse 27", 		"Change Grenade"},
-{"impulse 28", 		"Throw Grenade"},
-{"impulse 29", 		"Melee"},
-{"impulse 39", 		"Zoom"},
-{"+jump", 			"jump / swim up"},
-{"+forward", 		"move forward"},
-{"+back", 			"move back"},
-{"+moveleft", 		"move left" },
-{"+moveright", 		"move right" },
-{"+speed", 			"run" },
-{"+moveup",			"swim up" },
-{"+movedown",		"swim down" },
-{"centerview", 		"center view"},
-{"+left", 			"turn left"},
-{"+right", 			"turn right"},
-{"+strafe", 		"sidestep"},
-{"+lookup", 		"look up"},
-{"+lookdown", 		"look down"}
+	{"+attack", 		"Attack"},
+	{"impulse 10", 		"Cycle weapons"},
+	{"impulse 13", 		"Pickup / Reload"},
+	{"impulse 27", 		"Change Grenade"},
+	{"impulse 28", 		"Throw Grenade"},
+	{"impulse 29", 		"Melee"},
+	{"impulse 11", 		"Zoom"},
+	{"+jump", 			"Jump / Swim up"},
+	{"+forward", 		"Forward"},
+	{"+back", 			"Back"},
+	{"+moveleft", 		"Left" },
+	{"+moveright", 		"Right" }
 };
 
 #define	NUMCOMMANDS	(sizeof(bindnames)/sizeof(bindnames[0]))

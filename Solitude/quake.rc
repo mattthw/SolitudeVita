@@ -7,13 +7,20 @@ exec config.cfg
 // run a user script file if present
 exec autoexec.cfg
 
+    // Solitude mod settings
+    sv_maxspeed 200
+    sv_maxvelocity 5000
+    cl_forwardspeed 200
+    cl_backspeed 200
+    cl_sidespeed 200
+
+    //menu music
+    play music/Solitude_MainTheme_Low.wav
+
+    //hide console
+    toggleconsole
+
 // stuff command line statements
 stuffcmds 
-
-// Kurok stuff
-sv_maxspeed 200
-sv_maxvelocity 5000
-
-cl_forwardspeed 200
-cl_backspeed 200
-cl_sidespeed 200
+// play demos (removed)
+//startdemos title.dem
