@@ -47,7 +47,7 @@ extern int m_state;
 #define	QUAKE_GAME			// as opposed to utilities
 //#define	DEBUG
 
-#define ENGINE_NAME			"vitaQuake"
+#define ENGINE_NAME			"SolitudeQuake" //differentiate engine name for logging, config saving since sharing Quake directory.
 #define	VERSION				4.10
 #define VERSION_PROQUAKE	3.50
 #define	GLQUAKE_VERSION	    1.00
