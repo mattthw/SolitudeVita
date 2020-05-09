@@ -2576,7 +2576,8 @@ typedef struct
 
 level_t		levels[] =
 {
-	{"narsp", "Narrows"},
+	{"citadel", "Citadel"},
+	{"narsp", "Narrows V2"},
 	{"narrowed", "Narrows (original)"},
 	{"base", "Minibase"},
 	{"plaza", "Plaza"},
@@ -2646,7 +2647,8 @@ typedef struct
 
 episode_t	episodes[] =
 {
-	{"Solitude Mappack", 0, 8} //only 1 episode (solitude maps)
+	{"New Maps", 0, 2},
+	{"Classic Maps", 2, 7}
 };
 
 //MED 01/06/97  added hipnotic episodes
@@ -2844,7 +2846,7 @@ void M_GameOptions_Draw (void)
 	else
 		M_Print (160, 96, va("%i minutes", (int)timelimit.value));
 
-	M_Print (0, 112, "                "); //"Episode" 
+	M_Print (0, 112, "        Map Pack"); //"Episode" 
    //MED 01/06/97 added hipnotic episodes
    if (hipnotic)
       M_Print (160, 112, hipnoticepisodes[startepisode].description);
@@ -2957,7 +2959,7 @@ void M_NetStart_Change (int dir)
 
 	case 7:
 		startepisode += dir;
-		count = 1;
+		count = 2; //episodes list size
 
 		if (startepisode < 0)
 			startepisode = count - 1;
