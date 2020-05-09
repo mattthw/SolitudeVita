@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Introduction
 vitaQuake is a Quake engine source port for PSVITA.
 
@@ -68,35 +69,25 @@ An official channel to discuss the development of this source port can be found 
 # CDAudio Support
 
 vitaQuake supports all soundtrack packs for Quake and its two official mission packs, "Scourge of Armagon" and "Dissolution of Eternity." In order for the soundtrack to work, files must be placed in a folder named /cdtracks/ in each campaign folder (main game for example will be ux0:data/Quake/id1/cdtracks). 
+=======
+# Solitude
+>>>>>>> 04d051a (updated readme)
 
-By default, the music folder has tracks named as track02, track03, etc. For vitaQuake, add an extra "0" after "track" in order for them to be loaded properly and in order. **Ex.: track02 -> track002**
+## Introduction
+vitaQuake is a Quake engine source port for PSVITA.
 
-You can find the official soundtrack for the main campaign in .ogg format [here](https://www.quaddicted.com/files/music/quake_music.zip).
+vitaQuake Solitude is a port of Solitude for the vita. Solitude was originally made for the PSP, which was abandoned, then rebooted as Solitude Revamped, then abandoned, then ported to N3DS, then forgotten. This port is still a work in progress.
 
-# Loading Expansions and Mods
+## Credit
+- Credit to Id Software for Quake
+- Credit to Rinne for [vitaQuake](https://github.com/Rinnegatamante/vitaQuake)
+- Credit to FlamingIce team for the original Solitude and Solitude Revamped
+- Credit to TCPixel for the [N3DS port](https://github.com/CollinScripter/Revamped3DS), which was the only place I was able to obtain the source code
+- Also credit to all the unnamed and unknown contributors to Solitudes several maps and many assets
 
-vitaQuake supports the official Quake expansions, "Scourge of Armagon" and "Dissolution of Eternity." These were offical expansions, so they can be found usually wherever the full base game is sold (GOG, Steam). In order to get them to load properly, place them in the "ux0:/data/quake/" folder alongside "id1". 
+An official channel to discuss the development of this source port can be found on [Vita Nuova discord server](https://discord.gg/PyCaBx9).
 
-Both official mission packs support their own soundtracks as long as they are placed properly in their respective "/cdtracks/" folder.
-
-Mod compatibility is varied, but as a general rule of thumb, mods compatible with winQuake will be compatible with vitaQuake.
-
-Here's a list of some popular mods and their actual working state:
-
-Expansion/Mod | Link | Status
----|---|---|
-Dissolution of Eternity | Official Expansion | ![#007f00](https://placehold.it/15/007f00/000000?text=+) `Fully Working`
-dopa | [Free](https://twitter.com/machinegames/status/746363189768650752?lang=en) | ![#007f00](https://placehold.it/15/007f00/000000?text=+) `Fully Working`
-Halo Revamped | [Free](https://wololo.net/downloads/index.php/download/1376) | ![#d0d000](https://placehold.it/15/d0d000/000000?text=+) `Boots, lots of bugs`
-Kurok | [Free](http://www.bladebattles.com/kurok/) | ![#007f00](https://placehold.it/15/007f00/000000?text=+) `Playable with glitches`
-Nazi Zombies Portable | [Free](https://www.moddb.com/games/nazi-zombies-portable/news/nazi-zombies-portable-ps-vita-info) | ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) `Not Working`
-Quake Rally | [Free](https://www.moddb.com/mods/quake-rally) | ![#007f00](https://placehold.it/15/007f00/000000?text=+) `Fully Working`
-Scourge of Armagon | Official Expansion | ![#007f00](https://placehold.it/15/007f00/000000?text=+) `Fully Working`
-Slayer's Testament | [Free](https://www.youtube.com/watch?v=abn9aCiJ3pY) | ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) `Crash on models loading`
-SUPERHOT Quake | [Free](https://www.moddb.com/mods/superhot-quake) | ![#007f00](https://placehold.it/15/007f00/000000?text=+) `Working without monochromatic graphics`
-SUPERQOT | [Free](https://superhotgame.com/SUPERQOT/) | ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) `Not Working`
-YPOD | [Free](https://www.quakewiki.net/archives/doom/) | ![#007f00](https://placehold.it/15/007f00/000000?text=+) `Fully Working`
-
+<<<<<<< HEAD
 # Credits
 - idSoftware for winQuake sourcecode
 - MasterFeizz for ctrQuake sourcecode i studied to understand how winQuake works
@@ -104,3 +95,25 @@ YPOD | [Free](https://www.quakewiki.net/archives/doom/) | ![#007f00](https://pla
 - Ch0wW for various improvements and code cleanup
 - JPG for ProQuake and some various fixes.
 - Cuevavirus for 1920x1080 rendering
+=======
+## Features
+- 4 Player bot Slayer matches (Free for all)
+- Many maps
+ - One new map (Citadel, a remake of the map from the third official game DLC- remade by me) - this one is probably the best looking while maintaining close to 60fps on the vita
+ - One remade map (Narrows, credit to the original author: Scifiknux)
+- New touchscreen aiming support
+
+## Broken / WIP
+- Firefight mode
+- HLBSP support
+- 4 -> 8 player maximum increase
+- Networking
+- Some glitches still exist
+- Sometimes if you play Quake it will overwrite the Solitude config. You can set the defaults in the Solitude options to fix this
+- Loading screen
+- Launch image is not added
+
+# Installation
+
+Place the Solitude folder inside ```<ux0 or alternative:>/data/Quake/```. You will also need the original quake files or shareware files as a .PAK filetype inside ```<ux0 or alternative:>/data/Quake/id1/```. You should be able to use the data files from VITADB for vitaQuake.
+>>>>>>> 04d051a (updated readme)
