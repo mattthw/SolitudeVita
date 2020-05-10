@@ -2576,67 +2576,21 @@ typedef struct
 
 level_t		levels[] =
 {
-	{"citadel", "Citadel"},
+	{"citadel", "Citadel"}, //0
 	{"narsp", "Narrows V2"},
-	{"narrowed", "Narrows (original)"},
+	{"narrowed", "Narrows (original)"}, //2
 	{"base", "Minibase"},
 	{"plaza", "Plaza"},
 	{"spider", "Spiderweb"},
-	{"construction", "Construction"},
 	{"bloody", "Blood Gutch 3DS"},
-	{"lockout", "Lockout"}
+	{"lockout", "Lockout"},
+
+	{"construction", "Construction"}, //8
+	{"fire", "Fire!"}, //9 
+	{"firefight", "test123"}
 };
 
-//MED 01/06/97 added hipnotic levels
-level_t     hipnoticlevels[] =
-{
-   {"start", "Command HQ"},  // 0
 
-   {"hip1m1", "The Pumping Station"},          // 1
-   {"hip1m2", "Storage Facility"},
-   {"hip1m3", "The Lost Mine"},
-   {"hip1m4", "Research Facility"},
-   {"hip1m5", "Military Complex"},
-
-   {"hip2m1", "Ancient Realms"},          // 6
-   {"hip2m2", "The Black Cathedral"},
-   {"hip2m3", "The Catacombs"},
-   {"hip2m4", "The Crypt"},
-   {"hip2m5", "Mortum's Keep"},
-   {"hip2m6", "The Gremlin's Domain"},
-
-   {"hip3m1", "Tur Torment"},       // 12
-   {"hip3m2", "Pandemonium"},
-   {"hip3m3", "Limbo"},
-   {"hip3m4", "The Gauntlet"},
-
-   {"hipend", "Armagon's Lair"},       // 16
-
-   {"hipdm1", "The Edge of Oblivion"}           // 17
-};
-
-//PGM 01/07/97 added rogue levels
-//PGM 03/02/97 added dmatch level
-level_t		roguelevels[] =
-{
-	{"start",	"Split Decision"},
-	{"r1m1",	"Deviant's Domain"},
-	{"r1m2",	"Dread Portal"},
-	{"r1m3",	"Judgement Call"},
-	{"r1m4",	"Cave of Death"},
-	{"r1m5",	"Towers of Wrath"},
-	{"r1m6",	"Temple of Pain"},
-	{"r1m7",	"Tomb of the Overlord"},
-	{"r2m1",	"Tempus Fugit"},
-	{"r2m2",	"Elemental Fury I"},
-	{"r2m3",	"Elemental Fury II"},
-	{"r2m4",	"Curse of Osiris"},
-	{"r2m5",	"Wizard's Keep"},
-	{"r2m6",	"Blood Sacrifice"},
-	{"r2m7",	"Last Bastion"},
-	{"r2m8",	"Source of Evil"},
-	{"ctf1",    "Division of Change"}
-};
 
 typedef struct
 {
@@ -2647,30 +2601,10 @@ typedef struct
 
 episode_t	episodes[] =
 {
-	{"New Maps", 0, 2},
-	{"Classic Maps", 2, 7}
+	{"Slayer Maps", 0, 8},
+	{"Firefight Maps", 8, 2}
 };
 
-//MED 01/06/97  added hipnotic episodes
-episode_t   hipnoticepisodes[] =
-{
-   {"Scourge of Armagon", 0, 1},
-   {"Fortress of the Dead", 1, 5},
-   {"Dominion of Darkness", 6, 6},
-   {"The Rift", 12, 4},
-   {"Final Level", 16, 1},
-   {"Deathmatch Arena", 17, 1}
-};
-
-//PGM 01/07/97 added rogue episodes
-//PGM 03/02/97 added dmatch episode
-episode_t	rogueepisodes[] =
-{
-	{"Introduction", 0, 1},
-	{"Hell's Fortress", 1, 7},
-	{"Corridors of Time", 8, 8},
-	{"Deathmatch Arena", 16, 1}
-};
 
 void M_Menu_Pause_f (void)
 {
@@ -2770,178 +2704,212 @@ void M_Menu_GameOptions_f (void)
 
 
 int gameoptions_cursor_table[] = {40, 56, 64, 72, 80, 88, 96, 112, 120};
-#define	NUM_GAMEOPTIONS	9
+#define	NUM_GAMEOPTIONS	6
 int		gameoptions_cursor;
+
 
 void M_GameOptions_Draw (void)
 {
-	qpic_t	*p;
-	int		x;
+	qpic_t	*p, *gt, *skillp, *mappit, *mapfire, *mapconstruction, *mapbase, *mapbloody, *mapfoundation, *mapnarrowed, *mapplaza, *mapspider, *maplockout, *mapcitadel, *maprandom;
+	int		x, chg;
 
-	M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
+	//M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
+	mapfire = Draw_CachePic ("gfx/maps/fire.lmp");
+	mappit = Draw_CachePic ("gfx/maps/pit.lmp");
+	mapconstruction = Draw_CachePic ("gfx/maps/construction.lmp");
+	mapbase = Draw_CachePic ("gfx/maps/base.lmp");
+	mapbloody = Draw_CachePic ("gfx/maps/bloody.lmp");
+	mapfoundation = Draw_CachePic ("gfx/maps/foundation.lmp");
+	mapnarrowed = Draw_CachePic ("gfx/maps/narrowed.lmp");
+	mapplaza = Draw_CachePic ("gfx/maps/plaza.lmp");
+	mapspider = Draw_CachePic ("gfx/maps/spider.lmp");
+	maplockout = Draw_CachePic ("gfx/maps/lockout.lmp");
+	maprandom = Draw_CachePic ("gfx/maps/random.lmp");
+	mapcitadel = Draw_CachePic ("gfx/maps/citadel.lmp");
+
 	p = Draw_CachePic ("gfx/p_multi.lmp");
-	M_DrawPic ( (320-p->width)/2, 4, p);
+	M_DrawTransPic ( (320-p->width)/2, 4, p);
+	chg=126;
 
-	M_DrawTextBox (152, 32, 10, 1);
-	M_Print (160, 40, "begin game");
+	// M_DrawTextBox (-8, 160+(gameoptions_cursor*20)-chg, 15, 1);
+	M_DrawCharacter (-8, 170+(gameoptions_cursor*20)-chg, 12+((int)(realtime*4)&1));
 
-	M_Print (0, 56, "      Max players");
-	M_Print (160, 56, va("%i", maxplayers) );
 
-	M_Print (0, 64, "        Game Type");
-	if (coop.value)
-		M_Print (160, 64, "Firefight (not implemented)"); //Cooperative
-	else
-		M_Print (160, 64, "Slayer"); //Deathmatch
-
-	M_Print (0, 72, "        Teamplay");
-	if (rogue)
+	//M_DrawTextBox (-8, 160, 10, 1);
+	//========================
+	//  OPT1: Start game
+	//=======================
+	M_Print (0, 168-chg, "Start Game");
+	//========================
+	//  OPT1: game type
+	//=======================
+	M_Print (0, 188-chg, "Mode: ");
+	switch((int)deathmatch.value)
 	{
-		char *msg;
-
-		switch((int)teamplay.value)
-		{
-			case 1: msg = "No Friendly Fire"; break;
-			case 2: msg = "Friendly Fire"; break;
-			case 3: msg = "Tag"; break;
-			case 4: msg = "Capture the Flag"; break;
-			case 5: msg = "One Flag CTF"; break;
-			case 6: msg = "Three Team CTF"; break;
-			default: msg = "Off"; break;
-		}
-		M_Print (160, 72, msg);
+		case 0:
+			M_PrintWhite  (60, 188-chg, "Co-op");
+		break;
+		case 1:
+			M_PrintWhite (60, 188-chg, "Slayer");
+			if((int)deathmatch.value > 1000)
+				Cvar_SetValue ("fraglimit", 50);
+			Cvar_SetValue ("deathmatch", 1);
+			Cbuf_AddText ("deathmatch 1\n");
+			Cvar_SetValue ("coop", 0);
+			Cbuf_AddText ("coop 0\n");
+			Cvar_SetValue ("teamplay", 0);
+		break;
+		case 2:
+			Cbuf_AddText ("fraglimit 99999\n");
+			Cvar_SetValue ("coop", 0);
+			Cbuf_AddText ("deathmatch 2\n");
+			Cbuf_AddText ("cl_killmedals 0\n");
+			Cbuf_AddText ("cl_round 0\n");
+			Cbuf_AddText ("cl_life 1\n");
+			Cbuf_AddText ("teamplay 0\n");
+			startepisode = 1;
+			M_PrintWhite (60, 188-chg, "Firefight");
+		break;
+		case 3:
+			M_PrintWhite (60, 188-chg, "Swat");
+			if((int)deathmatch.value > 1000)
+				Cvar_SetValue ("fraglimit", 50);
+			Cvar_SetValue ("deathmatch", 3);
+			Cbuf_AddText ("deathmatch 3\n");
+			Cvar_SetValue ("coop", 0);
+			Cvar_SetValue ("teamplay", 0);
+		break;
 	}
-	else
-	{
-		char *msg;
-
-		switch((int)teamplay.value)
-		{
-			case 1: msg = "No Friendly Fire"; break;
-			case 2: msg = "Friendly Fire"; break;
-			default: msg = "Off"; break;
-		}
-		M_Print (160, 72, msg);
-	}
-
-	M_Print (0, 80, "            Skill");
-	if (skill.value == 0)
-		M_Print (160, 80, "Easy difficulty");
-	else if (skill.value == 1)
-		M_Print (160, 80, "Normal difficulty");
-	else if (skill.value == 2)
-		M_Print (160, 80, "Hard difficulty");
-	else
-		M_Print (160, 80, "Nightmare difficulty");
-
-	M_Print (0, 88, "       Frag Limit");
+	//========================
+	//  OPT1: game settings (kills)
+	//=======================
+	M_Print (00, 208-chg, "Kills: ");
 	if (fraglimit.value == 0)
-		M_Print (160, 88, "none");
+		M_PrintWhite (60, 208-chg, "none");
+	else if (fraglimit.value < 1000)
+		M_PrintWhite (60, 208-chg, va("%i frags", (int)fraglimit.value));
 	else
-		M_Print (160, 88, va("%i frags", (int)fraglimit.value));
-
-	M_Print (0, 96, "       Time Limit");
-	if (timelimit.value == 0)
-		M_Print (160, 96, "none");
+		M_PrintWhite (60, 208-chg, "Rounds");
+	//========================
+	//  OPT1: difficulty
+	//=======================
+	M_Print (0, 228-chg, "Skill");
+	if (skill.value == 0)
+		M_PrintWhite (60, 228-chg, "Normal");
+	else if (skill.value == 1)
+		M_PrintWhite (60, 228-chg, "Hard");
+	else if (skill.value == 2)
+		M_PrintWhite (60, 228-chg, "Legendary");
 	else
-		M_Print (160, 96, va("%i minutes", (int)timelimit.value));
+		M_PrintWhite (60, 228-chg, "Nightmare");
+	//========================
+	//  OPT1: map set
+	//=======================
+	M_Print (0, 248-chg, episodes[startepisode].description);
 
-	M_Print (0, 112, "        Map Pack"); //"Episode" 
-   //MED 01/06/97 added hipnotic episodes
-   if (hipnotic)
-      M_Print (160, 112, hipnoticepisodes[startepisode].description);
-   //PGM 01/07/97 added rogue episodes
-   else if (rogue)
-      M_Print (160, 112, rogueepisodes[startepisode].description);
-   else
-      M_Print (160, 112, episodes[startepisode].description);
+	//========================
+	//  OPT1: map
+	//=======================
+	
+	//hacky fix #TODO: remove and figure out why code in NetStart_Change is't
+	//                 preventing M_PrintWhite reading map name with index out of bounds.
+		int levcount = episodes[startepisode].levels;
+		if (startlevel < 0)
+			startlevel = levcount - 1;
+		if (startlevel >= levcount)
+			startlevel = 0;
 
-	M_Print (0, 120, "             Map"); // "Level"
-   //MED 01/06/97 added hipnotic episodes
-   if (hipnotic)
-   {
-      M_Print (160, 120, hipnoticlevels[hipnoticepisodes[startepisode].firstLevel + startlevel].description);
-      M_Print (160, 128, hipnoticlevels[hipnoticepisodes[startepisode].firstLevel + startlevel].name);
-   }
-   //PGM 01/07/97 added rogue episodes
-   else if (rogue)
-   {
-      M_Print (160, 120, roguelevels[rogueepisodes[startepisode].firstLevel + startlevel].description);
-      M_Print (160, 128, roguelevels[rogueepisodes[startepisode].firstLevel + startlevel].name);
-   }
-   else
-   {
-      M_Print (160, 120, levels[episodes[startepisode].firstLevel + startlevel].description);
-      M_Print (160, 128, levels[episodes[startepisode].firstLevel + startlevel].name);
-   }
+	M_Print (0, 268-chg, "Map: ");
+    M_PrintWhite (60, 268-chg, levels[episodes[startepisode].firstLevel + startlevel].name);
 
-// line cursor
-	M_DrawCharacter (144, gameoptions_cursor_table[gameoptions_cursor], 12+((int)(realtime*4)&1));
-
-	if (m_serverInfoMessage)
-	{
-		if ((realtime - m_serverInfoMessageTime) < 5.0)
-		{
-			x = (320-26*8)/2;
-			M_DrawTextBox (x, 138, 24, 4);
-			x += 8;
-			M_Print (x, 146, "  More than 4 players   ");
-			M_Print (x, 154, " requires using command ");
-			M_Print (x, 162, "line parameters; please ");
-			M_Print (x, 170, "   see techinfo.txt.    ");
-		}
-		else
-		{
-			m_serverInfoMessage = false;
-		}
-	}
+	//Draw image
+	if(levels[episodes[startepisode].firstLevel + startlevel].name == "fire")
+    	 M_DrawTransPic ( 180, 55, mapfire);
+   	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "pit")
+    	 M_DrawTransPic ( 180, 55, mappit);
+   	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "construction")
+    	 M_DrawTransPic ( 180, 55, mapconstruction);
+	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "base")
+		M_DrawTransPic ( 180, 55, mapbase);
+	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "spider")
+		M_DrawTransPic ( 180, 55, mapspider);
+	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "foundation")
+		M_DrawTransPic ( 180, 55, mapfoundation);
+	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "bloody")
+		M_DrawTransPic ( 180, 55, mapbloody);
+	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "narrowed")
+		M_DrawTransPic ( 180, 55, mapnarrowed);
+	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "plaza")
+		M_DrawTransPic ( 180, 55, mapplaza);
+	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "lockout")
+		M_DrawTransPic ( 180, 55, maplockout);
+	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "citadel")
+		M_DrawTransPic ( 180, 55, mapcitadel);
+   	else
+   		M_DrawTransPic ( 180, 55, maprandom);
 }
-
 
 void M_NetStart_Change (int dir)
 {
-	int count;
-
+	int epcount, levcount;
 	switch (gameoptions_cursor)
 	{
-	case 1:
-		maxplayers += dir;
-		if (maxplayers > svs.maxclientslimit)
+	case 1: //game mode
+		Cvar_SetValue ("deathmatch", (int)deathmatch.value + dir);
+		if ((int)deathmatch.value < 1) //rollover
 		{
-			maxplayers = svs.maxclientslimit;
-			m_serverInfoMessage = true;
-			m_serverInfoMessageTime = realtime;
+			Cvar_SetValue ("deathmatch", 3);
+			Cbuf_AddText ("deathmatch 3\n");
 		}
-		if (maxplayers < 2)
-			maxplayers = 2;
-		break;
+		else if((int)deathmatch.value > 3) //rollover
+		{
+			Cvar_SetValue ("deathmatch", 1);
+			Cbuf_AddText ("deathmatch 1\n");
+		}
 
-	case 2:
-		Cvar_SetValue ("coop", coop.value ? 0 : 1);
-		break;
-
-	case 3:
-		if (rogue)
-			count = 6;
-		else
-			count = 2;
-
-		Cvar_SetValue ("teamplay", teamplay.value + dir);
-		if (teamplay.value > count)
+		if ((int)deathmatch.value == 2) //firefight
+		{
+			Cbuf_AddText ("fraglimit 9999\n");
+			Cbuf_AddText ("deathmatch 2\n");
+			Cvar_SetValue ("deathmatch", 2);
+			Cvar_SetValue ("coop", 0);
 			Cvar_SetValue ("teamplay", 0);
-		else if (teamplay.value < 0)
-			Cvar_SetValue ("teamplay", count);
+			startepisode = 0;
+			startlevel = 0;
+		}
+		else if((int)deathmatch.value == 1) //slayer
+		{
+			if((int)fraglimit.value > 1000)
+				Cbuf_AddText ("fraglimit 50\n");
+			Cbuf_AddText ("deathmatch 1\n");
+			Cvar_SetValue ("deathmatch", 1);
+			Cvar_SetValue ("coop", 0);
+			Cvar_SetValue ("teamplay", 0);
+			startepisode = 0;
+			startlevel = 0;
+		}
+		else if((int)deathmatch.value == 3) //Swat
+		{
+			if((int)fraglimit.value > 1000)
+				Cbuf_AddText ("fraglimit 50\n");
+			Cbuf_AddText ("deathmatch 3\n");
+			Cvar_SetValue ("deathmatch", 3);
+			Cvar_SetValue ("coop", 0);
+			Cvar_SetValue ("teamplay", 0);
+			startepisode = 0;
+			startlevel = 0;
+		}
+		else
+		{
+			startepisode = 0;
+			startlevel = 0;
+		}
+
+		if(sv.active)
+			Cbuf_AddText ("disconnect\n");
 		break;
 
-	case 4:
-		Cvar_SetValue ("skill", skill.value + dir);
-		if (skill.value > 3)
-			Cvar_SetValue ("skill", 0);
-		if (skill.value < 0)
-			Cvar_SetValue ("skill", 3);
-		break;
-
-	case 5:
+	case 2: //game mode frags
 		Cvar_SetValue ("fraglimit", fraglimit.value + dir*10);
 		if (fraglimit.value > 100)
 			Cvar_SetValue ("fraglimit", 0);
@@ -2949,42 +2917,33 @@ void M_NetStart_Change (int dir)
 			Cvar_SetValue ("fraglimit", 100);
 		break;
 
-	case 6:
-		Cvar_SetValue ("timelimit", timelimit.value + dir*5);
-		if (timelimit.value > 60)
-			Cvar_SetValue ("timelimit", 0);
-		if (timelimit.value < 0)
-			Cvar_SetValue ("timelimit", 60);
+	case 3: //difficulty
+		Cvar_SetValue ("skill", skill.value + dir);
+		if (skill.value > 3)
+			Cvar_SetValue ("skill", 0);
+		if (skill.value < 0)
+			Cvar_SetValue ("skill", 3);
 		break;
-
-	case 7:
+	case 4: //map set
 		startepisode += dir;
-		count = 2; //episodes list size
+		epcount = 2; //episodes list size
 
 		if (startepisode < 0)
-			startepisode = count - 1;
+			startepisode = epcount - 1;
 
-		if (startepisode >= count)
+		if (startepisode >= epcount)
 			startepisode = 0;
 
 		startlevel = 0;
 		break;
-
-	case 8:
+	case 5: //map
 		startlevel += dir;
-    //MED 01/06/97 added hipnotic episodes
-		if (hipnotic)
-			count = hipnoticepisodes[startepisode].levels;
-	//PGM 01/06/97 added hipnotic episodes
-		else if (rogue)
-			count = rogueepisodes[startepisode].levels;
-		else
-			count = episodes[startepisode].levels;
+		levcount = episodes[startepisode].levels;
 
 		if (startlevel < 0)
-			startlevel = count - 1;
+			startlevel = levcount - 1;
 
-		if (startlevel >= count)
+		if (startlevel >= levcount)
 			startlevel = 0;
 		break;
 	}
@@ -3035,16 +2994,16 @@ void M_GameOptions_Key (int key)
 		{
 			if (sv.active)
 				Cbuf_AddText ("disconnect\n");
+			SCR_BeginLoadingPlaque ();
 			Cbuf_AddText ("listen 0\n");	// so host_netport will be re-examined
 			Cbuf_AddText ( va ("maxplayers %u\n", maxplayers) );
-			SCR_BeginLoadingPlaque ();
-
-			if (hipnotic)
-				Cbuf_AddText ( va ("map %s\n", hipnoticlevels[hipnoticepisodes[startepisode].firstLevel + startlevel].name) );
-			else if (rogue)
-				Cbuf_AddText ( va ("map %s\n", roguelevels[rogueepisodes[startepisode].firstLevel + startlevel].name) );
-			else
-				Cbuf_AddText ( va ("map %s\n", levels[episodes[startepisode].firstLevel + startlevel].name) );
+			Cbuf_AddText ( va ("deathmatch %u\n", (int)deathmatch.value) );
+			Cbuf_AddText ( va ("map %s\n", levels[episodes[startepisode].firstLevel + startlevel].name) );
+			// int bots = 4; #TODO: add bots setting
+			// for (int i = 0; i < bots; i++)
+			// {
+			// 	Cbuf_AddText ("impulse 101")
+			// }
 
 			return;
 		}
@@ -3240,6 +3199,10 @@ void M_Init (void)
 	Cmd_AddCommand ("help", M_Menu_Help_f);
 	Cmd_AddCommand ("menu_quit", M_Menu_Quit_f);
 	Cmd_AddCommand ("menu_pause", M_Menu_Pause_f);
+
+	//default MP settings
+	Cvar_SetValue ("deathmatch", 1);
+	Cvar_SetValue ("skill", 0);
 }
 
 
