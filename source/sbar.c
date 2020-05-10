@@ -105,8 +105,8 @@ qpic_t		*frag;
 //Health
 qpic_t		*life90;
 qpic_t		*lifered;
-qpic_t		*health_bar;
-qpic_t		*health_bar_red;
+qpic_t		*health_bar_outline_blue;
+qpic_t		*health_bar_outline_red;
 
 //Ammo counter
 qpic_t		*pistolb;
@@ -604,7 +604,7 @@ Sbar_DrawScoreboard
 void Sbar_DrawScoreboard (void)
 {
 	Sbar_SoloScoreboard ();
-	if (cl.gametype == GAME_DEATHMATCH)
+	if (cl.gametype == 1 || cl.gametype == 3) //Slayer or Swat 
 		Sbar_DeathmatchOverlay ();
 #if 0
 	int		i, j, c;
@@ -740,12 +740,12 @@ void Sbar_DrawHealth(void)
 	{
 			if((int)cl.stats[STAT_HEALTH] <= 30)
 			{
-				int hbrstart = (CANVAS_WIDTH-health_bar_red->width)/2 + 8;
+				int hbrstart = (CANVAS_WIDTH-health_bar_outline_red->width)/2 + 8;
 				M_DrawPic (((int)(hbrstart+(b-lifered->width)/2)), YPADDING + 4, lifered ); //+4 y due to border of healthbar 
 			}
 			else
 			{
-				int hbstart = (CANVAS_WIDTH-health_bar->width)/2 + 8;
+				int hbstart = (CANVAS_WIDTH-health_bar_outline_blue->width)/2 + 8;
 				M_DrawTransPic (((int)(hbstart+(b)/2)), YPADDING + 4, life90); //+4 y due to border of healthbar 
 			}	
 		b += 1.55;
@@ -1076,8 +1076,8 @@ Firefight Rounds
 	round = (int)cl_round.value;
 	if ((int)deathmatch.value == 2)
 	{
-		sprintf (up,"[%d]", round);
-		Sbar_DrawString (690, -18, up);
+		sprintf (up,"ROUND [%d]", round);
+		Sbar_DrawString (CANVAS_WIDTH-(CANVAS_WIDTH*0.1), 430, up);
 	}
 /*
 =============================================
@@ -1087,8 +1087,8 @@ Firefight Lives
 	round = (int)cl_life.value;
 	if ((int)deathmatch.value == 2)
 	{
-		sprintf (up,"%d", round);
-		Sbar_DrawString (660, -18, up);
+		sprintf (up,"LIVES: %d", round);
+		Sbar_DrawString (CANVAS_WIDTH-(CANVAS_WIDTH*0.1), 450, up);
 	}
 }
 
@@ -1171,8 +1171,7 @@ void Sbar_DrawSlowmo (void)
 	*/
 	int round;
 	round = (int)cl_slowmo.value;
-
-	M_DrawTransPic (5, 200, slomoclock[round] );
+	M_DrawTransPic (XPADDING, CANVAS_HEIGHT-YPADDING, slomoclock[round] );
 }
 
 int crosshairs_kicked;
@@ -1275,8 +1274,8 @@ void Sbar_DrawInventory (void)
 {
 	if(!cach)
 	{
-		health_bar_red = Draw_CachePic ("gfx/healthbackr.lmp");
-		health_bar = Draw_CachePic ("gfx/healthback.lmp");
+		health_bar_outline_red = Draw_CachePic ("gfx/healthbackr.lmp");
+		health_bar_outline_blue = Draw_CachePic ("gfx/healthback.lmp");
 		cach=1;
 	}
 	if((int)hide_hud.value)
@@ -1290,7 +1289,7 @@ void Sbar_DrawInventory (void)
 		if((int)deathmatch.value == 2) {
 			Sbar_DrawFirefight();
 		}
-		else if((int)deathmatch.value == 3)
+		if((int)deathmatch.value == 3)
 		{
 			Sbar_DrawSlowmo();
 		}
@@ -1310,7 +1309,7 @@ void Sbar_DrawInventory (void)
 		{
 			if ((int)cl.stats[STAT_HEALTH] <= 30)
 			{
-				M_DrawTransPic ( (CANVAS_WIDTH-health_bar_red->width)/2, YPADDING, health_bar_red);
+				M_DrawTransPic ( (CANVAS_WIDTH-health_bar_outline_red->width)/2, YPADDING, health_bar_outline_red);
 				//if(h_flash == 1 && h_flash_timer <= 0.5f)
 				//{
 				//	M_DrawTransPic ( (CANVAS_WIDTH-health_bar->width)/*/2*/, 16, health_bar);
@@ -1327,7 +1326,7 @@ void Sbar_DrawInventory (void)
 			}
 			else
 			{
-				M_DrawTransPic ( (CANVAS_WIDTH-health_bar->width)/2, YPADDING, health_bar);
+				M_DrawTransPic ( (CANVAS_WIDTH-health_bar_outline_blue->width)/2, YPADDING, health_bar_outline_blue);
 			}
 		}
 		//if(cl.stats[STAT_HEALTH] <= 0)
@@ -1750,7 +1749,7 @@ void Sbar_IntermissionOverlay (void)
 	scr_copyeverything = 1;
 	scr_fullupdate = 0;
 
-	if (cl.gametype == GAME_DEATHMATCH)
+	if (cl.gametype == 1 || cl.gametype == 3) //Slayer or Swat
 	{
 		Sbar_DeathmatchOverlay ();
 		return;

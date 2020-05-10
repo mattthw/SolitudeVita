@@ -214,7 +214,7 @@ void SV_SendServerinfo (client_t *client)
 	MSG_WriteByte (&client->message, svs.maxclients);
 
 	if (!coop.value && deathmatch.value)
-		MSG_WriteByte (&client->message, GAME_DEATHMATCH);
+		MSG_WriteByte (&client->message, deathmatch.value);
 	else
 		MSG_WriteByte (&client->message, GAME_COOP);
 
