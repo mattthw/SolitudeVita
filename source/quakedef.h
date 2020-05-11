@@ -41,6 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define m_mods 19
 #define m_graphics 20
 #define m_pause 21
+#define m_firefight 22
 
 extern int m_state;
 
@@ -450,6 +451,7 @@ typedef struct ModsList{
 #define CANVAS_SBAR        3
 #define CANVAS_CROSSHAIR   4
 #define CANVAS_TOPRIGHT    5
-#define CANVAS_LEGACY      6
+#define CANVAS_MENU_STRETCH   6
+#define MENU_SCALE 1.5
 
 extern void Log(const char *format, ...);
