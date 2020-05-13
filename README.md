@@ -104,14 +104,7 @@ An official channel to discuss the development of this source port can be found 
 - New touchscreen aiming support
 
 ## Broken / WIP
-- Firefight mode
-- HLBSP support
-- 4 -> 8 player maximum increase
-- Networking
-- Some glitches still exist
-- Sometimes if you play Quake it will overwrite the Solitude config. You can set the defaults in the Solitude options to fix this
-- Loading screen
-- Launch image is not added
+- See [issues](https://github.com/mmccoy37/vitaQuake-Solitude/issues)
 
 # Installation
 
