@@ -787,24 +787,24 @@ void Draw_Init (void)
 	
 	// External conback texture support
 	int cwidth, cheight;
-	byte *data = Image_LoadImage ("gfx/conback", &cwidth, &cheight);
+	byte *data = Image_LoadImage ("gfx/conbackblue", &cwidth, &cheight);
 	if (data) {
 		conback->width = cwidth;
 		conback->height = cheight;
 		ncdata = data;
 	} else {
-		cb = (qpic_t *)COM_LoadTempFile ("gfx/conback.lmp", NULL);	
+		cb = (qpic_t *)COM_LoadTempFile ("gfx/conbackblue.lmp", NULL);	
 		if (!cb)
-			Sys_Error ("Couldn't load gfx/conback.lmp");
+			Sys_Error ("Couldn't load gfx/conbackblue.lmp");
 		SwapPic (cb);
 
 		// hack the version number directly into the pic
-		sprintf (ver, "(gl %4.2f) %4.2f", (float)GLQUAKE_VERSION, (float)VERSION);
+		// sprintf (ver, "(gl %4.2f) %4.2f", (float)GLQUAKE_VERSION, (float)VERSION);
 
-		dest = cb->data + 320*186 + 320 - 11 - 8*strlen(ver);
-		y = strlen(ver);
-		for (x=0 ; x<y ; x++)
-			Draw_CharToConback (ver[x], dest+(x<<3));
+		// dest = cb->data + 320*186 + 320 - 11 - 8*strlen(ver);
+		// y = strlen(ver);
+		// for (x=0 ; x<y ; x++)
+		// 	Draw_CharToConback (ver[x], dest+(x<<3));
 
 		conback->width = cb->width;
 		conback->height = cb->height;
@@ -816,10 +816,10 @@ void Draw_Init (void)
 
 	gl = (glpic_t *)conback->data;
 	if (data) {
-		gl->texnum = GL_LoadTexture32 ("conback", conback->width, conback->height, ncdata, false, true, false);
+		gl->texnum = GL_LoadTexture32 ("conbackblue", conback->width, conback->height, ncdata, false, true, false);
 		free(data);
 	} else
-		gl->texnum = GL_LoadTexture ("conback", conback->width, conback->height, ncdata, false, true); //  30/01/2000 modified: M.Tretene
+		gl->texnum = GL_LoadTexture ("conbackblue", conback->width, conback->height, ncdata, false, true); //  30/01/2000 modified: M.Tretene
 	gl->sl = 0;
 	gl->sh = 1;
 	gl->tl = 0;

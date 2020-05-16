@@ -427,13 +427,13 @@ void M_Main_Key (int key)
 		break;
 
 	case K_DOWNARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		if (++m_main_cursor >= MAIN_ITEMS)
 			m_main_cursor = 0;
 		break;
 
 	case K_UPARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		if (--m_main_cursor < 0)
 			m_main_cursor = MAIN_ITEMS - 1;
 		break;
@@ -503,13 +503,13 @@ void M_SinglePlayer_Key (int key)
 		break;
 
 	case K_DOWNARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		if (++m_singleplayer_cursor >= SINGLEPLAYER_ITEMS)
 			m_singleplayer_cursor = 0;
 		break;
 
 	case K_UPARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		if (--m_singleplayer_cursor < 0)
 			m_singleplayer_cursor = SINGLEPLAYER_ITEMS - 1;
 		break;
@@ -642,7 +642,7 @@ void M_Load_Key (int k)
 		break;
 
 	case K_CROSS: // Cross
-		S_LocalSound ("misc/menu2.wav");
+		S_LocalSound ("misc/menuenter.wav");
 		if (!loadable[load_cursor])
 			return;
 		m_state = m_none;
@@ -658,7 +658,7 @@ void M_Load_Key (int k)
 
 	case K_UPARROW:
 	case K_LEFTARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		load_cursor--;
 		if (load_cursor < 0)
 			load_cursor = MAX_SAVEGAMES-1;
@@ -666,7 +666,7 @@ void M_Load_Key (int k)
 
 	case K_DOWNARROW:
 	case K_RIGHTARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		load_cursor++;
 		if (load_cursor >= MAX_SAVEGAMES)
 			load_cursor = 0;
@@ -693,7 +693,7 @@ void M_Save_Key (int k)
 
 	case K_UPARROW:
 	case K_LEFTARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		load_cursor--;
 		if (load_cursor < 0)
 			load_cursor = MAX_SAVEGAMES-1;
@@ -701,7 +701,7 @@ void M_Save_Key (int k)
 
 	case K_DOWNARROW:
 	case K_RIGHTARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		load_cursor++;
 		if (load_cursor >= MAX_SAVEGAMES)
 			load_cursor = 0;
@@ -764,13 +764,13 @@ void M_MultiPlayer_Key (int key)
 		break;
 
 	case K_DOWNARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		if (++m_multiplayer_cursor >= MULTIPLAYER_ITEMS)
 			m_multiplayer_cursor = 0;
 		break;
 
 	case K_UPARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		if (--m_multiplayer_cursor < 0)
 			m_multiplayer_cursor = MULTIPLAYER_ITEMS - 1;
 		break;
@@ -917,14 +917,14 @@ void M_Setup_Key (int k)
 		break;
 
 	case K_UPARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		setup_cursor--;
 		if (setup_cursor < 0)
 			setup_cursor = NUM_SETUP_CMDS-1;
 		break;
 
 	case K_DOWNARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		setup_cursor++;
 		if (setup_cursor >= NUM_SETUP_CMDS)
 			setup_cursor = 0;
@@ -933,7 +933,7 @@ void M_Setup_Key (int k)
 	case K_LEFTARROW:
 		if (setup_cursor < 2)
 			return;
-		S_LocalSound ("misc/menu3.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		if (setup_cursor == 2)
 			setup_top = setup_top - 1;
 		if (setup_cursor == 3)
@@ -943,7 +943,7 @@ void M_Setup_Key (int k)
 		if (setup_cursor < 2)
 			return;
 forward:
-		S_LocalSound ("misc/menu3.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		if (setup_cursor == 2)
 			setup_top = setup_top + 1;
 		if (setup_cursor == 3)
@@ -1133,14 +1133,14 @@ void M_Mods_Key (int k)
 		return;
 
 	case K_UPARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		mods_cursor--;
 		if (mods_cursor < 0)
 			mods_cursor = max_mod_idx;
 		break;
 
 	case K_DOWNARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		mods_cursor++;
 		if (mods_cursor > max_mod_idx)
 			mods_cursor = 0;
@@ -1188,7 +1188,7 @@ void M_Menu_Graphics_f (void)
 
 void M_AdjustSliders2 (int dir)
 {
-	S_LocalSound ("misc/menu3.wav");
+	S_LocalSound ("misc/menuoption.wav");
 	
 	switch (graphics_cursor)
 	{
@@ -1309,89 +1309,90 @@ void M_Graphics_Draw (void)
 {
 	float		r;
 	qpic_t	*p;
+	int xoff = 60;
 
-	M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
+	M_DrawTransPic (xoff+16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
 	p = Draw_CachePic ("gfx/p_option.lmp");
-	M_DrawPic ( (320-p->width)/2, 4, p);
+	M_DrawPic ( (320*MENU_SCALE-p->width)/2, 4, p);
 	
-	M_Print (16, 32, "    Bilinear Filtering");
-	M_DrawCheckbox (220, 32, gl_bilinear.value);
+	M_Print (xoff+16, 32, "    Bilinear Filtering");
+	M_DrawCheckbox (xoff+220, 32, gl_bilinear.value);
 	
-	M_Print (16, 40, "            Brightness");
+	M_Print (xoff+16, 40, "            Brightness");
 	r = (1.0 - v_gamma.value) / 0.5;
-	M_DrawSlider (220, 40, r);
+	M_DrawSlider (xoff+220, 40, r);
 	
-	M_Print (16, 48, "      Light Overbright");
+	M_Print (xoff+16, 48, "      Light Overbright");
 	r = gl_overbright.value / 2;
-	M_DrawSlider (220, 48, r);
+	M_DrawSlider (xoff+220, 48, r);
 	
-	M_Print (16, 56, "      HUD Transparency");
-	M_DrawSlider (220, 56, scr_sbaralpha.value);
+	M_Print (xoff+16, 56, "      HUD Transparency");
+	M_DrawSlider (xoff+220, 56, scr_sbaralpha.value);
 	
-	M_Print (16, 64, "       Mirrors Opacity");
+	M_Print (xoff+16, 64, "       Mirrors Opacity");
 	r = r_mirroralpha.value;
-	M_DrawSlider (220, 64, r);
+	M_DrawSlider (xoff+220, 64, r);
 	
-	M_Print (16, 72, "         Water Opacity");
+	M_Print (xoff+16, 72, "         Water Opacity");
 	r = r_wateralpha.value;
-	M_DrawSlider (220, 72, r);
+	M_DrawSlider (xoff+220, 72, r);
 	
-	M_Print (16, 80, "        Dynamic Lights");
-	M_DrawCheckbox (220, 80, gl_torchflares.value);
+	M_Print (xoff+16, 80, "        Dynamic Lights");
+	M_DrawCheckbox (xoff+220, 80, gl_torchflares.value);
 
-	M_Print (16, 88, "       Dynamic Shadows");
-	M_DrawCheckbox (220, 88, r_shadows.value);
+	M_Print (xoff+16, 88, "       Dynamic Shadows");
+	M_DrawCheckbox (xoff+220, 88, r_shadows.value);
 	
-	M_Print (16, 96, "         Fog Rendering");
-	M_DrawCheckbox (220, 96, gl_fog.value);
+	M_Print (xoff+16, 96, "         Fog Rendering");
+	M_DrawCheckbox (xoff+220, 96, gl_fog.value);
 	
-	M_Print (16, 104, "           Cel Shading");
+	M_Print (xoff+16, 104, "           Cel Shading");
 	r = gl_outline.value / 6;
-	M_DrawSlider (220, 104, r);
+	M_DrawSlider (xoff+220, 104, r);
 	
-	M_Print (16, 112,"           Anaglyph 3D");
-	M_DrawCheckbox (220, 112, st_separation.value != 0);
+	M_Print (xoff+16, 112,"           Anaglyph 3D");
+	M_DrawCheckbox (xoff+220, 112, st_separation.value != 0);
 
-	M_Print (16, 120,"         Anti-Aliasing");
+	M_Print (xoff+16, 120,"         Anti-Aliasing");
 	switch (antialiasing) {
 	case 1:
-		M_Print (220, 120, "MSAA 2x");
+		M_Print (xoff+220, 120, "MSAA 2x");
 		break;
 	case 2:
-		M_Print (220, 120, "MSAA 4x");
+		M_Print (xoff+220, 120, "MSAA 4x");
 		break;
 	case 3:
-		M_Print (220, 120, "SSAA 2x");
+		M_Print (xoff+220, 120, "SSAA 2x");
 		break;
 	case 4:
-		M_Print (220, 120, "SSAA 4x");
+		M_Print (xoff+220, 120, "SSAA 4x");
 		break;
 	case 5:
-		M_Print (220, 120, "MSAA 2x + SSAA 2x");
+		M_Print (xoff+220, 120, "MSAA 2x + SSAA 2x");
 		break;
 	case 6:
-		M_Print (220, 120, "MSAA 2x + SSAA 4x");
+		M_Print (xoff+220, 120, "MSAA 2x + SSAA 4x");
 		break;
 	case 7:
-		M_Print (220, 120, "MSAA 4x + SSAA 2x");
+		M_Print (xoff+220, 120, "MSAA 4x + SSAA 2x");
 		break;
 	case 8:
-		M_Print (220, 120, "MSAA 4x + SSAA 4x");
+		M_Print (xoff+220, 120, "MSAA 4x + SSAA 4x");
 		break;
 	default:
-		M_Print (220, 120, "Disabled");
+		M_Print (xoff+220, 120, "Disabled");
 		break;
 	}
 	
 	char res_str[64];
 	sprintf(res_str, "%dx%d", cfg_width, cfg_height);
-	M_Print (16, 128,"            Resolution");
-	M_Print (220, 128, res_str);
+	M_Print (xoff+16, 128,"            Resolution");
+	M_Print (xoff+220, 128, res_str);
 
-	M_Print (16, 136,"                V-Sync");
-	M_DrawCheckbox (220, 136, vid_vsync.value);
+	M_Print (xoff+16, 136,"                V-Sync");
+	M_DrawCheckbox (xoff+220, 136, vid_vsync.value);
 	
-	M_Print (16, 152,"      Test Performance");
+	M_Print (xoff+16, 152,"      Test Performance");
 	
 	// Warn users for reboot required
 	if (graphics_cursor == 11 || graphics_cursor == 12) {
@@ -1400,8 +1401,8 @@ void M_Graphics_Draw (void)
 	}
 	
 // cursor
-	if (graphics_cursor == GRAPHICS_ITEMS) M_DrawCharacter (200, 152, 12+((int)(realtime*4)&1));
-	else M_DrawCharacter (200, 32 + graphics_cursor*8, 12+((int)(realtime*4)&1));
+	if (graphics_cursor == GRAPHICS_ITEMS) M_DrawCharacter (xoff+200, 152, 12+((int)(realtime*4)&1));
+	else M_DrawCharacter (xoff+200, 32 + graphics_cursor*8, 12+((int)(realtime*4)&1));
 }
 
 void M_Graphics_Key (int k)
@@ -1420,14 +1421,14 @@ void M_Graphics_Key (int k)
 		return;
 
 	case K_UPARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		graphics_cursor--;
 		if (graphics_cursor < 0)
 			graphics_cursor = GRAPHICS_ITEMS;
 		break;
 
 	case K_DOWNARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		graphics_cursor++;
 		if (graphics_cursor > GRAPHICS_ITEMS)
 			graphics_cursor = 0;
@@ -1462,7 +1463,7 @@ int w_pos_idx = -1;
 
 void M_AdjustSliders (int dir)
 {
-	S_LocalSound ("misc/menu3.wav");
+	S_LocalSound ("misc/menuoption.wav");
 
 	switch (options_cursor)
 	{
@@ -1598,92 +1599,93 @@ void M_Options_Draw (void)
 {
 	float		r;
 	qpic_t	*p;
+	int xoff = 60;
 
-	M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
+	M_DrawTransPic (xoff+16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
 	p = Draw_CachePic ("gfx/p_option.lmp");
-	M_DrawPic ( (320-p->width)/2, 4, p);
+	M_DrawPic ( (320*MENU_SCALE-p->width)/2, 4, p);
 
-	M_Print (16, 32, "     Controls Settings");
-	M_Print (16, 40, "     Graphics Settings");
-	M_Print (16, 48, "          Open Console");
-	M_Print (16, 56, "        Open Mods Menu");
-	M_Print (16, 64, "     Reset to defaults");
+	M_Print (xoff+16, 32, "     Controls Settings");
+	M_Print (xoff+16, 40, "     Graphics Settings");
+	M_Print (xoff+16, 48, "          Open Console");
+	M_Print (xoff+16, 56, "        Open Mods Menu");
+	M_Print (xoff+16, 64, "     Reset to defaults");
 
-	M_Print (16, 72, "           Screen size");
+	M_Print (xoff+16, 72, "           Screen size");
 	r = (viewsize.value - 30) / (120 - 30);
-	M_DrawSlider (220, 72, r);
+	M_DrawSlider (xoff+220, 72, r);
 	
-	M_Print (16, 80, "    Camera Sensitivity");
+	M_Print (xoff+16, 80, "    Camera Sensitivity");
 	r = (sensitivity.value - 1)/10;
-	M_DrawSlider (220, 80, r);
+	M_DrawSlider (xoff+220, 80, r);
 	
-	M_Print (16, 88, "         Invert Camera");
-	M_DrawCheckbox (220, 88, invert_camera.value);
+	M_Print (xoff+16, 88, "         Invert Camera");
+	M_DrawCheckbox (xoff+220, 88, invert_camera.value);
 
-	M_Print (16, 96,"          Music Volume");
+	M_Print (xoff+16, 96,"          Music Volume");
 	r = bgmvolume.value;
-	M_DrawSlider (220, 96, r);
+	M_DrawSlider (xoff+220, 96, r);
 	
-	M_Print (16, 104,"          Sound Volume");
+	M_Print (xoff+16, 104,"          Sound Volume");
 	r = volume.value;
-	M_DrawSlider (220, 104, r);
+	M_DrawSlider (xoff+220, 104, r);
 	
-	M_Print (16, 112,"        Use Retrotouch");
-	M_DrawCheckbox (220, 112, retrotouch.value);
+	M_Print (xoff+16, 112,"        Use Retrotouch");
+	M_DrawCheckbox (xoff+220, 112, retrotouch.value);
 
-	M_Print (16, 120,"         Use Gyroscope");
-	M_DrawCheckbox (220, 120, motioncam.value);
+	M_Print (xoff+16, 120,"         Use Gyroscope");
+	M_DrawCheckbox (xoff+220, 120, motioncam.value);
 	
-	M_Print (16, 128,"    Gyro X Sensitivity");
+	M_Print (xoff+16, 128,"    Gyro X Sensitivity");
 	r = motion_horizontal_sensitivity.value/10;
-	M_DrawSlider (220, 128, r);
+	M_DrawSlider (xoff+220, 128, r);
 
-	M_Print (16, 136,"    Gyro Y Sensitivity");
+	M_Print (xoff+16, 136,"    Gyro Y Sensitivity");
 	r = motion_vertical_sensitivity.value/10;
-	M_DrawSlider (220, 136, r);
+	M_DrawSlider (xoff+220, 136, r);
 
-	M_Print (16, 144,"         Rumble Effect");
-	M_DrawCheckbox (220, 144, pstv_rumble.value);
+	M_Print (xoff+16, 144,"         Rumble Effect");
+	M_DrawCheckbox (xoff+220, 144, pstv_rumble.value);
 	
-	M_Print (16, 152,"        Show Framerate");
-	M_DrawCheckbox (220, 152, show_fps.value);
+	M_Print (xoff+16, 152,"        Show Framerate");
+	M_DrawCheckbox (xoff+220, 152, show_fps.value);
 	
-	M_Print (16, 160,"        Show Crosshair");
-	if (crosshair.value == 0) M_Print (220, 160, "Off");
-	else if (crosshair.value == 1) M_Print (220, 160, "Original");
-	else M_Print (220, 160, "Custom");
+	M_Print (xoff+16, 160,"        Show Crosshair");
+	if (crosshair.value == 0) M_Print (xoff+220, 160, "Off");
+	else if (crosshair.value == 1) M_Print (xoff+220, 160, "Original");
+	else M_Print (xoff+220, 160, "Custom");
 	
-	M_Print (16, 168,"       Weapon Position");
+	M_Print (xoff+16, 168,"       Weapon Position");
 	if (w_pos_idx == -1) {
 		if (!r_drawviewmodel.value) w_pos_idx = 3;
 		else if (r_viewmodeloffset.value < 0) w_pos_idx = 2;
 		else if (r_viewmodeloffset.value > 0) w_pos_idx = 1;
 		else w_pos_idx = 0;
 	}
-	M_Print (220, 168, w_pos[w_pos_idx]);
+	M_Print (xoff+220, 168, w_pos[w_pos_idx]);
 	
-	M_Print (16, 176,"         Field of View");
+	M_Print (xoff+16, 176,"         Field of View");
 	r = (fov.value - 75) / 55;
-	M_DrawSlider (220, 176, r);
+	M_DrawSlider (xoff+220, 176, r);
 	
-	M_Print (16, 184,"     Smooth Animations");
-	M_DrawCheckbox (220, 184, r_interpolate_model_animation.value);
+	M_Print (xoff+16, 184,"     Smooth Animations");
+	M_DrawCheckbox (xoff+220, 184, r_interpolate_model_animation.value);
 	
-	M_Print (16, 192,"         Specular Mode");
-	M_DrawCheckbox (220, 192, gl_xflip.value);
+	M_Print (xoff+16, 192,"         Specular Mode");
+	M_DrawCheckbox (xoff+220, 192, gl_xflip.value);
 
-	M_Print (16, 200,"   Touch X Sensitivity");
+	M_Print (xoff+16, 200,"   Touch X Sensitivity");
 	r = psvita_front_sensitivity_x.value;
-	M_DrawSlider (220, 200, r);
+	M_DrawSlider (xoff+220, 200, r);
 
-	M_Print (16, 208,"   Touch Y Sensitivity");
+	M_Print (xoff+16, 208,"   Touch Y Sensitivity");
 	r = psvita_front_sensitivity_y.value;
-	M_DrawSlider (220, 208, r);
+	M_DrawSlider (xoff+220, 208, r);
 
-	M_Print (16, 216,"   Touch Screen Aiming");
-	M_DrawCheckbox (220, 216, psvita_touchmode.value);
+	M_Print (xoff+16, 216,"   Touch Screen Aiming");
+	M_DrawCheckbox (xoff+220, 216, psvita_touchmode.value);
 
-	M_DrawCharacter (200, 32 + options_cursor*8, 12+((int)(realtime*4)&1));
+	M_DrawCharacter (xoff+200, 32 + options_cursor*8, 12+((int)(realtime*4)&1));
 }
 
 
@@ -1799,14 +1801,14 @@ void M_Options_Key (int k)
 		return;
 
 	case K_UPARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		options_cursor--;
 		if (options_cursor < 0)
 			options_cursor = OPTIONS_ITEMS;
 		break;
 
 	case K_DOWNARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		options_cursor++;
 		if (options_cursor > OPTIONS_ITEMS)
 			options_cursor = 0;
@@ -1908,22 +1910,23 @@ void M_Keys_Draw (void)
 	int		keys[2];
 	char	*name;
 	int		x, y;
+	int xoff =60;
 	qpic_t	*p;
 
 	p = Draw_CachePic ("gfx/ttl_cstm.lmp");
-	M_DrawPic ( (320-p->width)/2, 4, p);
+	M_DrawPic ( (320*MENU_SCALE-p->width)/2, 4, p);
 
 	if (bind_grab)
-		M_Print (12, 32, "Press a key or button for this action");
+		M_Print (xoff+12, 32, "Press a key or button for this action");
 	else
-		M_Print (18, 32, "Cross to change, Select to clear");
+		M_Print (xoff+18, 32, "Cross to change, Select to clear");
 
 // search for known bindings
 	for (i=0 ; i<NUMCOMMANDS ; i++)
 	{
 		y = 48 + 8*i;
 
-		M_Print (16, y, bindnames[i][1]);
+		M_Print (xoff+16, y, bindnames[i][1]);
 
 		l = strlen (bindnames[i][0]);
 
@@ -1931,25 +1934,25 @@ void M_Keys_Draw (void)
 
 		if (keys[0] == -1)
 		{
-			M_Print (140, y, "???");
+			M_Print (xoff+140, y, "???");
 		}
 		else
 		{
 			name = Key_KeynumToString (keys[0]);
-			M_Print (140, y, name);
+			M_Print (xoff+140, y, name);
 			x = strlen(name) * 8;
 			if (keys[1] != -1)
 			{
-				M_Print (140 + x + 8, y, "or");
-				M_Print (140 + x + 32, y, Key_KeynumToString (keys[1]));
+				M_Print (xoff+140 + x + 8, y, "or");
+				M_Print (xoff+140 + x + 32, y, Key_KeynumToString (keys[1]));
 			}
 		}
 	}
 
 	if (bind_grab)
-		M_DrawCharacter (130, 48 + keys_cursor*8, '=');
+		M_DrawCharacter (xoff+130, 48 + keys_cursor*8, '=');
 	else
-		M_DrawCharacter (130, 48 + keys_cursor*8, 12+((int)(realtime*4)&1));
+		M_DrawCharacter (xoff+130, 48 + keys_cursor*8, 12+((int)(realtime*4)&1));
 }
 
 
@@ -1960,7 +1963,7 @@ void M_Keys_Key (int k)
 
 	if (bind_grab)
 	{	// defining a key
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		if (k == K_START) // Start cancels
 		{
 			bind_grab = false;
@@ -1985,7 +1988,7 @@ void M_Keys_Key (int k)
 
 	case K_LEFTARROW:
 	case K_UPARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		keys_cursor--;
 		if (keys_cursor < 0)
 			keys_cursor = NUMCOMMANDS-1;
@@ -1993,7 +1996,7 @@ void M_Keys_Key (int k)
 
 	case K_DOWNARROW:
 	case K_RIGHTARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		keys_cursor++;
 		if (keys_cursor >= NUMCOMMANDS)
 			keys_cursor = 0;
@@ -2001,14 +2004,14 @@ void M_Keys_Key (int k)
 
 	case K_CROSS:		// go into bind mode
 		M_FindKeysForCommand (bindnames[keys_cursor][0], keys);
-		S_LocalSound ("misc/menu2.wav");
+		S_LocalSound ("misc/menuenter.wav");
 		if (keys[1] != -1)
 			M_UnbindCommand (bindnames[keys_cursor][0]);
 		bind_grab = true;
 		break;
 
 	case K_SELECT:				// delete bindings
-		S_LocalSound ("misc/menu2.wav");
+		S_LocalSound ("misc/menuenter.wav");
 		M_UnbindCommand (bindnames[keys_cursor][0]);
 		break;
 	}
@@ -2097,10 +2100,10 @@ bool	wasInMenus;
 char *quitMessage [] =
 {
 /* .........1.........2.... */
-  "  Are you gonna quit    ",
-  "  this game just like   ",
-  "   everything else?     ",
+  "    Ready to retire     ",
+  "         Chief?         ",
   "                        ",
+  "   O NO         X YES   ",
 
   " Milord, methinks that  ",
   "   thou art a lowly     ",
@@ -2153,7 +2156,7 @@ void M_Menu_Quit_f (void)
 	m_quit_prevstate = m_state;
 	m_state = m_quit;
 	m_entersound = true;
-	msgNumber = rand()&7;
+	msgNumber = 0; //rand()&7;
 }
 
 
@@ -2162,6 +2165,7 @@ void M_Quit_Key (int key)
 	switch (key)
 	{
 	case K_TRIANGLE:
+	case K_CIRCLE:
 	case K_SELECT:
 	case 'n':
 	case 'N':
@@ -2198,6 +2202,8 @@ void M_Quit_Draw (void)
 		M_Draw ();
 		m_state = m_quit;
 	}
+	int xoff = 80;
+	int yoff = 20;
 
 #ifdef _WIN32	// ToDo: Move this to a Credits subsection
 	M_DrawTextBox (0, 0, 38, 23);
@@ -2223,11 +2229,11 @@ void M_Quit_Draw (void)
 	M_PrintWhite (16, 172, "Nothing Interactive, Inc. All rights\n");
 	M_PrintWhite (16, 180, "reserved. Press y to exit\n");
 #else
-	M_DrawTextBox (56, 76, 24, 4);
-	M_Print (64, 84,  quitMessage[msgNumber*4+0]);
-	M_Print (64, 92,  quitMessage[msgNumber*4+1]);
-	M_Print (64, 100, quitMessage[msgNumber*4+2]);
-	M_Print (64, 108, quitMessage[msgNumber*4+3]);
+	M_DrawTextBox (xoff+56, yoff+76, 24, 4);
+	M_PrintWhite (xoff+64, yoff+84,  quitMessage[msgNumber*4+0]);
+	M_PrintWhite (xoff+64, yoff+92,  quitMessage[msgNumber*4+1]);
+	M_PrintWhite (xoff+64, yoff+100, quitMessage[msgNumber*4+2]);
+	M_PrintWhite (xoff+64, yoff+108, quitMessage[msgNumber*4+3]);
 #endif
 }
 
@@ -2336,7 +2342,7 @@ void M_LanConfig_Key (int key)
 		break;
 
 	case K_UPARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		lanConfig_cursor--;
 		if (lanConfig_cursor < 0)
 			if (JoiningGame)
@@ -2346,7 +2352,7 @@ void M_LanConfig_Key (int key)
 		break;
 
 	case K_DOWNARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		lanConfig_cursor++;
 		if (lanConfig_cursor > NUM_LANCONFIG_CMDS)
 			lanConfig_cursor = 0;
@@ -2527,14 +2533,14 @@ void M_OnlineServerList_Key (int key)
 		break;
 
 	case K_UPARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		onlineServerList_cursor--;
 		if (onlineServerList_cursor < 0)
 			onlineServerList_cursor = NUM_SERVERS-1;
 		break;
 
 	case K_DOWNARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		onlineServerList_cursor++;
 		if (onlineServerList_cursor >= NUM_SERVERS)
 			onlineServerList_cursor = 0;
@@ -2569,16 +2575,19 @@ typedef struct
 level_t		levels[] =
 {
 	{"citadel", "Citadel"}, //0
-	{"narsp", "Narrows V2"},
-	{"narrowed", "Narrows"}, //2
+	{"narsp", "Narrows"},
+	{"Longest", "Longest"},
+	{"chill", "Chill Out"},
+	{"pri2", "Prisoner"},
 	{"base", "Minibase"},
 	{"plaza", "Plaza"},
 	{"spider", "Spiderweb"},
 	{"bloody", "Blood Gutch"},
 	{"lockout", "Lockout"},
+	{"lock", "Lockout2"},
 
-	{"construction", "Construction"}, //8
-	{"fire", "Fire!"} //9 
+	{"construction", "Construction"}, //11
+	{"fire", "Fire!"} //12
 };
 
 
@@ -2592,12 +2601,12 @@ typedef struct
 
 episode_t	episodes[] =
 {
-	{"Slayer Maps", 0, 8}
+	{"Slayer Maps", 0, 11}
 };
 
 episode_t	episodes_ff[] =
 {
-	{"Firefight Maps", 8, 2}
+	{"Firefight Maps", 11, 2}
 };
 
 
@@ -2613,25 +2622,52 @@ int		pause_cursor;
 //remove bot
 //options
 //quit
+	// int y_offset = 170;
+	// int y_cursor_offset = 32;
+	// int x_offset = 30;
+	// int x_text_offset = 15;
+
+	// //background
+	// bg = Draw_CachePic ("gfx/MENU/menuback.lmp");
+	// M_DrawTransPic(x_offset-16,y_offset+22, bg);
+	// bar = Draw_CachePic ("gfx/MENU/menubar.lmp");
+	// //cursor
+	// M_DrawTransPic (x_offset-16, y_offset+y_cursor_offset+(m_main_cursor*20)-3,bar);
+	// //menu items
+	// M_PrintWhite(x_offset, y_offset+32, "Matchmaking");
+	// M_PrintWhite(x_offset, y_offset+52, "Firefight");
+	// M_PrintWhite(x_offset, y_offset+72, "Options");
+	// M_PrintWhite(x_offset, y_offset+92, "Quit");
+//pause
 void M_Pause_Draw (void)
 {
 	int		f;
-	qpic_t	*p;
-	int y_offset = 30;
+	qpic_t	*p, *bar, *bg;
+	bg = Draw_CachePic ("gfx/MENU/menuback.lmp");
+	bar = Draw_CachePic ("gfx/MENU/menubar.lmp");
+	int y_offset = 70;
 	int y_cursor_offset = 32;
-	int x_offset = 100;
-	int x_text_offset = 15;
+	int charwidth = 8;
+	int avg_opt_cars = 17;
+	int bg_offset = (320*MENU_SCALE-bg->width)/2;
+	int x_offset = bg_offset + 15;
 	
+
+	//background
+	M_DrawTransPic(bg_offset, y_offset+12, bg);
 	//cursor
-	f = (int)(host_time * 5)%6;
-	M_DrawTransPic (x_offset, y_offset+y_cursor_offset+(pause_cursor*20), Draw_CachePic(va("gfx/menudot%i.lmp", f+1)));
+	M_DrawTransPic ((320*MENU_SCALE-bar->width)/2, y_offset+y_cursor_offset+(pause_cursor*20)-3,bar);
+	//cursor
+	// f = (int)(host_time * 5)%6;
+	// M_DrawTransPic (x_offset, y_offset+y_cursor_offset+(pause_cursor*20), Draw_CachePic(va("gfx/menudot%i.lmp", f+1)));
 	//menu items
-	M_Print(x_offset+x_text_offset, y_offset+32, "Add Bot");
-	M_Print(x_offset+x_text_offset, y_offset+52, "Remove Bot");
-	M_Print(x_offset+x_text_offset, y_offset+72, "Options");
-	M_Print(x_offset+x_text_offset, y_offset+92, "Disconnect");
+	M_Print(x_offset, y_offset+32, "Add Bot");
+	M_Print(x_offset, y_offset+52, "Remove Bot");
+	M_Print(x_offset, y_offset+72, "Options");
+	M_Print(x_offset, y_offset+92, "Disconnect");
 
 }
+
 void M_Pause_Key (int key)
 {
 	switch (key)
@@ -2644,21 +2680,21 @@ void M_Pause_Key (int key)
 		break;
 
 	case K_UPARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		pause_cursor--;
 		if (pause_cursor < 0)
 			pause_cursor = NUM_PAUSEOPTIONS-1;
 		break;
 
 	case K_DOWNARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		pause_cursor++;
 		if (pause_cursor >= NUM_PAUSEOPTIONS)
 			pause_cursor = 0;
 		break;
 
 	case K_CROSS:
-		S_LocalSound ("misc/menu2.wav");
+		S_LocalSound ("misc/menuenter.wav");
 		if(pause_cursor == 0)
 		{
 			Cbuf_AddText ("impulse 100\n");
@@ -2710,7 +2746,7 @@ int		gameoptions_cursor;
 
 void M_Matchmaking_Draw (void)
 {
-	qpic_t	*p, *gt, *bg, *bar, *skillp, *mappit, *mapfire, *mapconstruction, *mapbase, *mapbloody, *mapfoundation, *mapnarrowed, *mapplaza, *mapspider, *maplockout, *mapcitadel, *maprandom;
+	qpic_t	*p, *gt, *bg, *bar, *skillp, *mappit, *mapfire, *mapconstruction, *mapbase, *mapbloody, *maplong, *mapfoundation, *mapnarrowed, *mapplaza, *mapspider, *maplockout, *mapcitadel, *maprandom;
 	int		x, chg;
 
 	//M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
@@ -2726,6 +2762,7 @@ void M_Matchmaking_Draw (void)
 	maplockout = Draw_CachePic ("gfx/maps/lockout.lmp");
 	maprandom = Draw_CachePic ("gfx/maps/random.lmp");
 	mapcitadel = Draw_CachePic ("gfx/maps/citadel.lmp");
+	maplong = Draw_CachePic ("gfx/maps/longest.lmp");
 
 	chg=106;
 	int xmenustart = 30;
@@ -2844,6 +2881,8 @@ void M_Matchmaking_Draw (void)
 		M_DrawTransPic(xmenustart,300-chg, maplockout);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "citadel")
 		M_DrawTransPic(xmenustart,300-chg, mapcitadel);
+	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "Longest")
+		M_DrawTransPic(xmenustart,300-chg, maplong);
    	else
    		M_DrawTransPic(xmenustart,300-chg, maprandom);
 }
@@ -2948,14 +2987,14 @@ void M_Matchmaking_Key (int key)
 		break;
 
 	case K_UPARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		gameoptions_cursor--;
 		if (gameoptions_cursor < 0)
 			gameoptions_cursor = NUM_GAMEOPTIONS-1;
 		break;
 
 	case K_DOWNARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		gameoptions_cursor++;
 		if (gameoptions_cursor >= NUM_GAMEOPTIONS)
 			gameoptions_cursor = 0;
@@ -2964,23 +3003,24 @@ void M_Matchmaking_Key (int key)
 	case K_LEFTARROW:
 		if (gameoptions_cursor == 0)
 			break;
-		S_LocalSound ("misc/menu3.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		M_Matchmaking_Change (-1);
 		break;
 
 	case K_RIGHTARROW:
 		if (gameoptions_cursor == 0)
 			break;
-		S_LocalSound ("misc/menu3.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		M_Matchmaking_Change (1);
 		break;
 
 	case K_CROSS:
-		S_LocalSound ("misc/menu2.wav");
+		S_LocalSound ("misc/menuenter.wav");
 		if (gameoptions_cursor == 0)
 		{
 			if (sv.active)
 				Cbuf_AddText ("disconnect\n");
+			S_LocalSound ("misc/menuback.wav");
 			SCR_BeginLoadingPlaque ();
 			Cbuf_AddText ("listen 0\n");	// so host_netport will be re-examined
 			Cbuf_AddText ( va ("maxplayers %u\n", maxplayers) );
@@ -3096,14 +3136,14 @@ void M_Firefight_Key (int key)
 		break;
 
 	case K_UPARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		firefight_cursor--;
 		if (firefight_cursor < 0)
 			firefight_cursor = NUM_FIREFIGHT_OPTIONS-1;
 		break;
 
 	case K_DOWNARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		firefight_cursor++;
 		if (firefight_cursor >= NUM_FIREFIGHT_OPTIONS)
 			firefight_cursor = 0;
@@ -3112,23 +3152,24 @@ void M_Firefight_Key (int key)
 	case K_LEFTARROW:
 		if (firefight_cursor == 0)
 			break;
-		S_LocalSound ("misc/menu3.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		M_Firefight_Change (-1);
 		break;
 
 	case K_RIGHTARROW:
 		if (firefight_cursor == 0)
 			break;
-		S_LocalSound ("misc/menu3.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		M_Firefight_Change (1);
 		break;
 
 	case K_CROSS:
-		S_LocalSound ("misc/menu2.wav");
+		S_LocalSound ("misc/menuenter.wav");
 		if (firefight_cursor == 0) //on start options
 		{
 			if (sv.active)
 				Cbuf_AddText ("disconnect\n");
+			S_LocalSound ("misc/menuback.wav");
 			SCR_BeginLoadingPlaque (); //#TODO: fix this not working..
 			Cbuf_AddText ("listen 0\n");	// so host_netport will be re-examined
 			Cbuf_AddText ( va ("maxplayers %u\n", maxplayers) );
@@ -3276,7 +3317,7 @@ void M_ServerList_Key (int k)
 
 	case K_UPARROW:
 	case K_LEFTARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		slist_cursor--;
 		if (slist_cursor < 0)
 			slist_cursor = hostCacheCount - 1;
@@ -3284,14 +3325,14 @@ void M_ServerList_Key (int k)
 
 	case K_DOWNARROW:
 	case K_RIGHTARROW:
-		S_LocalSound ("misc/menu1.wav");
+		S_LocalSound ("misc/menuoption.wav");
 		slist_cursor++;
 		if (slist_cursor >= hostCacheCount)
 			slist_cursor = 0;
 		break;
 
 	case K_CROSS:
-		S_LocalSound ("misc/menu2.wav");
+		S_LocalSound ("misc/menuenter.wav");
 		m_return_state = m_state;
 		m_return_onerror = true;
 		slist_sorted = false;
@@ -3452,7 +3493,7 @@ void M_Draw (void)
 
 	if (m_entersound)
 	{
-		S_LocalSound ("misc/menu2.wav");
+		S_LocalSound ("misc/menuenter.wav");
 		m_entersound = false;
 	}
 
