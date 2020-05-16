@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	MAXCLIPPLANES	11
 
 #define	TOP_RANGE		16			// soldier uniform colors
-#define	BOTTOM_RANGE	96
+#define	BOTTOM_RANGE	2  //original 96. quick fix to avoid coloring skins. Need to recolor skins long term, otherwise weapons are also colored
 
 //=============================================================================
 
