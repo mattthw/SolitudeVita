@@ -191,24 +191,25 @@ void R_TranslatePlayerSkin (int playernum)
 	unsigned	frac, fracstep;
 	extern	byte		**player_8bit_texels_tbl;
 
-	top = cl.scores[playernum].colors & 0xf0;
-	bottom = (cl.scores[playernum].colors &15)<<4;
+	top = cl.scores[playernum].colors & 0xf0; //color for top
+	bottom = (cl.scores[playernum].colors &15)<<4; //color for bottom
 
 	for (i=0 ; i<256 ; i++)
+	{
 		translate[i] = i;
+	}
 
 	for (i=0 ; i<16 ; i++)
 	{
-		if (top < 128)	// the artists made some backwards ranges.  sigh.
-			translate[TOP_RANGE+i] = top+i;
-		else
-			translate[TOP_RANGE+i] = top+15-i;
-				
 		if (bottom < 128)
+		{
 			translate[BOTTOM_RANGE+i] = bottom+i;
+		}
 		else
+		{
 			translate[BOTTOM_RANGE+i] = bottom+15-i;
-	}
+		}
+	}		
 
 	//
 	// locate the original skin pixels
@@ -231,7 +232,7 @@ void R_TranslatePlayerSkin (int playernum)
 		Con_Printf("(%d): Invalid player skin #%d\n", playernum, currententity->skinnum);
 		original = (byte *)paliashdr + paliashdr->texels[0];
 	} else
-		original = (byte *)paliashdr + paliashdr->texels[currententity->skinnum];
+		original = (byte *)paliashdr + paliashdr->texels[currententity->skinnum]; //original = original player skin
 	if (s & 3)
 		Sys_Error ("R_TranslateSkin: s&3");
 
@@ -260,9 +261,9 @@ void R_TranslatePlayerSkin (int playernum)
 	}
 
 	for (i=0 ; i<256 ; i++)
-		translate32[i] = d_8to24table[translate[i]];
+		translate32[i] = d_8to24table[translate[i]]; //go from 8bit to 24bit color map??? IDK
 
-	out = pixels;
+	out = pixels; //out = translated skin pixels with color?
 	fracstep = inwidth*0x10000/scaled_width;
 	for (i=0 ; i<scaled_height ; i++, out += scaled_width)
 	{
