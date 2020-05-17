@@ -577,23 +577,17 @@ void Sbar_SoloScoreboard (void)
 	int		minutes, seconds, tens, units;
 	int		l;
 
-	sprintf (str,"Monsters:%3i /%3i", cl.stats[STAT_MONSTERS], cl.stats[STAT_TOTALMONSTERS]);
-	Sbar_DrawString (8, 4, str);
-
-	sprintf (str,"Secrets :%3i /%3i", cl.stats[STAT_SECRETS], cl.stats[STAT_TOTALSECRETS]);
-	Sbar_DrawString (8, 12, str);
-
-// time
+	// time
 	minutes = cl.time / 60;
 	seconds = cl.time - 60*minutes;
 	tens = seconds / 10;
 	units = seconds - 10*tens;
-	sprintf (str,"Time :%3i:%i%i", minutes, tens, units);
-	Sbar_DrawString (184, 4, str);
+	sprintf (str,"Time:%3i:%i%i", minutes, tens, units);
+	Sbar_DrawString (8, 8, str);
 
-// draw level name
+	// draw level name
 	l = strlen (cl.levelname);
-	Sbar_DrawString (232 - l*4, 12, cl.levelname);
+	Sbar_DrawString (232 - l*4, 8, cl.levelname);
 }
 
 /*
@@ -603,57 +597,16 @@ Sbar_DrawScoreboard
 */
 void Sbar_DrawScoreboard (void)
 {
-	Sbar_SoloScoreboard ();
+	//Sbar_SoloScoreboard ();
 	if (cl.gametype == 1 || cl.gametype == 3) //Slayer or Swat 
 		Sbar_DeathmatchOverlay ();
-#if 0
-	int		i, j, c;
-	int		x, y;
-	int		l;
-	int		top, bottom;
-	scoreboard_t	*s;
-
-	if (cl.gametype != GAME_DEATHMATCH)
-	{
-		Sbar_SoloScoreboard ();
-		return;
-	}
-
-	Sbar_UpdateScoreboard ();
-
-	l = scoreboardlines <= 6 ? scoreboardlines : 6;
-
-	for (i=0 ; i<l ; i++)
-	{
-		x = 20*(i&1);
-		y = i/2 * 8;
-
-		s = &cl.scores[fragsort[i]];
-		if (!s->name[0])
-			continue;
-
-	// draw background
-		top = s->colors & 0xf0;
-		bottom = (s->colors & 15)<<4;
-		top = Sbar_ColorForMap (top);
-		bottom = Sbar_ColorForMap (bottom);
-
-		Draw_Fill ( x*8+10 + ((vid.width - 320)>>1), y + vid.height - SBAR_HEIGHT, 28, 4, top);
-		Draw_Fill ( x*8+10 + ((vid.width - 320)>>1), y+4 + vid.height - SBAR_HEIGHT, 28, 4, bottom);
-
-	// draw text
-		for (j=0 ; j<20 ; j++)
-		{
-			c = scoreboardtext[i][j];
-			if (c == 0 || c == ' ')
-				continue;
-			Sbar_DrawCharacter ( (x+j)*8, y, c);
-		}
-	}
-#endif
 }
 
-//=============================================================================
+
+
+
+
+
 void Sbar_DrawWeaponPic (void)
 {
 	if(!drawweapon_kicked)
@@ -713,6 +666,8 @@ void Sbar_DrawWeaponPic (void)
 		M_DrawTransPic ((CANVAS_WIDTH-XPADDING-Sniper->width), YPADDING, Sniper);
 	}
 }
+
+
 
 int oldsheilds;
 int sheildrechargeplaying = 0;
@@ -1094,23 +1049,36 @@ Firefight Lives
 
 void Sbar_DrawRespawn (void)
 {
-	char up[35];
-	int round;
+	char respawnstr[35];
+	int round = 8;
 	round = (int)cl_respawn.value;
+	sprintf (respawnstr,"You will respawn in %d seconds", round);
+	size_t len = strlen(respawnstr) * 8; //8 is character glyph width
+	int canwidth = 320*MENU_SCALE;
+	int canheight = 200*MENU_SCALE;
+	int x = canwidth/2 - len/2;
+	int y = canheight - (canheight*0.4);
 
-	sprintf (up,"You will respawn in %d seconds", round);
-	Sbar_DrawString (50, 50, up);
+	Sbar_DrawString (x, y, respawnstr);
 }
 
 
 void Sbar_DrawGametype (void)
 {
+	int canwidth = 320*MENU_SCALE;
+	int canheight = 200*MENU_SCALE;
+	int x = canwidth-(canwidth*0.15);
+	int y = canheight - (canheight*0.3);
+	//set canvas mode
+	GL_SetCanvas(CANVAS_MENU_STRETCH);
 	if (deathmatch.value == 1)
-		Sbar_DrawString (CANVAS_WIDTH-(CANVAS_WIDTH*0.1), 400, "Slayer");
+		Sbar_DrawString (x, y, "Slayer");
 	if (deathmatch.value == 2)
-		Sbar_DrawString (CANVAS_WIDTH-(CANVAS_WIDTH*0.1), 400, "Firefight");
+		Sbar_DrawString (x, y, "Firefight");
 	if (deathmatch.value == 3)
-		Sbar_DrawString (CANVAS_WIDTH-(CANVAS_WIDTH*0.1), 400, "Swat");
+		Sbar_DrawString (x, y, "Swat");
+	//set canvas mode
+	GL_SetCanvas(CANVAS_DEFAULT);
 }
 
 void Sbar_DrawMedal ()
@@ -1329,9 +1297,7 @@ void Sbar_DrawInventory (void)
 				M_DrawTransPic ( (CANVAS_WIDTH-health_bar_outline_blue->width)/2, YPADDING, health_bar_outline_blue);
 			}
 		}
-		//if(cl.stats[STAT_HEALTH] <= 0)
-		//	  Sbar_DrawRespawn();
-		}
+	}
 }
 
 
@@ -1543,17 +1509,22 @@ void Sbar_Draw (void)
 
 	if (sb_showscores || cl.stats[STAT_HEALTH] <= 0)
 	{
-		Sbar_DrawPicAlpha (0, 0, sb_scorebar, scr_sbaralpha.value);
 		Sbar_DrawScoreboard ();
 		sb_updates = 0;
+		if (cl.stats[STAT_HEALTH] <= 0)
+		{
+			GL_SetCanvas(CANVAS_MENU_STRETCH);
+			Sbar_DrawRespawn();
+			GL_SetCanvas(CANVAS_SBAR);
+		}
 	}
 
 	GL_SetCanvas (CANVAS_DEFAULT);
 	//Sbar_DrawFace();
-	if (viewsize.value < 130)
+	if (viewsize.value < 130 && !sb_showscores && cl.stats[STAT_HEALTH] > 0)
     	{
 		Sbar_DrawInventory ();
-		// Sbar_MiniDeathmatchOverlay();
+		Sbar_MiniDeathmatchOverlay();
 	}
 }
 
@@ -1611,9 +1582,6 @@ void Sbar_DeathmatchOverlay (void)
 	scr_copyeverything = 1;
 	scr_fullupdate = 0;
 
-	pic = Draw_CachePic ("gfx/ranking.lmp");
-	M_DrawPic ((CANVAS_MENU_WIDTH-pic->width)/2, 8, pic);
-
 // scores
 	Sbar_SortFrags ();
 
@@ -1622,6 +1590,9 @@ void Sbar_DeathmatchOverlay (void)
 
 	x = 80;
 	y = 40;
+	Draw_Fill ( x+12, 28, 136, 10, 0);
+	M_PrintWhite (x+20, 29,"  LEADERBOARD");
+
 	for (i=0 ; i<l ; i++)
 	{
 		k = fragsort[i];
@@ -1629,16 +1600,14 @@ void Sbar_DeathmatchOverlay (void)
 		if (!s->name[0])
 			continue;
 
-	// draw background
-		top = s->colors & 0xf0;
+		// draw background
 		bottom = (s->colors & 15)<<4;
-		top = Sbar_ColorForMap (top);
 		bottom = Sbar_ColorForMap (bottom);
 
-		Draw_Fill ( x, y, 40, 4, top);
-		Draw_Fill ( x, y+4, 40, 4, bottom);
+		Draw_Fill ( x+12, y, 32, 8, 1); //score num bg
+		Draw_Fill ( x+52, y, 96, 8, bottom); //player name bg
 
-	// draw number
+		// draw number
 		f = s->frags;
 		sprintf (num, "%3i",f);
 
@@ -1668,7 +1637,7 @@ void Sbar_DeathmatchOverlay (void)
 #endif
 
 	// draw name
-		M_Print (x+64, y, s->name);
+		M_PrintWhite (x+64, y, s->name);
 
 		y += 10;
 	}
@@ -1684,40 +1653,43 @@ Sbar_DeathmatchOverlay
 */
 void Sbar_MiniDeathmatchOverlay (void)
 {
-//	qpic_t			*pic;
 	int				i, k, l;
-	int				top;
+	int				bottom;
 	int				x, y, f;
 	char			num[12];
 	scoreboard_t	*s;
 
 	scr_copyeverything = 1;
 	scr_fullupdate = 0;
-
-// scores
+	//set canvas mode
+	GL_SetCanvas(CANVAS_MENU_STRETCH);
+	// scores
 	Sbar_SortFrags ();
 
-// draw the text
+	// draw the text
 	l = scoreboardlines;
+	if (l > 2)
+	{
+		l = 2;
+	}
 
-	x = 100;
-	y = 100;
+	x = 400;
+	y = 250;
 
-	Sbar_DrawRespawn();
-	for (i=0 ; i<l ; i++)
+	for (i=0 ; i<l ; i++) //only show two lines
 	{
 		k = fragsort[i];
 		s = &cl.scores[k];
 		if (!s->name[0])
 			continue;
 
-	// draw background
-		top = s->colors & 0xf0;
-		top = Sbar_ColorForMap (top);
+		// draw background
+		bottom = (s->colors & 15) <<4;
+		bottom = Sbar_ColorForMap (bottom);
 
-		Draw_Fill ( x, y, 70, 10, top);
+		Draw_Fill ( x, y, 70, 10, bottom);
 
-	// draw number
+	   // draw number
 		f = s->frags;
 		sprintf (num, "%3i",f);
 
@@ -1732,6 +1704,8 @@ void Sbar_MiniDeathmatchOverlay (void)
 
 		y += 16;
 	}
+	//set canvas mode
+	GL_SetCanvas(CANVAS_DEFAULT);
 }
 
 /*
