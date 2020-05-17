@@ -374,7 +374,7 @@ void M_ToggleMenu_f (void)
 /* MAIN MENU */
 
 int	m_main_cursor;
-#define	MAIN_ITEMS	4
+#define	MAIN_ITEMS	5
 
 
 void M_Menu_Main_f (void)
@@ -409,23 +409,14 @@ void M_Main_Draw (void)
 	M_PrintWhite(x_offset, y_offset+32, "Matchmaking");
 	M_PrintWhite(x_offset, y_offset+52, "Firefight");
 	M_PrintWhite(x_offset, y_offset+72, "Options");
-	M_PrintWhite(x_offset, y_offset+92, "Quit");
+	M_PrintWhite(x_offset, y_offset+92, "Spartan");
+	M_PrintWhite(x_offset, y_offset+112, "Quit");
 }
 
 void M_Main_Key (int key)
 {
 	switch (key)
 	{
-	case K_ENTER:
-	case K_START:
-	case K_TRIANGLE:
-		key_dest = key_game;
-		m_state = m_none;
-		cls.demonum = m_save_demonum;
-		if (cls.demonum != -1 && !cls.demoplayback && cls.state != ca_connected)
-			CL_NextDemo ();
-		break;
-
 	case K_DOWNARROW:
 		S_LocalSound ("misc/menuoption.wav");
 		if (++m_main_cursor >= MAIN_ITEMS)
@@ -455,6 +446,10 @@ void M_Main_Key (int key)
 			break;
 
 		case 3:
+			M_Menu_Setup_f ();
+			break;
+
+		case 4:
 			M_Menu_Quit_f ();
 			break;
 		}
@@ -840,8 +835,8 @@ void M_Benchmark_Key (int key)
 //=============================================================================
 /* SETUP MENU */
 
-int		setup_cursor = 4;
-int		setup_cursor_table[] = {40, 56, 80, 104, 140};
+int		setup_cursor = 40;
+int		setup_cursor_table[] = {40, 56, 80, 124};
 
 char	setup_hostname[16];
 char	setup_myname[16];
@@ -850,7 +845,7 @@ int		setup_oldbottom;
 int		setup_top;
 int		setup_bottom;
 
-#define	NUM_SETUP_CMDS	5
+#define	NUM_SETUP_CMDS	4
 
 void M_Menu_Setup_f (void)
 {
@@ -867,40 +862,40 @@ void M_Menu_Setup_f (void)
 void M_Setup_Draw (void)
 {
 	qpic_t	*p;
+	int xoff = 60;
+	int yoff = 70;
 
-	M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
-	p = Draw_CachePic ("gfx/p_multi.lmp");
-	M_DrawPic ( (320-p->width)/2, 4, p);
+	M_DrawTransPic (16, yoff+4, Draw_CachePic ("gfx/qplaque.lmp") );
+	//p = Draw_CachePic ("gfx/p_multi.lmp");
+	//M_DrawPic ( (320-p->width)/2, 4, p);
 
-	M_Print (64, 40, "Hostname");
-	M_DrawTextBox (160, 32, 16, 1);
-	M_Print (168, 40, setup_hostname);
+	M_Print (xoff+64, yoff+40, "Hostname");
+	M_DrawTextBox (xoff+176, yoff+32, 16, 1);
+	M_PrintWhite (xoff+184, yoff+40, setup_hostname);
 
-	M_Print (64, 56, "Your name");
-	M_DrawTextBox (160, 48, 16, 1);
-	M_Print (168, 56, setup_myname);
+	M_Print (xoff+64, yoff+56, "Spartan name");
+	M_DrawTextBox (xoff+176, yoff+48, 16, 1);
+	M_PrintWhite (xoff+184, yoff+56, setup_myname);
 
-	M_Print (64, 80, "Shirt color");
-    M_DrawColorBar (64, 88, setup_top);
-    M_Print (64, 104, "Pants color");
-    M_DrawColorBar (64, 112, setup_bottom);
+    M_Print (xoff+64, yoff+80, "Spartan color");
+    M_DrawColorBar (xoff+64, yoff+88, setup_bottom);
 
-	M_DrawTextBox (64, 140-8, 14, 1);
-	M_Print (72, 140, "Accept Changes");
+	M_PrintWhite (xoff+64, yoff+124, "Accept");
 
-	p = Draw_CachePic ("gfx/bigbox.lmp");
-	M_DrawTransPic (176, 64, p);
-	p = Draw_CachePic ("gfx/menuplyr.lmp");
-	M_BuildTranslationTable(setup_top*16, setup_bottom*16);
-	M_DrawTransPicTranslate (188, 72, p);
+	//p = Draw_CachePic ("gfx/bigbox.lmp");
+	//M_DrawTransPic (xoff+176, yoff+64, p);
+	
+	// p = Draw_CachePic ("gfx/spartanmenu.lmp");
+	//M_BuildTranslationTable(setup_top*16, setup_bottom*16);
+	//M_DrawTransPicTranslate (xoff+176, yoff+72, p);
 
-	M_DrawCharacter (56, setup_cursor_table [setup_cursor], 12+((int)(realtime*4)&1));
+	M_DrawCharacter (xoff+56, yoff+setup_cursor_table [setup_cursor], 12+((int)(realtime*4)&1));
 
 	if (setup_cursor == 0)
-		M_DrawCharacter (168 + 8*strlen(setup_hostname), setup_cursor_table [setup_cursor], 10+((int)(realtime*4)&1));
+		M_DrawCharacter (xoff+184 + 8*strlen(setup_hostname), yoff+setup_cursor_table [setup_cursor], 10+((int)(realtime*4)&1));
 
 	if (setup_cursor == 1)
-		M_DrawCharacter (168 + 8*strlen(setup_myname), setup_cursor_table [setup_cursor], 10+((int)(realtime*4)&1));
+		M_DrawCharacter (xoff+184 + 8*strlen(setup_myname), yoff+setup_cursor_table [setup_cursor], 10+((int)(realtime*4)&1));
 }
 
 
@@ -913,7 +908,7 @@ void M_Setup_Key (int k)
 	case K_ENTER:
 	case K_START:
 	case K_TRIANGLE:
-		M_Menu_MultiPlayer_f ();
+		M_Menu_Main_f ();
 		break;
 
 	case K_UPARROW:
@@ -935,8 +930,6 @@ void M_Setup_Key (int k)
 			return;
 		S_LocalSound ("misc/menuoption.wav");
 		if (setup_cursor == 2)
-			setup_top = setup_top - 1;
-		if (setup_cursor == 3)
 			setup_bottom = setup_bottom - 1;
 		break;
 	case K_RIGHTARROW:
@@ -945,19 +938,14 @@ void M_Setup_Key (int k)
 forward:
 		S_LocalSound ("misc/menuoption.wav");
 		if (setup_cursor == 2)
-			setup_top = setup_top + 1;
-		if (setup_cursor == 3)
 			setup_bottom = setup_bottom + 1;
 		break;
 
 	case K_CROSS: // Cross
-		if (setup_cursor == 0 || setup_cursor == 1)
+		if (setup_cursor == 0 || setup_cursor == 1 || setup_cursor == 2)
 			return;
 
-		if (setup_cursor == 2 || setup_cursor == 3)
-			goto forward;
-
-		// setup_cursor == 4 (OK)
+		// setup_cursor == 3 (OK)
 		if (strcmp(cl_name.string, setup_myname) != 0)
 			Cbuf_AddText ( va ("name \"%s\"\n", setup_myname) );
 		if (strcmp(hostname.string, setup_hostname) != 0)
@@ -965,7 +953,7 @@ forward:
 		if (setup_top != setup_oldtop || setup_bottom != setup_oldbottom)
 			Cbuf_AddText( va ("color %i %i\n", setup_top, setup_bottom) );
 		m_entersound = true;
-		M_Menu_MultiPlayer_f ();
+		M_Menu_Main_f ();
 		break;
 
 	case K_BACKSPACE:
@@ -2817,7 +2805,7 @@ void M_Matchmaking_Draw (void)
 	if (fraglimit.value == 0)
 		M_PrintWhite (xmenustart+60, 208-chg, "none");
 	else if (fraglimit.value < 1000)
-		M_PrintWhite (xmenustart+60, 208-chg, va("%i frags", (int)fraglimit.value));
+		M_PrintWhite (xmenustart+60, 208-chg, va("%i", (int)fraglimit.value));
 	else
 		M_PrintWhite (xmenustart+60, 208-chg, "Rounds");
 	//========================
