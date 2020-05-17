@@ -865,29 +865,31 @@ void M_Setup_Draw (void)
 	int xoff = 60;
 	int yoff = 70;
 
+	int bgwidth = (320*MENU_SCALE)*0.66;
+	int bgheight = (200*MENU_SCALE)*0.5;
+	int tbcolor = BG_COLOR-3;
+
 	M_DrawTransPic (16, yoff+4, Draw_CachePic ("gfx/qplaque.lmp") );
-	//p = Draw_CachePic ("gfx/p_multi.lmp");
-	//M_DrawPic ( (320-p->width)/2, 4, p);
+
+	Draw_Fill ((320*MENU_SCALE-(bgwidth+8))/2, -4+(200*MENU_SCALE-(bgheight+18))/2, bgwidth+8, bgheight+16, BG_BORDER);
+	Draw_Fill ((320*MENU_SCALE-bgwidth)/2, (200*MENU_SCALE-bgheight)/2, bgwidth, bgheight, BG_COLOR);
+
+	M_PrintWhite(2+(320*MENU_SCALE-(bgwidth+8))/2, -3+(200*MENU_SCALE-(bgheight+16))/2, "Spartan Personalization");
 
 	M_Print (xoff+64, yoff+40, "Hostname");
-	M_DrawTextBox (xoff+176, yoff+32, 16, 1);
+	//M_DrawTextBox (xoff+176, yoff+32, 16, 1);
+	Draw_Fill(xoff+176,yoff+38, 16*8, 12, tbcolor);
 	M_PrintWhite (xoff+184, yoff+40, setup_hostname);
 
 	M_Print (xoff+64, yoff+56, "Spartan name");
-	M_DrawTextBox (xoff+176, yoff+48, 16, 1);
+	//M_DrawTextBox (xoff+176, yoff+48, 16, 1);
+	Draw_Fill(xoff+176,yoff+54, 16*8, 12, tbcolor);
 	M_PrintWhite (xoff+184, yoff+56, setup_myname);
 
     M_Print (xoff+64, yoff+80, "Spartan color");
     M_DrawColorBar (xoff+64, yoff+88, setup_bottom);
 
 	M_PrintWhite (xoff+64, yoff+124, "Accept");
-
-	//p = Draw_CachePic ("gfx/bigbox.lmp");
-	//M_DrawTransPic (xoff+176, yoff+64, p);
-	
-	// p = Draw_CachePic ("gfx/spartanmenu.lmp");
-	//M_BuildTranslationTable(setup_top*16, setup_bottom*16);
-	//M_DrawTransPicTranslate (xoff+176, yoff+72, p);
 
 	M_DrawCharacter (xoff+56, yoff+setup_cursor_table [setup_cursor], 12+((int)(realtime*4)&1));
 
@@ -3011,7 +3013,8 @@ void M_Matchmaking_Key (int key)
 			S_LocalSound ("misc/menuback.wav");
 			SCR_BeginLoadingPlaque ();
 			Cbuf_AddText ("listen 0\n");	// so host_netport will be re-examined
-			Cbuf_AddText ( va ("maxplayers %u\n", maxplayers) );
+			Cbuf_AddText ("chase_active 0\n");
+			Cbuf_AddText ( va ("maxplayers %u\n", 8) );
 			Cbuf_AddText ( va ("deathmatch %u\n", (int)deathmatch.value) );
 			Cbuf_AddText ( va ("map %s\n", levels[episodes[startepisode].firstLevel + startlevel].name) );
 
@@ -3160,7 +3163,8 @@ void M_Firefight_Key (int key)
 			S_LocalSound ("misc/menuback.wav");
 			SCR_BeginLoadingPlaque (); //#TODO: fix this not working..
 			Cbuf_AddText ("listen 0\n");	// so host_netport will be re-examined
-			Cbuf_AddText ( va ("maxplayers %u\n", maxplayers) );
+			Cbuf_AddText ("chase_active 0\n");
+			Cbuf_AddText ( va ("maxplayers %u\n", 1) );
 			Cbuf_AddText ( va ("deathmatch %u\n", (int)deathmatch.value) );
 			Cbuf_AddText ( va ("map %s\n", levels[episodes_ff[startepisode].firstLevel + startlevel].name) );
 

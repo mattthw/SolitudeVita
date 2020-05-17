@@ -196,8 +196,8 @@ void	Host_FindMaxClients (void)
 		svs.maxclients = MAX_SCOREBOARD;
 
 	svs.maxclientslimit = svs.maxclients;
-	if (svs.maxclientslimit < 4)
-		svs.maxclientslimit = 4;
+	if (svs.maxclientslimit <= 4)
+		svs.maxclientslimit = 8; //max clients to 8
 	svs.clients = (client_t*)Hunk_AllocName(svs.maxclientslimit * sizeof(client_t), "clients");
 
 	Cvar_SetValue ("deathmatch", svs.maxclients > 1 ? 1.0 : 0.0);
