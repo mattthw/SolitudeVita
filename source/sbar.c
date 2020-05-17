@@ -1021,32 +1021,41 @@ void Sbar_DrawNade (void)
 	}
 }
 
-void Sbar_DrawFirefight (void)
-{
 /*
 =============================================
-Firefight Rounds
+Firefight Rounds & Lives
 ===================================================
 */
+void Sbar_DrawFirefight (void)
+{
+
+	int canwidth = 320*MENU_SCALE;
+	int canheight = 200*MENU_SCALE;
+	int x = canwidth-(canwidth*0.15);
+	int y = canheight - (canheight*0.3);
+	//set canvas mode
+	GL_SetCanvas(CANVAS_MENU_STRETCH);
+
 	char up[35];
 	int round;
 	round = (int)cl_round.value;
+	//lives
 	if ((int)deathmatch.value == 2)
 	{
-		sprintf (up,"ROUND [%d]", round);
-		Sbar_DrawString (CANVAS_WIDTH-(CANVAS_WIDTH*0.1), 430, up);
+		sprintf (up,"Round %d", round);
+		Sbar_DrawString (x-8, y+20, up);
 	}
-/*
-=============================================
-Firefight Lives
-===================================================
-*/
+	//rounds
 	round = (int)cl_life.value;
 	if ((int)deathmatch.value == 2)
 	{
-		sprintf (up,"LIVES: %d", round);
-		Sbar_DrawString (CANVAS_WIDTH-(CANVAS_WIDTH*0.1), 450, up);
+		sprintf (up,"%d Lives", round);
+		Sbar_DrawString (x-8, y+36, up);
 	}
+
+	//set canvas mode
+	GL_SetCanvas(CANVAS_DEFAULT);
+
 }
 
 void Sbar_DrawRespawn (void)
@@ -1059,7 +1068,7 @@ void Sbar_DrawRespawn (void)
 	int canwidth = 320*MENU_SCALE;
 	int canheight = 200*MENU_SCALE;
 	int x = canwidth/2 - len/2;
-	int y = canheight - (canheight*0.4);
+	int y = canheight - (canheight*0.2);
 
 	Sbar_DrawString (x, y, respawnstr);
 }
@@ -1076,7 +1085,7 @@ void Sbar_DrawGametype (void)
 	if (deathmatch.value == 1)
 		Sbar_DrawString (x, y, "Slayer");
 	if (deathmatch.value == 2)
-		Sbar_DrawString (x, y, "Firefight");
+		Sbar_DrawString (x-16, y, "Firefight");
 	if (deathmatch.value == 3)
 		Sbar_DrawString (x, y, "Swat");
 	//set canvas mode
@@ -1526,7 +1535,10 @@ void Sbar_Draw (void)
 	if (viewsize.value < 130 && !sb_showscores && cl.stats[STAT_HEALTH] > 0)
     	{
 		Sbar_DrawInventory ();
-		Sbar_MiniDeathmatchOverlay();
+		if (cl.gametype != 2)
+		{
+			Sbar_MiniDeathmatchOverlay();
+		}
 	}
 }
 
@@ -1592,8 +1604,8 @@ void Sbar_DeathmatchOverlay (void)
 
 	x = 80;
 	y = 40;
-	Draw_Fill ( x+12, 28, 136, 10, 0);
-	M_PrintWhite (x+20, 29,"  LEADERBOARD");
+	Draw_Fill ( x+12, 26, 136, 10, 0);
+	M_PrintWhite (x+20, 27,"  LEADERBOARD");
 
 	for (i=0 ; i<l ; i++)
 	{
@@ -1606,8 +1618,8 @@ void Sbar_DeathmatchOverlay (void)
 		bottom = (s->colors & 15)<<4;
 		bottom = Sbar_ColorForMap (bottom);
 
-		Draw_Fill ( x+12, y, 32, 8, 1); //score num bg
-		Draw_Fill ( x+52, y, 96, 8, bottom); //player name bg
+		Draw_Fill ( x+12, y, 32, 12, 1); //score num bg
+		Draw_Fill ( x+50, y, 98, 12, bottom); //player name bg
 
 		// draw number
 		f = s->frags;
@@ -1618,7 +1630,7 @@ void Sbar_DeathmatchOverlay (void)
 		Draw_Character ( x+24 , y, num[2]);
 
 		if (k == cl.viewentity - 1)
-			Draw_Character ( x - 8, y, 12);
+			Draw_Character ( x - 8, y, 12); //triangle by name if it is me
 
 #if 0
 {
@@ -1638,10 +1650,10 @@ void Sbar_DeathmatchOverlay (void)
 }
 #endif
 
-	// draw name
-		M_PrintWhite (x+64, y, s->name);
+		// draw name
+		M_PrintWhite (x+52, y+2, s->name);
 
-		y += 10;
+		y += 16;
 	}
 	
 	GL_SetCanvas (CANVAS_SBAR); //johnfitz
