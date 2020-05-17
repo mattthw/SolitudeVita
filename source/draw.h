@@ -25,6 +25,8 @@ extern	qpic_t		*draw_disc;	// also used on sbar
 
 void Draw_Init (void);
 void Draw_Character (int x, int y, int num);
+void Draw_Window(float x, float y, float width, float height, char *str);
+void Draw_CenterWindow(float width, float height, char *str);
 void Draw_DebugChar (signed char num);
 void Draw_Pic (int x, int y, qpic_t *pic);
 void Draw_AlphaPic (int x, int y, qpic_t *pic, float alpha);
