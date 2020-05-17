@@ -3153,8 +3153,9 @@ void M_Firefight_Key (int key)
 		{
 			if (sv.active)
 				Cbuf_AddText ("disconnect\n");
-			S_LocalSound ("misc/menuback.wav");
-			SCR_BeginLoadingPlaque (); //#TODO: fix this not working..
+			SCR_BeginLoadingPlaque (); //#TODO: fix loading screen not working.
+			Cbuf_AddText ("timelimit 60\n");
+			Cbuf_AddText ("fraglimit 9999\n");
 			Cbuf_AddText ("listen 0\n");	// so host_netport will be re-examined
 			Cbuf_AddText ("chase_active 0\n");
 			Cbuf_AddText ( va ("maxplayers %u\n", 1) );
