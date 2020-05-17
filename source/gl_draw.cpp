@@ -903,6 +903,32 @@ void Draw_Character (int x, int y, int num)
 	
 }
 
+void D_PrintWhite (int cx, int cy, char *str)
+{
+	while (*str)
+	{
+		Draw_Character (cx, cy, *str);
+		str++;
+		cx += 8;
+	}
+}
+
+void Draw_Window(float x, float y, float width, float height, char *str)
+{
+	int bgwidth = (320*MENU_SCALE)*width;
+	int bgheight = (200*MENU_SCALE)*height;
+
+	Draw_Fill (x+(320*MENU_SCALE-(bgwidth+8))/2, y+-4+(200*MENU_SCALE-(bgheight+18))/2, bgwidth+8, bgheight+16, BG_BORDER);
+	Draw_Fill (x+(320*MENU_SCALE-bgwidth)/2, y+(200*MENU_SCALE-bgheight)/2, bgwidth, bgheight, BG_COLOR);
+
+	D_PrintWhite(x+2+(320*MENU_SCALE-(bgwidth+8))/2, y+-3+(200*MENU_SCALE-(bgheight+16))/2, str);
+}
+
+void Draw_CenterWindow(float width, float height, char *str)
+{
+	Draw_Window(0, 0, width, height, str);
+}
+
 /*
 ================
 Draw_String
