@@ -928,10 +928,15 @@ void Draw_BorderedWindow(int x, int y, float width, float height, char *str)
 
 void Draw_WindowIns(int x, int y, float width, float height)
 {
+	Draw_WindowInsCol(x, y, width, height, BG_COLOR);
+}
+
+void Draw_WindowInsCol(int x, int y, float width, float height, int color)
+{
 	int bgwidth = (320*MENU_SCALE)*width;
 	int bgheight = (200*MENU_SCALE)*height;
 
-	Draw_Fill (x, y, bgwidth, bgheight, BG_COLOR);
+	Draw_Fill (x, y, bgwidth, bgheight, color);
 }
 
 void Draw_OffCenterWindow(int x, int y, float width, float height, char *str)
