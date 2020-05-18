@@ -388,28 +388,24 @@ void M_Menu_Main_f (void)
 	m_entersound = true;
 }
 
-
 void M_Main_Draw (void)
 {
-	int		f;
-	qpic_t	*p, *bg, *bar;
-	int y_offset = 170;
-	int y_cursor_offset = 32;
+	float height = 0.35;
+	float width = 0.3;
+	int y_offset = (200*MENU_SCALE)-((200*MENU_SCALE)*(height));
 	int x_offset = 30;
 	int x_text_offset = 15;
 
 	//background
-	bg = Draw_CachePic ("gfx/MENU/menuback.lmp");
-	M_DrawTransPic(x_offset-16,y_offset+22, bg);
-	bar = Draw_CachePic ("gfx/MENU/menubar.lmp");
+	Draw_WindowIns(x_offset, -11+y_offset, width, height+0.05);
 	//cursor
-	M_DrawTransPic (x_offset-16, y_offset+y_cursor_offset+(m_main_cursor*20)-3,bar);
+	Draw_Fill(x_offset, -3+y_offset+(m_main_cursor*20), (320*MENU_SCALE)*width, 15, 108);
 	//menu items
-	M_PrintWhite(x_offset, y_offset+32, "Matchmaking");
-	M_PrintWhite(x_offset, y_offset+52, "Firefight");
-	M_PrintWhite(x_offset, y_offset+72, "Options");
-	M_PrintWhite(x_offset, y_offset+92, "Spartan");
-	M_PrintWhite(x_offset, y_offset+112, "Quit");
+	M_PrintWhite(x_offset+x_text_offset, y_offset, "Matchmaking");
+	M_PrintWhite(x_offset+x_text_offset, y_offset+20, "Firefight");
+	M_PrintWhite(x_offset+x_text_offset, y_offset+40, "Options");
+	M_PrintWhite(x_offset+x_text_offset, y_offset+60, "Spartan");
+	M_PrintWhite(x_offset+x_text_offset, y_offset+80, "Quit");
 }
 
 void M_Main_Key (int key)
@@ -707,7 +703,7 @@ void M_Save_Key (int k)
 /* MULTIPLAYER MENU */
 
 int	m_multiplayer_cursor = 1;
-#define	MULTIPLAYER_ITEMS	3
+#define	MULTIPLAYER_ITEMS	2
 
 
 void M_Menu_MultiPlayer_f (void)
@@ -736,7 +732,7 @@ void M_MultiPlayer_Draw (void)
 	//menu items
 	M_Print(x_offset+x_text_offset, y_offset+32, "Join Game");
 	M_Print(x_offset+x_text_offset, y_offset+52, "Start Game");
-	M_Print(x_offset+x_text_offset, y_offset+72, "Edit Spartan");
+	//M_Print(x_offset+x_text_offset, y_offset+72, "Edit Spartan");
 	//cursor
 	f = (int)(host_time * 10)%6;
 	M_DrawTransPic (x_offset, y_offset+y_cursor_offset+(m_multiplayer_cursor*20), Draw_CachePic(va("gfx/menudot%i.lmp", f+1)));
@@ -754,7 +750,7 @@ void M_MultiPlayer_Key (int key)
 	case K_ENTER:
 	case K_START:
 	case K_TRIANGLE:
-		M_Menu_Main_f ();
+		M_Matchmaking_f ();
 		break;
 
 	case K_DOWNARROW:
@@ -2192,7 +2188,7 @@ void M_Quit_Draw (void)
 	int xoff = 80;
 	int yoff = 20;
 
-	Draw_Window(0, -20, 0.5, 0.2, "Quit");
+	Draw_OffCenterWindow(0, -20, 0.5, 0.2, "Quit");
 	M_Print (xoff+64, yoff+84,  quitMessage[msgNumber*4+0]);
 	M_Print (xoff+64, yoff+92,  quitMessage[msgNumber*4+1]);
 	M_Print (xoff+64, yoff+100, quitMessage[msgNumber*4+2]);
@@ -2592,7 +2588,7 @@ void M_Pause_Draw (void)
 	
 
 	//background
-	Draw_Window(0, -10, 0.4, 0.3, "Pause");
+	Draw_OffCenterWindow(0, -10, 0.4, 0.3, "Pause");
 	//cursor
 	Draw_Fill((320*MENU_SCALE-cursorwidth)/2, y_offset+y_cursor_offset+(pause_cursor*20)-3, cursorwidth, 15, 108);
 	//menu items
@@ -2670,7 +2666,7 @@ void M_Matchmaking_f (void)
 	Cvar_SetValue ("skill", 0);
 	Cvar_SetValue ("deathmatch", 1);
 	startepisode = 0;
-	startlevel = 0;
+	startlevel = rand() % episodes[startepisode].levels;
 }
 
 
@@ -2919,6 +2915,10 @@ void M_Matchmaking_Key (int key)
 	case K_START:
 	case K_TRIANGLE:
 		M_Menu_Main_f ();
+		break;
+
+	case K_SELECT:
+		M_Menu_MultiPlayer_f ();
 		break;
 
 	case K_UPARROW:

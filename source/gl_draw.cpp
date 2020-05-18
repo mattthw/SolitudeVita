@@ -913,7 +913,28 @@ void D_PrintWhite (int cx, int cy, char *str)
 	}
 }
 
-void Draw_Window(float x, float y, float width, float height, char *str)
+void Draw_BorderedWindow(int x, int y, float width, float height, char *str)
+{
+	int bgwidth = (320*MENU_SCALE)*width;
+	int bgheight = (200*MENU_SCALE)*height;
+	int xpad = 8;
+	int ypad = 16;
+
+	Draw_Fill (x-xpad/2, y-(ypad-2), bgwidth+xpad, bgheight+ypad, BG_BORDER);
+	Draw_Fill (x, y, bgwidth, bgheight, BG_COLOR);
+
+	D_PrintWhite(x+2+(320*MENU_SCALE-(bgwidth+8))/2, y+-3+(200*MENU_SCALE-(bgheight+16))/2, str);
+}
+
+void Draw_WindowIns(int x, int y, float width, float height)
+{
+	int bgwidth = (320*MENU_SCALE)*width;
+	int bgheight = (200*MENU_SCALE)*height;
+
+	Draw_Fill (x, y, bgwidth, bgheight, BG_COLOR);
+}
+
+void Draw_OffCenterWindow(int x, int y, float width, float height, char *str)
 {
 	int bgwidth = (320*MENU_SCALE)*width;
 	int bgheight = (200*MENU_SCALE)*height;
@@ -926,7 +947,7 @@ void Draw_Window(float x, float y, float width, float height, char *str)
 
 void Draw_CenterWindow(float width, float height, char *str)
 {
-	Draw_Window(0, 0, width, height, str);
+	Draw_OffCenterWindow(0, 0, width, height, str);
 }
 
 /*
