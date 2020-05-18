@@ -455,6 +455,8 @@ typedef struct ModsList{
 #define CANVAS_MENU_STRETCH   6
 #define MENU_SCALE 1.5
 #define BG_COLOR 220
+#define YELLOW 107
+#define GREY 4
 #define BG_BORDER 1
 
 extern void Log(const char *format, ...);

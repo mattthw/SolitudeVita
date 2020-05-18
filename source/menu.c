@@ -128,6 +128,7 @@ int			m_return_state;
 bool	m_return_onerror;
 char		m_return_reason [32];
 
+int	m_multiplayer_cursor = 1;
 #define StartingGame	(m_multiplayer_cursor == 1)
 #define JoiningGame		(m_multiplayer_cursor == 0)
 #define SerialConfig	(m_net_cursor == 0)
@@ -374,7 +375,11 @@ void M_ToggleMenu_f (void)
 /* MAIN MENU */
 
 int	m_main_cursor;
+int m_main_multi_cursor;
+bool main_multi = false;
+
 #define	MAIN_ITEMS	5
+#define MAIN_MULTI_ITEMS 2
 
 
 void M_Menu_Main_f (void)
@@ -387,6 +392,24 @@ void M_Menu_Main_f (void)
 	key_dest = key_menu;
 	m_state = m_main;
 	m_entersound = true;
+	main_multi = false;
+}
+
+void M_Main_Multi_Draw (void)
+{
+	float height = 0.165;
+	float width = 0.17;
+	int y_offset = (200*MENU_SCALE)-((200*MENU_SCALE)*(0.35));
+	int x_offset = 30+((300*MENU_SCALE)*0.3) + 9; //idk why I need to offset by 9 to prevent overlap. I am forgetting something?
+	int x_text_offset = 15;
+
+	//background
+	Draw_WindowInsCol(x_offset, -11+y_offset, width, height, GREY);
+	//cursor
+	Draw_Fill(x_offset, -3+y_offset+(m_main_multi_cursor*20), (320*MENU_SCALE)*width, 15, YELLOW);
+	//menu items
+	M_PrintWhite(x_offset+x_text_offset, y_offset, "Create");
+	M_PrintWhite(x_offset+x_text_offset, y_offset+20, "Join");
 }
 
 void M_Main_Draw (void)
@@ -396,58 +419,99 @@ void M_Main_Draw (void)
 	int y_offset = (200*MENU_SCALE)-((200*MENU_SCALE)*(height));
 	int x_offset = 30;
 	int x_text_offset = 15;
+	int cursor_color = main_multi ? GREY : YELLOW;
 
 	//background
 	Draw_WindowIns(x_offset, -11+y_offset, width, height+0.05);
 	//cursor
-	Draw_Fill(x_offset, -3+y_offset+(m_main_cursor*20), (320*MENU_SCALE)*width, 15, 108);
+	Draw_Fill(x_offset, -3+y_offset+(m_main_cursor*20), (320*MENU_SCALE)*width, 15, cursor_color);
 	//menu items
 	M_PrintWhite(x_offset+x_text_offset, y_offset, "Matchmaking");
 	M_PrintWhite(x_offset+x_text_offset, y_offset+20, "Firefight");
 	M_PrintWhite(x_offset+x_text_offset, y_offset+40, "Options");
 	M_PrintWhite(x_offset+x_text_offset, y_offset+60, "Spartan");
 	M_PrintWhite(x_offset+x_text_offset, y_offset+80, "Quit");
+
+	if (main_multi)
+		M_Main_Multi_Draw ();
 }
 
 void M_Main_Key (int key)
 {
 	switch (key)
 	{
+	case K_TRIANGLE:
+		if (main_multi == true)
+			main_multi = false;
+		break;
 	case K_DOWNARROW:
 		S_LocalSound ("misc/menuoption.wav");
-		if (++m_main_cursor >= MAIN_ITEMS)
-			m_main_cursor = 0;
+		if (main_multi)
+		{
+			if (++m_main_multi_cursor >= MAIN_MULTI_ITEMS)
+				m_main_multi_cursor = 0;
+		}
+		else
+		{
+			if (++m_main_cursor >= MAIN_ITEMS)
+				m_main_cursor = 0;
+		}
+		
 		break;
 
 	case K_UPARROW:
 		S_LocalSound ("misc/menuoption.wav");
-		if (--m_main_cursor < 0)
-			m_main_cursor = MAIN_ITEMS - 1;
+		if (main_multi)
+		{
+			if (--m_main_multi_cursor < 0)
+				m_main_multi_cursor = MAIN_MULTI_ITEMS - 1;
+		}
+		else
+		{
+			if (--m_main_cursor < 0)
+				m_main_cursor = MAIN_ITEMS - 1;
+		}
 		break;
 
 	case K_CROSS:
 		m_entersound = true;
 
-		switch (m_main_cursor)
+		if (main_multi)
 		{
-		case 0:			
-			M_Matchmaking_f ();
-			break;
-		case 1:
-			M_Menu_Firefight_f ();
-			break;
+			switch (m_main_multi_cursor)
+			{
+			case 0:
+				M_Matchmaking_f ();
+				break;
+			case 1:
+				m_multiplayer_cursor = 0;
+				M_Menu_Net_f ();
+				break;
+			}
+		}
+		else
+		{
+			switch (m_main_cursor)
+			{
+			case 0:	
+				main_multi = true;
+				break;
+			case 1:
+				M_Menu_Firefight_f ();
+				break;
 
-		case 2:
-			M_Menu_Options_f ();
-			break;
+			case 2:
+				M_Menu_Options_f ();
+				break;
 
-		case 3:
-			M_Menu_Setup_f ();
-			break;
+			case 3:
+				M_Menu_Setup_f ();
+				break;
 
-		case 4:
-			M_Menu_Quit_f ();
-			break;
+			case 4:
+				M_Menu_Quit_f ();
+				break;
+			}
 		}
 	}
 }
@@ -703,7 +767,6 @@ void M_Save_Key (int k)
 //=============================================================================
 /* MULTIPLAYER MENU */
 
-int	m_multiplayer_cursor = 1;
 #define	MULTIPLAYER_ITEMS	2
 
 
@@ -2303,7 +2366,14 @@ void M_LanConfig_Key (int key)
 	case K_ENTER:
 	case K_START:
 	case K_TRIANGLE:
-		M_Menu_MultiPlayer_f ();
+		if (m_multiplayer_cursor == 0)
+		{
+			M_Menu_Main_f ();
+		}
+		else
+		{
+			M_Matchmaking_f ();
+		}
 		break;
 
 	case K_UPARROW:
