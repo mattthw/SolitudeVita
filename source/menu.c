@@ -396,7 +396,7 @@ void M_Menu_Main_f (void)
 
 void M_Main_Multi_Draw (void)
 {
-	float height = 0.165;
+	float height = 0.17;
 	float width = 0.17;
 	int y_offset = (200*MENU_SCALE)-((200*MENU_SCALE)*(0.35));
 	int x_offset = 30+((300*MENU_SCALE)*0.3) + 9; //idk why I need to offset by 9 to prevent overlap. I am forgetting something?
@@ -473,7 +473,14 @@ void M_Main_Key (int key)
 		break;
 
 	case K_CROSS:
-		m_entersound = true;
+		if (m_main_cursor != 0) //submenu
+		{
+			S_LocalSound ("misc/menuoption.wav");
+		}
+		else
+		{
+			m_entersound = true;
+		}
 
 		if (main_multi)
 		{
@@ -2741,7 +2748,7 @@ void M_Matchmaking_f (void)
 
 
 int gameoptions_cursor_table[] = {40, 56, 64, 72, 80, 88, 96, 112, 120};
-#define	NUM_GAMEOPTIONS	6
+#define	NUM_GAMEOPTIONS	7
 int		gameoptions_cursor;
 
 
@@ -2776,16 +2783,21 @@ void M_Matchmaking_Draw (void)
 	//cursor
 	M_DrawTransPic (xmenustart-16, 166-chg+(gameoptions_cursor*20),bar);
 
+	M_PrintWhite (xmenustart, 138-chg, "MATCHMAKING");
 
-	//M_DrawTextBox (-8, 160, 10, 1);
+
 	//========================
 	//  OPT1: Start game
 	//=======================
-	M_Print (xmenustart, 168-chg, "Start Game");
+		//force update protocol char[]
+		if (proto_idx == 0) sprintf(protocol, "TCP/IP");
+		else sprintf(protocol, "AdHoc");
+	M_PrintWhite (xmenustart+60, 168-chg, protocol);
+	M_Print (xmenustart, 168-chg, "NETWORK");
 	//========================
 	//  OPT1: game type
 	//=======================
-	M_Print (xmenustart, 188-chg, "Mode");
+	M_Print (xmenustart, 188-chg, "GAME");
 	switch((int)deathmatch.value)
 	{
 		case 0:
@@ -2814,7 +2826,7 @@ void M_Matchmaking_Draw (void)
 	//========================
 	//  OPT1: game settings (kills)
 	//=======================
-	M_Print (xmenustart, 208-chg, "Kills");
+	M_Print (xmenustart, 208-chg, "KILLS");
 	if (fraglimit.value == 0)
 		M_PrintWhite (xmenustart+60, 208-chg, "none");
 	else if (fraglimit.value < 1000)
@@ -2824,7 +2836,7 @@ void M_Matchmaking_Draw (void)
 	//========================
 	//  OPT1: time limit
 	//=======================
-	M_Print (xmenustart, 228-chg, "Time");
+	M_Print (xmenustart, 228-chg, "TIME");
 	if (timelimit.value == 0)
 		M_PrintWhite (xmenustart+60, 228-chg, "none");
 	else
@@ -2833,7 +2845,7 @@ void M_Matchmaking_Draw (void)
 	//========================
 	//  OPT1: difficulty
 	//=======================
-	M_Print (xmenustart, 248-chg, "Skill");
+	M_Print (xmenustart, 248-chg, "SKILL");
 	if (skill.value == 0)
 		M_PrintWhite (xmenustart+60, 248-chg, "Easy");
 	else if (skill.value == 1)
@@ -2855,37 +2867,42 @@ void M_Matchmaking_Draw (void)
 		if (startlevel >= levcount)
 			startlevel = 0;
 
-	M_Print (xmenustart, 268-chg, "Map");
+	M_Print (xmenustart, 268-chg, "MAP");
     // M_PrintWhite (60, 268-chg, levels[episodes[startepisode].firstLevel + startlevel].description);
 	M_PrintWhite (xmenustart+40, 268-chg, levels[episodes[startepisode].firstLevel + startlevel].description);
 
+	//=========================
+	// Start game
+	//========================
+	M_PrintWhite (xmenustart, 288-chg, "START GAME");
+
 	//Draw image
 	if(levels[episodes[startepisode].firstLevel + startlevel].name == "fire")
-    	 M_DrawTransPic(xmenustart,300-chg, mapfire);
+    	 M_DrawTransPic(xmenustart,308-chg, mapfire);
    	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "pit")
-    	 M_DrawTransPic(xmenustart,300-chg, mappit);
+    	 M_DrawTransPic(xmenustart,308-chg, mappit);
    	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "construction")
-    	 M_DrawTransPic(xmenustart,300-chg, mapconstruction);
+    	 M_DrawTransPic(xmenustart,308-chg, mapconstruction);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "base")
-		M_DrawTransPic(xmenustart,300-chg, mapbase);
+		M_DrawTransPic(xmenustart,308-chg, mapbase);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "spider")
-		M_DrawTransPic(xmenustart,300-chg, mapspider);
+		M_DrawTransPic(xmenustart,308-chg, mapspider);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "foundation")
-		M_DrawTransPic(xmenustart,300-chg, mapfoundation);
+		M_DrawTransPic(xmenustart,308-chg, mapfoundation);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "bloody")
-		M_DrawTransPic(xmenustart,300-chg, mapbloody);
+		M_DrawTransPic(xmenustart,308-chg, mapbloody);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "narrowed")
-		M_DrawTransPic(xmenustart,300-chg, mapnarrowed);
+		M_DrawTransPic(xmenustart,308-chg, mapnarrowed);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "plaza")
-		M_DrawTransPic(xmenustart,300-chg, mapplaza);
+		M_DrawTransPic(xmenustart,308-chg, mapplaza);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "lockout")
-		M_DrawTransPic(xmenustart,300-chg, maplockout);
+		M_DrawTransPic(xmenustart,308-chg, maplockout);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "citadel")
-		M_DrawTransPic(xmenustart,300-chg, mapcitadel);
+		M_DrawTransPic(xmenustart,308-chg, mapcitadel);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "Longest")
-		M_DrawTransPic(xmenustart,300-chg, maplong);
+		M_DrawTransPic(xmenustart,308-chg, maplong);
    	else
-   		M_DrawTransPic(xmenustart,300-chg, maprandom);
+   		M_DrawTransPic(xmenustart,308-chg, maprandom);
 }
 
 void M_Matchmaking_Change (int dir)
@@ -2987,10 +3004,6 @@ void M_Matchmaking_Key (int key)
 		M_Menu_Main_f ();
 		break;
 
-	case K_SELECT:
-		M_Menu_MultiPlayer_f ();
-		break;
-
 	case K_UPARROW:
 		S_LocalSound ("misc/menuoption.wav");
 		gameoptions_cursor--;
@@ -3006,14 +3019,14 @@ void M_Matchmaking_Key (int key)
 		break;
 
 	case K_LEFTARROW:
-		if (gameoptions_cursor == 0)
+		if (gameoptions_cursor == 6 || gameoptions_cursor == 0)
 			break;
 		S_LocalSound ("misc/menuoption.wav");
 		M_Matchmaking_Change (-1);
 		break;
 
 	case K_RIGHTARROW:
-		if (gameoptions_cursor == 0)
+		if (gameoptions_cursor == 6 || gameoptions_cursor == 0)
 			break;
 		S_LocalSound ("misc/menuoption.wav");
 		M_Matchmaking_Change (1);
@@ -3021,7 +3034,7 @@ void M_Matchmaking_Key (int key)
 
 	case K_CROSS:
 		S_LocalSound ("misc/menuenter.wav");
-		if (gameoptions_cursor == 0)
+		if (gameoptions_cursor == 6)
 		{
 			if (sv.active)
 				Cbuf_AddText ("disconnect\n");
@@ -3034,6 +3047,11 @@ void M_Matchmaking_Key (int key)
 			Cbuf_AddText ( va ("map %s\n", levels[episodes[startepisode].firstLevel + startlevel].name) );
 
 			return;
+		}
+		else if (gameoptions_cursor == 0)
+		{
+			m_multiplayer_cursor = 1;
+			M_Menu_Net_f ();
 		}
 
 		M_Matchmaking_Change (1);
