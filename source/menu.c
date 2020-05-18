@@ -207,7 +207,7 @@ void M_Print (int cx, int cy, char *str)
 
 void M_PrintCentered (int cy, char *str)
 {
-	int cx = 160 - strlen(str) * 4;
+	int cx = (320*MENU_SCALE)/2 - strlen(str) * 4;
 	
 	while (*str)
 	{
@@ -2749,7 +2749,7 @@ void M_Matchmaking_f (void)
 
 int gameoptions_cursor_table[] = {40, 56, 64, 72, 80, 88, 96, 112, 120};
 #define	NUM_GAMEOPTIONS	7
-int		gameoptions_cursor;
+int		gameoptions_cursor = 6;
 
 
 void M_Matchmaking_Draw (void)
@@ -2772,18 +2772,21 @@ void M_Matchmaking_Draw (void)
 	mapcitadel = Draw_CachePic ("gfx/maps/citadel.lmp");
 	maplong = Draw_CachePic ("gfx/maps/longest.lmp");
 
-	chg=106;
+	chg=103;
 	int xmenustart = 30;
 
-	// M_DrawTextBox (-8, 160+(gameoptions_cursor*20)-chg, 15, 1);
-	// M_DrawCharacter (xmenustart-8, 170+(gameoptions_cursor*20)-chg, 12+((int)(realtime*4)&1));
-	bg = Draw_CachePic ("gfx/MENU/matchmakingback.lmp");
-	M_DrawTransPic(xmenustart-16, 0, bg);
-	bar = Draw_CachePic ("gfx/MENU/menubarmp.lmp");
-	//cursor
-	M_DrawTransPic (xmenustart-16, 166-chg+(gameoptions_cursor*20),bar);
+	//new bg
+	float darken_height = 0.46;
+	float width = 0.37;
+	int darken_y_offset = 60;
 
-	M_PrintWhite (xmenustart, 138-chg, "MATCHMAKING");
+	//background
+	Draw_WindowInsCol(xmenustart-16, 0, width, 200*MENU_SCALE, BG_COLOR);
+	Draw_WindowInsCol(xmenustart-16, darken_y_offset, width, darken_height, BG_COLOR+1);
+	//cursor
+	Draw_Fill(xmenustart-16, 62+(gameoptions_cursor*20), (320*MENU_SCALE)*width, 16, YELLOW);
+
+	M_PrintWhite (xmenustart, 42, "MATCHMAKING");
 
 
 	//========================
@@ -2801,10 +2804,10 @@ void M_Matchmaking_Draw (void)
 	switch((int)deathmatch.value)
 	{
 		case 0:
-			M_PrintWhite  (xmenustart+60, 188-chg, "Co-op");
+			M_PrintWhite  (xmenustart+40, 188-chg, "Co-op");
 			break;
 		case 1:
-			M_PrintWhite (xmenustart+60, 188-chg, "Slayer");
+			M_PrintWhite (xmenustart+40, 188-chg, "Slayer");
 			if((int)deathmatch.value > 1000)
 				Cvar_SetValue ("fraglimit", 50);
 			Cvar_SetValue ("deathmatch", 1);
@@ -2814,7 +2817,7 @@ void M_Matchmaking_Draw (void)
 			Cvar_SetValue ("teamplay", 0);
 			break;
 		case 3:
-			M_PrintWhite (xmenustart+60, 188-chg, "Swat");
+			M_PrintWhite (xmenustart+40, 188-chg, "Swat");
 			if((int)deathmatch.value > 1000)
 				Cvar_SetValue ("fraglimit", 50);
 			Cvar_SetValue ("deathmatch", 3);
@@ -2828,32 +2831,32 @@ void M_Matchmaking_Draw (void)
 	//=======================
 	M_Print (xmenustart, 208-chg, "KILLS");
 	if (fraglimit.value == 0)
-		M_PrintWhite (xmenustart+60, 208-chg, "none");
+		M_PrintWhite (xmenustart+48, 208-chg, "Unlimited");
 	else if (fraglimit.value < 1000)
-		M_PrintWhite (xmenustart+60, 208-chg, va("%i", (int)fraglimit.value));
+		M_PrintWhite (xmenustart+48, 208-chg, va("%i", (int)fraglimit.value));
 	else
-		M_PrintWhite (xmenustart+60, 208-chg, "Rounds");
+		M_PrintWhite (xmenustart+48, 208-chg, "Rounds");
 	//========================
 	//  OPT1: time limit
 	//=======================
 	M_Print (xmenustart, 228-chg, "TIME");
 	if (timelimit.value == 0)
-		M_PrintWhite (xmenustart+60, 228-chg, "none");
+		M_PrintWhite (xmenustart+40, 228-chg, "Unlimited");
 	else
-		M_PrintWhite (xmenustart+60, 228-chg, va("%i minutes", (int)timelimit.value));
+		M_PrintWhite (xmenustart+40, 228-chg, va("%i Minutes", (int)timelimit.value));
 	
 	//========================
 	//  OPT1: difficulty
 	//=======================
 	M_Print (xmenustart, 248-chg, "SKILL");
 	if (skill.value == 0)
-		M_PrintWhite (xmenustart+60, 248-chg, "Easy");
+		M_PrintWhite (xmenustart+48, 248-chg, "Easy");
 	else if (skill.value == 1)
-		M_PrintWhite (xmenustart+60, 248-chg, "Normal");
+		M_PrintWhite (xmenustart+48, 248-chg, "Normal");
 	else if (skill.value == 2)
-		M_PrintWhite (xmenustart+60, 248-chg, "Hard");
+		M_PrintWhite (xmenustart+48, 248-chg, "Hard");
 	else
-		M_PrintWhite (xmenustart+60, 248-chg, "Legendary");
+		M_PrintWhite (xmenustart+48, 248-chg, "Legendary");
 
 	//========================
 	//  OPT1: map
@@ -2869,7 +2872,7 @@ void M_Matchmaking_Draw (void)
 
 	M_Print (xmenustart, 268-chg, "MAP");
     // M_PrintWhite (60, 268-chg, levels[episodes[startepisode].firstLevel + startlevel].description);
-	M_PrintWhite (xmenustart+40, 268-chg, levels[episodes[startepisode].firstLevel + startlevel].description);
+	M_PrintWhite (xmenustart+32, 268-chg, levels[episodes[startepisode].firstLevel + startlevel].description);
 
 	//=========================
 	// Start game
@@ -2878,31 +2881,31 @@ void M_Matchmaking_Draw (void)
 
 	//Draw image
 	if(levels[episodes[startepisode].firstLevel + startlevel].name == "fire")
-    	 M_DrawTransPic(xmenustart,308-chg, mapfire);
+    	 M_DrawTransPic(xmenustart+8,312-chg, mapfire);
    	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "pit")
-    	 M_DrawTransPic(xmenustart,308-chg, mappit);
+    	 M_DrawTransPic(xmenustart+8,312-chg, mappit);
    	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "construction")
-    	 M_DrawTransPic(xmenustart,308-chg, mapconstruction);
+    	 M_DrawTransPic(xmenustart+8,312-chg, mapconstruction);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "base")
-		M_DrawTransPic(xmenustart,308-chg, mapbase);
+		M_DrawTransPic(xmenustart+8,312-chg, mapbase);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "spider")
-		M_DrawTransPic(xmenustart,308-chg, mapspider);
+		M_DrawTransPic(xmenustart+8,312-chg, mapspider);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "foundation")
-		M_DrawTransPic(xmenustart,308-chg, mapfoundation);
+		M_DrawTransPic(xmenustart+8,312-chg, mapfoundation);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "bloody")
-		M_DrawTransPic(xmenustart,308-chg, mapbloody);
+		M_DrawTransPic(xmenustart+8,312-chg, mapbloody);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "narrowed")
-		M_DrawTransPic(xmenustart,308-chg, mapnarrowed);
+		M_DrawTransPic(xmenustart+8,312-chg, mapnarrowed);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "plaza")
-		M_DrawTransPic(xmenustart,308-chg, mapplaza);
+		M_DrawTransPic(xmenustart+8,312-chg, mapplaza);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "lockout")
-		M_DrawTransPic(xmenustart,308-chg, maplockout);
+		M_DrawTransPic(xmenustart+8,312-chg, maplockout);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "citadel")
-		M_DrawTransPic(xmenustart,308-chg, mapcitadel);
+		M_DrawTransPic(xmenustart+8,312-chg, mapcitadel);
 	else if(levels[episodes[startepisode].firstLevel + startlevel].name == "Longest")
-		M_DrawTransPic(xmenustart,308-chg, maplong);
+		M_DrawTransPic(xmenustart+8,312-chg, maplong);
    	else
-   		M_DrawTransPic(xmenustart,308-chg, maprandom);
+   		M_DrawTransPic(xmenustart+8,312-chg, maprandom);
 }
 
 void M_Matchmaking_Change (int dir)
@@ -2937,7 +2940,6 @@ void M_Matchmaking_Change (int dir)
 			Cvar_SetValue ("coop", 0);
 			Cvar_SetValue ("teamplay", 0);
 			startepisode = 0;
-			startlevel = 0;
 		}
 		else if((int)deathmatch.value == 3) //Swat
 		{
@@ -2948,7 +2950,6 @@ void M_Matchmaking_Change (int dir)
 			Cvar_SetValue ("coop", 0);
 			Cvar_SetValue ("teamplay", 0);
 			startepisode = 0;
-			startlevel = 0;
 		}
 		else
 		{
