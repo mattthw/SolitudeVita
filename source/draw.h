@@ -25,10 +25,13 @@ extern	qpic_t		*draw_disc;	// also used on sbar
 
 void Draw_Init (void);
 void Draw_Character (int x, int y, int num);
-void Draw_BorderedWindow(int x, int y, float width, float height, char *str);
+int PixWidth(float percent);
+int PixHeight(float percent);
 void Draw_WindowInsCol(int x, int y, float width, float height, int color);
 void Draw_WindowIns(int x, int y, float width, float height);
 void Draw_OffCenterWindow(int x, int y, float width, float height, char *str);
+void Draw_OffCenterWindowPix(int x, int y, int width, int height, char *str);
+void Draw_WindowPix(int x, int y, int bgwidth, int bgheight, char *str);
 void Draw_CenterWindow(float width, float height, char *str);
 void Draw_DebugChar (signed char num);
 void Draw_Pic (int x, int y, qpic_t *pic);
@@ -44,4 +47,5 @@ void Draw_FadeScreen (void);
 void Draw_String (int x, int y, const char *str);
 void Draw_Crosshair(void);
 qpic_t *Draw_PicFromWad (const char *name);
+qpic_t	*Draw_CachePicSafe (char *path, char *backup);
 qpic_t *Draw_CachePic (char *path);

@@ -40,6 +40,7 @@ typedef struct
 {
 	int			width, height;
 	byte		data[4];			// variably sized
+	bool		empty;
 } qpic_t;
 
 
