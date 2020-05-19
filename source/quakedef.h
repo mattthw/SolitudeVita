@@ -456,6 +456,8 @@ typedef struct ModsList{
 #define BG_COLOR 220
 #define YELLOW 107
 #define GREY 4
+#define BLACK 0
 #define BG_BORDER 1
+#define CHARSZ 8
 
 extern void Log(const char *format, ...);

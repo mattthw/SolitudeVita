@@ -373,12 +373,41 @@ void M_ToggleMenu_f (void)
 //=============================================================================
 /* MAIN MENU */
 
+
+#define	MAIN_ITEMS	5
+#define MAIN_MULTI_ITEMS 2
+
 int	m_main_cursor;
 int m_main_multi_cursor;
 bool main_multi = false;
 
-#define	MAIN_ITEMS	5
-#define MAIN_MULTI_ITEMS 2
+float main_percentwidth = 0.3;
+float main_x_offset_percent = 0.1;
+float mvs_percent = 0.067;
+
+#define m_x_text_offset 15
+
+#define _mvs PixHeight(mvs_percent) //menu vertical spacing
+#define text_v_margin (_mvs-8)/2
+#define cur_height _mvs
+
+//main
+#define main_pixel_height (MAIN_ITEMS + 1) * _mvs
+#define main_pixel_width PixWidth(main_percentwidth)
+
+#define main_y_offset_pixels PixHeight(1)-main_pixel_height
+#define main_x_offset_pixels PixWidth(main_x_offset_percent)
+//main-multi submenu
+#define multi_pixel_height (MAIN_MULTI_ITEMS) * _mvs
+#define multi_pixel_width 11*CHARSZ
+
+#define multi_x_offset_pixels main_x_offset_pixels+main_pixel_width
+
+int mvs(int cursorpos)
+{
+	return cursorpos*_mvs;
+}
+
 
 
 void M_Menu_Main_f (void)
@@ -396,40 +425,31 @@ void M_Menu_Main_f (void)
 
 void M_Main_Multi_Draw (void)
 {
-	float height = 0.17;
-	float width = 0.17;
-	int y_offset = (200*MENU_SCALE)-((200*MENU_SCALE)*(0.35));
-	int x_offset = 30+((300*MENU_SCALE)*0.3) + 9; //idk why I need to offset by 9 to prevent overlap. I am forgetting something?
-	int x_text_offset = 15;
-
 	//background
-	Draw_WindowInsCol(x_offset, -11+y_offset, width, height, GREY);
+	Draw_Fill(multi_x_offset_pixels, main_y_offset_pixels, multi_pixel_width, multi_pixel_height, GREY);
 	//cursor
-	Draw_Fill(x_offset, -3+y_offset+(m_main_multi_cursor*20), (320*MENU_SCALE)*width, 15, YELLOW);
+	Draw_Fill(multi_x_offset_pixels, main_y_offset_pixels+mvs(m_main_multi_cursor), multi_pixel_width, cur_height, YELLOW);
 	//menu items
-	M_PrintWhite(x_offset+x_text_offset, y_offset, "Create");
-	M_PrintWhite(x_offset+x_text_offset, y_offset+20, "Join");
+	M_PrintWhite(multi_x_offset_pixels+m_x_text_offset, main_y_offset_pixels+text_v_margin+mvs(0), "Create");
+	M_PrintWhite(multi_x_offset_pixels+m_x_text_offset, main_y_offset_pixels+text_v_margin+mvs(1), "Join");
 }
 
 void M_Main_Draw (void)
 {
-	float height = 0.35;
-	float width = 0.3;
-	int y_offset = (200*MENU_SCALE)-((200*MENU_SCALE)*(height));
-	int x_offset = 30;
-	int x_text_offset = 15;
 	int cursor_color = main_multi ? GREY : YELLOW;
 
 	//background
-	Draw_WindowIns(x_offset, -11+y_offset, width, height+0.05);
+	Draw_Fill(main_x_offset_pixels, main_y_offset_pixels, main_pixel_width, main_pixel_height, BG_COLOR); //blue bg
+	Draw_Fill(main_x_offset_pixels, PixHeight(1)-_mvs, main_pixel_width, _mvs, BLACK); //black bar bottom
+	M_PrintWhite(main_x_offset_pixels+main_pixel_width-(9*8), PixHeight(1)-_mvs+text_v_margin, "X Select"); //tip
 	//cursor
-	Draw_Fill(x_offset, -3+y_offset+(m_main_cursor*20), (320*MENU_SCALE)*width, 15, cursor_color);
+	Draw_Fill(main_x_offset_pixels, main_y_offset_pixels+mvs(m_main_cursor), main_pixel_width, cur_height, cursor_color);
 	//menu items
-	M_PrintWhite(x_offset+x_text_offset, y_offset, "Matchmaking");
-	M_PrintWhite(x_offset+x_text_offset, y_offset+20, "Firefight");
-	M_PrintWhite(x_offset+x_text_offset, y_offset+40, "Options");
-	M_PrintWhite(x_offset+x_text_offset, y_offset+60, "Spartan");
-	M_PrintWhite(x_offset+x_text_offset, y_offset+80, "Quit");
+	M_PrintWhite(main_x_offset_pixels+m_x_text_offset, main_y_offset_pixels+text_v_margin+mvs(0), "Matchmaking");
+	M_PrintWhite(main_x_offset_pixels+m_x_text_offset, main_y_offset_pixels+text_v_margin+mvs(1), "Firefight");
+	M_PrintWhite(main_x_offset_pixels+m_x_text_offset, main_y_offset_pixels+text_v_margin+mvs(2), "Options");
+	M_PrintWhite(main_x_offset_pixels+m_x_text_offset, main_y_offset_pixels+text_v_margin+mvs(3), "Spartan");
+	M_PrintWhite(main_x_offset_pixels+m_x_text_offset, main_y_offset_pixels+text_v_margin+mvs(4), "Quit");
 
 	if (main_multi)
 		M_Main_Multi_Draw ();
@@ -441,7 +461,14 @@ void M_Main_Key (int key)
 	{
 	case K_TRIANGLE:
 		if (main_multi == true)
+		{
 			main_multi = false;
+		}
+		else
+		{
+			m_main_cursor = 4;
+			M_Menu_Quit_f ();
+		}
 		break;
 	case K_DOWNARROW:
 		S_LocalSound ("misc/menuoption.wav");
