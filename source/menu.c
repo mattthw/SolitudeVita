@@ -48,6 +48,7 @@ int cfg_width;
 int cfg_height;
 extern cvar_t gl_bilinear;
 int m_state = m_none;
+bool mm_rentry = false;
 
 extern ModsList* mods;
 extern int max_mod_idx;
@@ -1090,6 +1091,7 @@ forward:
 int	m_net_cursor;
 int m_net_items;
 int m_net_saveHeight;
+int m_net_prevstate;
 
 char *net_helpMessage [] =
 {
@@ -1103,6 +1105,7 @@ char *net_helpMessage [] =
 void M_Menu_Net_f (void)
 {
 	key_dest = key_menu;
+	m_net_prevstate = m_state;
 	m_state = m_net;
 	m_entersound = true;
 	m_net_items = 1;
@@ -2290,16 +2293,22 @@ void M_Quit_Draw (void)
 /* LAN CONFIG MENU */
 
 int		lanConfig_cursor = 2;
-int		lanConfig_cursor_table [] = {72, 92, 112, 144, 158};
 #define NUM_LANCONFIG_CMDS	4
+#define LAN_HEIGHT_P 0.5
+#define LAN_WIDTH_P 0.55
+#define LAN_HEIGHT PixHeight(LAN_HEIGHT_P)
+#define LAN_WIDTH PixWidth(0.66)
 
 int 	lanConfig_port;
 char	lanConfig_portname[6];
 char	lanConfig_joinname[22];
 
+//int m_lan_prevstate;
+
 void M_Menu_LanConfig_f (void)
 {
 	key_dest = key_menu;
+	//m_lan_prevstate = m_state;
 	m_state = m_lanconfig;
 	m_entersound = true;
 	if (lanConfig_cursor == -1)
@@ -2314,6 +2323,7 @@ void M_Menu_LanConfig_f (void)
 
 	m_return_onerror = false;
 	m_return_reason[0] = 0;
+	mm_rentry = true;
 }
 
 char protocol[64];
@@ -2321,59 +2331,71 @@ uint8_t proto_idx = 0;
 
 void M_LanConfig_Draw (void)
 {
-	qpic_t	*p;
+	int LAN_YOFF = (PixHeight(1)-LAN_HEIGHT-MVS)/2 - 20;
+	int		lanConfig_cursor_table [] = {LAN_YOFF+72, LAN_YOFF+92, LAN_YOFF+112, LAN_YOFF+144, LAN_YOFF+158};
+	// qpic_t	*p;
 	int		basex;
 	char	*startJoin;
 	
-	
-	M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
-	p = Draw_CachePic ("gfx/p_multi.lmp");
-	basex = (320-p->width)/2;
-	M_DrawPic (basex, 4, p);
-
+	if (key_dest == key_menu)
+	{
+		m_state = m_net_prevstate;
+		m_recursiveDraw = true;
+		M_Draw ();
+		m_state = m_lanconfig;
+	}
 	if (StartingGame)
 		startJoin = "New Game";
 	else
 		startJoin = "Join Game";
 
-	if (proto_idx == 0) sprintf(protocol, "TCP/IP");
-	else sprintf(protocol, "AdHoc");
+	if (proto_idx == 0)
+		sprintf(protocol, "TCP/IP");
+	else
+		sprintf(protocol, "AdHoc");
+
+	M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
+	Draw_CenterWindow(LAN_WIDTH_P, LAN_HEIGHT_P, va ("%s - %s", startJoin, protocol));
 	
-	M_Print (basex, 32, va ("%s - %s", startJoin, protocol));
+	// p = Draw_CachePic ("gfx/p_multi.lmp");
+	basex = (320*MENU_SCALE-LAN_WIDTH)/2 + 30;
+	// M_DrawPic (basex, 4, p);
+	
+	// M_PrintWhite (basex+9*CHARZ, LAN_YOFF+32, );
 	basex += 8;
 
-	M_Print (basex, 52, "Address:");
-	M_Print (basex+9*8, 52, my_tcpip_address);
+	M_PrintWhite (basex, LAN_YOFF+52, "Address:");
+	M_PrintWhite (basex+9*CHARZ, LAN_YOFF+52, my_tcpip_address);
 
-	M_Print (basex, lanConfig_cursor_table[0], "Port");
+	M_PrintWhite (basex, lanConfig_cursor_table[0], "Port");
 	M_DrawTextBox (basex+8*8, lanConfig_cursor_table[0]-8, 6, 1);
-	M_Print (basex+9*8, lanConfig_cursor_table[0], lanConfig_portname);
-	M_Print (basex, lanConfig_cursor_table[1], "Protocol");
-	M_Print (basex+9*8, lanConfig_cursor_table[1], protocol);
+	M_Print (basex+9*CHARZ, lanConfig_cursor_table[0], lanConfig_portname);
+	M_PrintWhite (basex, lanConfig_cursor_table[1], "Protocol");
+	M_Print (basex+9*CHARZ, lanConfig_cursor_table[1], protocol);
 	if (JoiningGame)
 	{
 		M_Print (basex, lanConfig_cursor_table[2], "Search for local games...");
-		M_Print (basex, 128, "Join game at:");
+		M_Print (basex, LAN_YOFF+128, "Join game at:");
 		M_DrawTextBox (basex+8, lanConfig_cursor_table[3]-8, 22, 1);
 		M_Print (basex+16, lanConfig_cursor_table[3], lanConfig_joinname);
-		M_Print (basex, 158, "Join an online server");
+		M_Print (basex, LAN_YOFF+158, "Join an online server");
 	}
 	else
 	{
-		M_DrawTextBox (basex, lanConfig_cursor_table[2]-8, 2, 1);
-		M_Print (basex+8, lanConfig_cursor_table[2], "OK");
+		//M_DrawTextBox (basex, lanConfig_cursor_table[2]-8, 2, 1);
+		M_PrintWhite (basex+8, lanConfig_cursor_table[2], "Accept");
 	}
 
 	M_DrawCharacter (basex-8, lanConfig_cursor_table [lanConfig_cursor], 12+((int)(realtime*4)&1));
 
 	if (lanConfig_cursor == 0)
-		M_DrawCharacter (basex+9*8 + 8*strlen(lanConfig_portname), lanConfig_cursor_table [0], 10+((int)(realtime*4)&1));
+		M_DrawCharacter (basex+9*CHARZ + 8*strlen(lanConfig_portname), lanConfig_cursor_table [0], 10+((int)(realtime*4)&1));
 
 	if (lanConfig_cursor == 3)
 		M_DrawCharacter (basex+16 + 8*strlen(lanConfig_joinname), lanConfig_cursor_table [3], 10+((int)(realtime*4)&1));
 
 	if (*m_return_reason)
-		M_PrintWhite (basex, 168, m_return_reason);
+		M_PrintWhite (basex, LAN_YOFF+168, m_return_reason);
 }
 
 
@@ -2764,7 +2786,9 @@ void M_Matchmaking_f (void)
 	Cvar_SetValue ("skill", 0);
 	Cvar_SetValue ("deathmatch", 1);
 	startepisode = 0;
-	startlevel = rand() % episodes[startepisode].levels;
+	if (!mm_rentry)
+		startlevel = rand() % episodes[startepisode].levels;
+	mm_rentry = false;
 }
 
 
