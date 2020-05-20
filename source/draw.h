@@ -30,6 +30,8 @@ int PixHeight(float percent);
 void Draw_WindowInsCol(int x, int y, float width, float height, int color);
 void Draw_WindowIns(int x, int y, float width, float height);
 void Draw_OffCenterWindow(int x, int y, float width, float height, char *str);
+void Draw_OffCenterWindowPix(int x, int y, int width, int height, char *str);
+void Draw_WindowPix(int x, int y, int bgwidth, int bgheight, char *str);
 void Draw_CenterWindow(float width, float height, char *str);
 void Draw_DebugChar (signed char num);
 void Draw_Pic (int x, int y, qpic_t *pic);

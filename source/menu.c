@@ -2671,29 +2671,30 @@ void M_Menu_Pause_f (void)
 	m_state = m_pause;
 	m_entersound = true;
 }
+
 #define	NUM_PAUSEOPTIONS	4
+
+#define P_HEIGHT 			mvs(4)
+#define P_YOFF				PixHeight(0.3)
+
+#define P_WIDTH 			PixWidth(0.4)
+#define P_XOFF				(PixWidth(1)-P_WIDTH)/2
+
 int		pause_cursor;
 
 //pause
 void M_Pause_Draw (void)
-{
-	int y_offset = 70;
-	int y_cursor_offset = 32;
-	int cursorwidth = (320*MENU_SCALE)*0.4;
-	int cursoroffset = (320*MENU_SCALE-cursorwidth)/2;
-	int x_offset = cursoroffset + 32;
-	
+{	
 
 	//background
-	Draw_OffCenterWindow(0, -10, 0.4, 0.3, "Pause");
+	Draw_WindowPix(P_XOFF, P_YOFF, P_WIDTH, P_HEIGHT, "Pause");
 	//cursor
-	Draw_Fill((320*MENU_SCALE-cursorwidth)/2, y_offset+y_cursor_offset+(pause_cursor*20)-3, cursorwidth, 15, 108);
+	Draw_Fill(P_XOFF, P_YOFF+mvs(pause_cursor), P_WIDTH, MVS, YELLOW);
 	//menu items
-	M_Print(x_offset, y_offset+32, "Add Bot");
-	M_Print(x_offset, y_offset+52, "Remove Bot");
-	M_Print(x_offset, y_offset+72, "Options");
-	M_Print(x_offset, y_offset+92, "Disconnect");
-
+	M_Print(P_XOFF+TEXT_XMARGIN, P_YOFF+mvs(0)+TEXT_YMARGIN, "Add Bot");
+	M_Print(P_XOFF+TEXT_XMARGIN, P_YOFF+mvs(1)+TEXT_YMARGIN, "Remove Bot");
+	M_Print(P_XOFF+TEXT_XMARGIN, P_YOFF+mvs(2)+TEXT_YMARGIN, "Options");
+	M_Print(P_XOFF+TEXT_XMARGIN, P_YOFF+mvs(3)+TEXT_YMARGIN, "Disconnect");
 }
 
 void M_Pause_Key (int key)

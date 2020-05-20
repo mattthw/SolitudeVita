@@ -1016,6 +1016,19 @@ void Draw_OffCenterWindow(int x, int y, float width, float height, char *str)
 	D_PrintWhite(inside_xoff+CHARZ, inside_yoff-top_margin+textmargin, str);
 }
 
+void Draw_WindowPix(int x, int y, int bgwidth, int bgheight, char *str)
+{
+	int top_margin = 20;
+	int textmargin = (top_margin-CHARZ)/2;
+	int side_margin = 1;
+	int bottom_margin = 1;
+
+	Draw_Fill (x-side_margin, y-top_margin, bgwidth+(2*side_margin), bgheight+top_margin+bottom_margin, BG_BORDER);
+	Draw_Fill (x, y, bgwidth, bgheight, BG_COLOR);
+
+	D_PrintWhite(x+CHARZ, y-top_margin+textmargin, str);
+}
+
 void Draw_CenterWindow(float width, float height, char *str)
 {
 	Draw_OffCenterWindow(0, 0, width, height, str);
