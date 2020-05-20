@@ -45,4 +45,5 @@ void Draw_FadeScreen (void);
 void Draw_String (int x, int y, const char *str);
 void Draw_Crosshair(void);
 qpic_t *Draw_PicFromWad (const char *name);
+qpic_t	*Draw_CachePicSafe (char *path, char *backup);
 qpic_t *Draw_CachePic (char *path);

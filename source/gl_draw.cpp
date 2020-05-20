@@ -541,6 +541,69 @@ qpic_t *Draw_PicFromWad (const char *name)
 	return p;
 }
 
+/*
+================
+Draw_CachePic
+================
+*/
+char *oldpath;
+qpic_t	*Draw_CachePicSafe (char *path, char *backup)
+{
+	cachepic_t	*pic;
+	int			i;
+	qpic_t		*dat;
+	glpic_t		*gl;
+
+	for (pic=menu_cachepics, i=0 ; i<menu_numcachepics ; pic++, i++)
+	{
+		if (!strcmp (path, pic->name))
+			return &pic->pic;
+	}
+
+	if (menu_numcachepics == MAX_CACHED_PICS)
+		Sys_Error ("menu_numcachepics == MAX_CACHED_PICS");
+	menu_numcachepics++;
+	strcpy (pic->name, path);
+	
+//
+// load the pic from disk
+//
+	dat = (qpic_t *)COM_LoadTempFile (path, NULL);	
+	if (!dat)
+	{
+		if (!strcmp (path, backup))
+		{
+			Sys_Error ("Draw_CachePic: failed to load %s", oldpath);
+		}
+		else
+		{
+			oldpath = path;
+			return Draw_CachePicSafe(backup, backup);
+		}
+	}
+	
+	SwapPic (dat);
+
+	// HACK HACK HACK --- we need to keep the bytes for
+	// the translatable player picture just for the menu
+	// configuration dialog
+	if (!strcmp (path, "gfx/menuplyr.lmp"))
+		memcpy (menuplyr_pixels, dat->data, dat->width*dat->height);
+
+	pic->pic.width = dat->width;
+	pic->pic.height = dat->height;
+	
+	gl = (glpic_t *)pic->pic.data;
+	int texnum = LoadExternalPic(path);
+	if (texnum != -1) gl->texnum = texnum;
+	else gl->texnum = GL_LoadPicTexture (dat);
+	gl->sl = 0;
+	gl->sh = 1;
+	gl->tl = 0;
+	gl->th = 1;
+	
+	return &pic->pic;
+}
 
 /*
 ================
@@ -943,14 +1006,14 @@ void Draw_OffCenterWindow(int x, int y, float width, float height, char *str)
 	int inside_yoff = y+(200*MENU_SCALE-bgheight)/2;
 	int inside_xoff = x+(320*MENU_SCALE-bgwidth)/2;
 	int top_margin = 20;
-	int textmargin = (top_margin-CHARSZ)/2;
+	int textmargin = (top_margin-CHARZ)/2;
 	int side_margin = 1;
 	int bottom_margin = 1;
 
 	Draw_Fill (inside_xoff-side_margin, inside_yoff-top_margin, bgwidth+(2*side_margin), bgheight+top_margin+bottom_margin, BG_BORDER);
 	Draw_Fill (inside_xoff, inside_yoff, bgwidth, bgheight, BG_COLOR);
 
-	D_PrintWhite(inside_xoff+CHARSZ, inside_yoff-top_margin+textmargin, str);
+	D_PrintWhite(inside_xoff+CHARZ, inside_yoff-top_margin+textmargin, str);
 }
 
 void Draw_CenterWindow(float width, float height, char *str)

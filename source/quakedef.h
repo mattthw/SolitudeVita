@@ -452,12 +452,36 @@ typedef struct ModsList{
 #define CANVAS_CROSSHAIR   4
 #define CANVAS_TOPRIGHT    5
 #define CANVAS_MENU_STRETCH   6
-#define MENU_SCALE 1.5
+
+// ______ _____  ___ _____ _   _    _____ _____                                     
+// |  _  \  ___|/ _ \_   _| | | |  |_   _|  _  |                                    
+// | | | | |__ / /_\ \| | | |_| |    | | | | | |                                    
+// | | | |  __||  _  || | |  _  |    | | | | | |                                    
+// | |/ /| |___| | | || | | | | |    | | \ \_/ /                                    
+// |___/ \____/\_| |_/\_/ \_| |_/    \_/  \___/                                     
+                                                                                 
+                                                                                 
+// ___  ___  ___  _____ _____ _____    _   _ _   ____  _________ ___________  _____ 
+// |  \/  | / _ \|  __ \_   _/  __ \  | \ | | | | |  \/  || ___ \  ___| ___ \/  ___|
+// | .  . |/ /_\ \ |  \/ | | | /  \/  |  \| | | | | .  . || |_/ / |__ | |_/ /\ `--. 
+// | |\/| ||  _  | | __  | | | |      | . ` | | | | |\/| || ___ \  __||    /  `--. \
+// | |  | || | | | |_\ \_| |_| \__/\  | |\  | |_| | |  | || |_/ / |___| |\ \ /\__/ /
+// \_|  |_/\_| |_/\____/\___/ \____/  \_| \_/\___/\_|  |_/\____/\____/\_| \_|\____/ 
+                                                                                 
+extern void Log(const char *format, ...);
+                                                                                
+//menu color defines
 #define BG_COLOR 220
 #define YELLOW 107
 #define GREY 4
 #define BLACK 0
 #define BG_BORDER 1
-#define CHARSZ 8
 
-extern void Log(const char *format, ...);
+//menu UI defines
+#define MENU_SCALE 1.5
+#define CHARZ 8
+#define MVS_P 0.067 //menu vertical spacing percent
+#define MVS PixHeight(MVS_P) //menu vertical spacing
+#define TEXT_YMARGIN (MVS-CHARZ)/2 //margin below or above text in a MVS row
+#define TEXT_XMARGIN 15
+
