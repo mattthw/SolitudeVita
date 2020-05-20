@@ -2889,6 +2889,8 @@ void M_Matchmaking_Draw (void)
 	//========================= 6
 	M_PrintWhite (MM_XOFF+TEXT_XMARGIN, MM_HEADER_HEIGHT+TEXT_YMARGIN+mvs(6), "START GAME");
 	//========================= Draw image
+	qpic_t *randmap = Draw_CachePicSafe("gfx/maps/random.lmp", "");
+	M_DrawTransPic(MM_XOFF+(MM_WIDTH_PIX-randmap->width)/2, MM_HEADER_HEIGHT+MM_GAMEOPS_HEIGHT+(((MM_HEIGHT_PIX-MM_FOOTER_HEIGHT)-(MM_HEADER_HEIGHT+MM_GAMEOPS_HEIGHT))-randmap->height)/2, randmap);
 	qpic_t *mappic = Draw_CachePicSafe(va("gfx/maps/%s.lmp", levels[episodes[startepisode].firstLevel + startlevel].name), "gfx/maps/random.lmp");
 	M_DrawTransPic(MM_XOFF+(MM_WIDTH_PIX-mappic->width)/2, MM_HEADER_HEIGHT+MM_GAMEOPS_HEIGHT+(((MM_HEIGHT_PIX-MM_FOOTER_HEIGHT)-(MM_HEADER_HEIGHT+MM_GAMEOPS_HEIGHT))-mappic->height)/2, mappic);
 	//========================= Footer
