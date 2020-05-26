@@ -1188,25 +1188,28 @@ void Sbar_CrossHairs (void)
 		{
 			case IT_NAILGUN:
 				M_DrawPic (0-arred->width/2, 0-arred->height/2, arred);
-			break;
+				break;
 			case IT_SUPER_NAILGUN:
 				M_DrawPic (0-smgred->width/2, 0-smgred->height/2, smgred);
-			break;
+				break;
 			case IT_GRENADE_LAUNCHER:
 				M_DrawPic (0-sniperred->width/2, 0-sniperred->height/2, sniperred);
-			break;
+				break;
 			case IT_ROCKET_LAUNCHER:
 				M_DrawPic (0-rlred->width/2, 0-rlred->height/2, rlred);
-			break;
+				break;
 			case IT_SHOTGUN:
 				M_DrawPic (0-pistolred->width/2, 0-pistolred->height/2, pistolred);
-			break;
+				break;
+			case IT_SUPER_SHOTGUN:
+				M_DrawPic (0-shotgunred->width/2, 0-shotgunred->height/2, shotgunred);
+				break;
 			case IT_EXTRA_WEAPON:	//Needs red pick
 				M_DrawPic (0-needlerred->width/2, 0-needlerred->height/2, needlerred);
-			break;
+				break;
 			case IT_AXE:	//Needs red pick
 				M_DrawPic (0-swordred->width/2, 0-swordred->height/2, swordred);
-			break;
+				break;
 		}
 	}
 	/* Blue Crosshairs */
@@ -1216,25 +1219,28 @@ void Sbar_CrossHairs (void)
 		{
 			case IT_NAILGUN:
 				M_DrawPic (0-arblue->width/2, 0-arblue->height/2, arblue);
-			break;
+				break;
 			case IT_SUPER_NAILGUN:
 				M_DrawPic (0-smgblue->width/2, 0-smgblue->height/2, smgblue);
-			break;
+				break;
 			case IT_GRENADE_LAUNCHER:
 				M_DrawPic (0-sniperblue->width/2, 0-sniperblue->height/2, sniperblue);
-			break;
+				break;
 			case IT_ROCKET_LAUNCHER:
 				M_DrawPic (0-rlblue->width/2, 0-rlblue->height/2, rlblue);
-			break;
+				break;
 			case IT_SHOTGUN:
 				M_DrawPic (0-pistolblue->width/2, 0-pistolblue->height/2, pistolblue);
-			break;
+				break;
+			case IT_SUPER_SHOTGUN:
+				M_DrawPic (0-shotgunblue->width/2, 0-shotgunblue->height/2, shotgunblue);
+				break;
 			case IT_EXTRA_WEAPON:
 				M_DrawPic (0-needlerblue->width/2, 0-needlerblue->height/2, needlerblue);
-			break;
+				break;
 			case IT_AXE:	//Needs pick
 				M_DrawPic (0-swordblue->width/2, 0-swordblue->height/2, swordblue);
-			break;
+				break;
 		}
 	}
 	GL_SetCanvas(CANVAS_DEFAULT);
