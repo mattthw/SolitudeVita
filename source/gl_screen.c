@@ -366,6 +366,7 @@ void SCR_Init (void)
 	Cvar_RegisterVariable (&scr_conscale);
 	Cvar_RegisterVariable (&scr_menuscale);
 	Cvar_RegisterVariable (&scr_sbarscale);
+	Cvar_RegisterVariable (&scr_crosshairscale);
 	Cvar_RegisterVariable (&scr_conspeed);
 	Cvar_RegisterVariable (&showram);
 	Cvar_RegisterVariable (&showturtle);
