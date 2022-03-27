@@ -570,10 +570,8 @@ int quake_main (unsigned int argc, void* argv){
 			param.inputTextBuffer = input_text;
 			sceImeDialogInit(&param);
 			while (sceImeDialogGetStatus() != 2) {
-				vglStartRendering();
-				vglStopRenderingInit();
-				vglUpdateCommonDialog();
-				vglStopRenderingTerm();
+				sceneReset();
+				vglSwapBuffers(true);
 			}
 			SceCommonDialogStatus status = sceImeDialogGetStatus();
 			SceImeDialogResult result;
