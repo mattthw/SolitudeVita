@@ -1,4 +1,0 @@
-plaza
-pit
-maze
-longest
