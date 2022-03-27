@@ -31,5 +31,14 @@ An official channel to discuss the development of this source port can be found 
 - Launch image is not added
 
 # Installation
+- Place the ```/Solitude``` folder inside ```<ux0 or alternative:>/data/Quake/```. You will also need the original quake files or shareware files as a .PAK filetype inside ```<ux0 or alternative:>/data/Quake/id1/```. You should be able to use the data files from VITADB for vitaQuake.
 
-Place the Solitude folder inside ```<ux0 or alternative:>/data/Quake/```. You will also need the original quake files or shareware files as a .PAK filetype inside ```<ux0 or alternative:>/data/Quake/id1/```. You should be able to use the data files from VITADB for vitaQuake.
+# Development
+
+## Compile SolitudeVita
+- Install the VitaSDK and set up building with the instructions here; https://vitasdk.org/
+- Install VitaGL (https://github.com/Rinnegatamante/vitaGl) with "make" then "make install"
+- Then just run ``make`` in the SolitudeVita, which should produce a working vitaquake.vpk
+
+## Add vitaQuake as remote (for source code updates, etc)
+- ``git remote add vitaQuake https://github.com/Rinnegatamante/vitaQuake.git``
