@@ -1,5 +1,4 @@
 # Solitude
-
 ## Introduction
 - vitaQuake is a Quake engine source port for PSVITA.
 - SolitudeVita is a port of Solitude for the vita. Solitude was originally made for the PSP, which was abandoned, then rebooted as Solitude Revamped, then abandoned, then ported to N3DS, then forgotten. This port is still a work in progress.
@@ -13,12 +12,25 @@
 - Overhauled menus and graphics
 - New touchscreen aiming support
 
-## Broken / WIP
-- See [issues](https://github.com/mmccoy37/vitaQuake-Solitude/issues)
+### Screenshots
+![](https://github.com/mmccoy37/SolitudeVita/files/menu.png)
+![](https://github.com/mmccoy37/SolitudeVita/files/gameplay.png)
+### Gameplay
+[Watch on youtube](https://www.youtube.com/watch?v=949wQT5fhPk)
 
-# Installation
-- Place the ```/Solitude``` folder inside ```<ux0 or alternative:>/data/Quake/```. You will also need the original quake files or shareware files as a .PAK filetype inside ```<ux0 or alternative:>/data/Quake/id1/```. You should be able to use the data files from VITADB for vitaQuake.
-- End result will look like
+## Issues
+![](https://img.shields.io/github/issues-raw/mmccoy37/SolitudeVita) ![](https://img.shields.io/github/issues-closed-raw/mmccoy37/SolitudeVita)
+
+Search [issues](https://github.com/mmccoy37/vitaQuake-Solitude/issues) for existing bugs and feature requests before submitting a new one.
+
+# Installation on Playstation Vita
+1. Download the latest release: [releases](https://github.com/mmccoy37/SolitudeVita/releases/)
+1. Extract the archive
+1. Install ``Solitude.vpk`` on the Playstation Vita
+1. Copy the ```/Solitude``` folder to ```<ux0 or alternative:>/data/Quake/```. 
+    - You will also need the original quake files or shareware files as a .PAK filetype inside ```<ux0 or alternative:>/data/Quake/id1/```. You should be able to use the data files from VITADB for vitaQuake.
+
+The end result will look something like this:
 ```
 /data/Quake/
             ./id1/*.PAK  # Legally acquired PAK files from original quake game
@@ -27,11 +39,11 @@
 
 # Development
 
-## Compile SolitudeVita
+### Compile SolitudeVita
 - Install the VitaSDK and set up building with the instructions here; https://vitasdk.org/
 - Install VitaGL (https://github.com/Rinnegatamante/vitaGl) with "make" then "make install"
 - Then just run ``make`` in the SolitudeVita, which should produce a working vitaquake.vpk
-## Add vitaQuake as remote (for source code updates, etc)
+### Add vitaQuake as remote (for source code updates, etc)
 - ``git remote add vitaQuake https://github.com/Rinnegatamante/vitaQuake.git``
 
 # Credits
