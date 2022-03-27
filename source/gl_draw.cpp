@@ -21,6 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // draw.c -- this is the only file outside the refresh that touches the
 // vid buffer
 
+#include <psp2/io/fcntl.h> 
+
 extern "C"{
 	#include "quakedef.h"
 	extern unsigned short CRC_Block(byte *data, int size);
