@@ -1,9 +1,10 @@
 # Solitude
 
+> ⚠️ **WARNING:** I am looking for the QC quake code source files to [Halo Revamped](https://www.youtube.com/watch?v=B_GB9LLBATQ) (r17?) for N3DS! Without this, the changes I am able to make are extremely limited. If you happen to have this laying around on your computer or know someone who has this, please let me know.
 ## Introduction
-vitaQuake is a Quake engine source port for PSVITA.
+vitaQuake is a Quake engine source port for Vita by Rinnegatamante
 
-vitaQuake Solitude is a port of Solitude for the vita. Solitude was originally made for the PSP, which was abandoned, then rebooted as Solitude Revamped, then abandoned, then ported to N3DS, then forgotten. This port is still a work in progress.
+SolitudeVita is a port of Solitude for the vita, built ontop of vitaQuake. Solitude was originally made for the PSP, which was abandoned, then rebooted as Solitude Revamped, then abandoned, then ported to N3DS, then forgotten. This port is still a work in progress.
 
 ### Features
 - Slayer game type
