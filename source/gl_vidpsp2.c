@@ -509,7 +509,7 @@ void GL_BeginRendering (int *x, int *y, int *width, int *height)
 			glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, fb_tex, 0);
 		} else glBindFramebuffer(GL_FRAMEBUFFER, fb);
 	}
-	vglStartRendering();
+	sceneReset();
 	vglIndexPointerMapped(indices);
 	gVertexBuffer = gVertexBufferPtr;
 	gColorBuffer = gColorBufferPtr;
@@ -523,10 +523,12 @@ void GL_EndRendering (void)
 	GL_SetCanvas(CANVAS_DEFAULT);
 	
 	if (isKeyboard || netcheck_dialog_running){
-		vglStopRenderingInit();
-		vglUpdateCommonDialog();
-		vglStopRenderingTerm();
-	}else vglStopRendering();
+		sceneEnd();
+		sceneReset();
+	} else {
+		sceneEnd();
+		sceneReset();
+	}
 	
 	if (gl_ssaa > 1) {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -535,7 +537,7 @@ void GL_EndRendering (void)
 		glOrtho(0, 960, 544, 0, -1, 1);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		vglStartRendering();
+		sceneReset();
 		glBindTexture(GL_TEXTURE_2D, fb_tex);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -550,7 +552,8 @@ void GL_EndRendering (void)
 		glTexCoord2i(0, 1);
 		glVertex3f(0, 544, 0);
 		glEnd();
-		vglStopRendering();
+		sceneEnd();
+		sceneReset();
 	}
 	
 }

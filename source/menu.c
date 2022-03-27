@@ -21,6 +21,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 #include "net_dgrm.h"
+#include <psp2/pspnet_adhoc.h> 
+#include <psp2/pspnet_adhocctl.h>
+#include <psp2/netcheck_dialog.h>
 
 char res_string[256];
 CVAR (vid_vsync, 1, CVAR_ARCHIVE)
