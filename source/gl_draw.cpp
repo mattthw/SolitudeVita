@@ -1643,7 +1643,9 @@ static GLenum oldtarget = 0; // KH
 int max_fps = 0;
 int average_fps = 0; // TODO: Add this
 int min_fps = 999;
-bool bBenchmarkStarted;
+extern "C"{
+extern bool bBenchmarkStarted;
+};
 bool bBlinkBenchmark;
 
 void GL_DrawBenchmark(void)
